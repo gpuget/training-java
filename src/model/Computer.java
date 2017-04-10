@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Computer implements Serializable{
-	private static final transient long serialVersionUID = 1L;
-	
+	private long id;
 	private String name;
 	private Company manufacturer;
 	private Date introduced;
 	private Date discontinued;
 	
-	public Computer(String name, Company manufacturer, Date... duration) {
+	public Computer() {
+		
+	}
+	
+	public Computer(long id, String name, Company manufacturer, Date... duration) {
+		this.id = id;
 		this.name = name;
 		this.manufacturer = manufacturer;
 		
@@ -54,6 +58,20 @@ public class Computer implements Serializable{
 		return res;
 	}
 	
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return the name
 	 */

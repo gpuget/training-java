@@ -2,9 +2,18 @@ package model;
 
 import java.io.Serializable;
 
-public class Company implements Serializable{	
-	private static final transient long serialVersionUID = 1L;
+public class Company implements Serializable{
+	private long id;
 	private String name;
+	
+	public Company() {
+		
+	}
+	
+	public Company(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -25,6 +34,20 @@ public class Company implements Serializable{
 	@Override
 	public String toString() {
 		return "Company "+this.name;
+	}
+	
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	/**
