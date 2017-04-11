@@ -4,17 +4,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Page {
+	public static final int MAX_PER_PAGE = 20;
+	
 	private List<Computer> computers;
 	private int number;
 
 	public Page() {
 		this.computers = new ArrayList<>();
-		this.number = 0;
-	}
-	
-	public Page(List<Computer> computers, int number) {
-		this.computers = computers;
-		this.number = number;
+		this.number = 1;
 	}
 	
 	@Override
@@ -28,12 +25,12 @@ public class Page {
 		return res;
 	}
 	
-	public void nextPage() {
+	public void next() {
 		this.number++;
 	}
 	
-	public void previousPage() {
-		if(this.number>0) this.number--;
+	public void previous() {
+		if(this.number>1) this.number--;
 	}
 
 	public List<Computer> getComputers() {

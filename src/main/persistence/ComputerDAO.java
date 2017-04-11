@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import model.Company;
 import model.Computer;
@@ -24,7 +24,7 @@ public class ComputerDAO extends DAO<Computer> {
 	private final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private final String BOUNDED_RST = " LIMIT ? OFFSET ?";
 	
-	private Collection<Computer> computersList = null;
+	private List<Computer> computersList = null;
 	private Computer computer = null;
 	private static ComputerDAO instance = null;
 	
@@ -81,7 +81,7 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public Collection<Computer> findAll() {
+	public List<Computer> findAll() {
 		computer = null;
 		computersList = new ArrayList<Computer>();
 		try {
@@ -143,7 +143,7 @@ public class ComputerDAO extends DAO<Computer> {
 		return obj;
 	}
 
-	public Collection<Computer> findAll(int limit, int offset) {
+	public List<Computer> findAll(int limit, int offset) {
 		computer = null;
 		computersList = new ArrayList<Computer>();
 		try {

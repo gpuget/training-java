@@ -32,17 +32,17 @@ public class DAOTest {
 	
 	@SuppressWarnings("static-access")
 	@Test
-	public void DAOSameConnection() {
+	public void daoSameConnection() {
 		assertSame(DAOList.get(0).connection, DAOList.get(1).connection);
 	}
 	
 	@Test
-	public void ComputerDAOFindNotNull() throws SQLException {
+	public void computerDAOFindNotNull() throws SQLException {
 		assertNotNull(DAOList.get(1).findById(1l));
 	}
 	
 	@Test
-	public void ComputerDAOFind() throws SQLException {
+	public void computerDAOFind() throws SQLException {
 		//Apple Inc. --> 1
 		//Apple III. --> 12
 		Computer c = (Computer) DAOList.get(1).findById(12l);
@@ -53,13 +53,14 @@ public class DAOTest {
 	}
 
 	@Test
-	public void ComputerDAOFindAll() throws SQLException {
+	public void computerDAOFindAll() throws SQLException {
 		//SELECT COUNT(*) FROM computer --> 574
 		assertEquals(574, DAOList.get(1).findAll().size());
+		assertEquals(new Computer(12l, "Apple III", new Company(1l, "Apple Inc."), Date.valueOf("1980-05-01")), DAOList.get(1).findAll().get(11));
 	}
 	
 	@Test
-	public void ComputerDAOFindBounded() {
+	public void computerDAOFindBounded() {
 		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
 		
 		assertEquals(5, dao.findAll(5, 100).size());
@@ -67,7 +68,7 @@ public class DAOTest {
 		assertTrue(dao.findAll(5, 1000).isEmpty());
 	}
 	
-	@Test public void ComputerDAOInsertAndDelete() throws SQLException {
+	@Test public void computerDAOInsertAndDelete() throws SQLException {
 		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
 		assertNotNull(dao.create(new Computer(777l, "Test", new Company())));
 		assertNull(dao.create(new Computer(777l, "Test", new Company())));	
@@ -79,7 +80,7 @@ public class DAOTest {
 	}
 	
 	@Test
-	public void CompanyDAOUpdate() {
+	public void companyDAOUpdate() {
 		//| 574 | iPhone 4S | 2011-10-14 00:00:00 | NULL         |          1 |
 		//| 1 | Apple Inc. |
 		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
@@ -96,7 +97,7 @@ public class DAOTest {
 	}
 	
 	@Test
-	public void CompanyDAOFindAll() throws SQLException {
+	public void companyDAOFindAll() throws SQLException {
 		//SELECT COUNT(*) FROM company --> 42
 		assertEquals(42, DAOList.get(0).findAll().size());
 	} 

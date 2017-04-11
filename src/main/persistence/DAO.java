@@ -2,7 +2,7 @@ package persistence;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
+import java.util.List;
 
 public abstract class DAO<T> {
 	protected static Connection connection = Connect.getInstance().getConnection();
@@ -15,7 +15,7 @@ public abstract class DAO<T> {
 	
 	public abstract boolean delete(T obj);
 	
-	public abstract Collection<T> findAll() throws SQLException;
+	public abstract List<T> findAll() throws SQLException;
 	
 	public abstract T findById(long id) throws SQLException;
 	

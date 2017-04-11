@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import model.Company;
@@ -32,7 +31,7 @@ public class CompanyDAO extends DAO<Company> {
 	public boolean delete(Company obj) {return false;}
 
 	@Override
-	public Collection<Company> findAll() {
+	public List<Company> findAll() {
 		company = null;
 		companiesList = new ArrayList<>();		
 		try {
