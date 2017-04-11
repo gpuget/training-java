@@ -15,7 +15,7 @@ public abstract class DAO<T> {
 	
 	public abstract boolean delete(T obj);
 	
-	public abstract Collection<T> findAll();
+	public abstract Collection<T> findAll() throws SQLException;
 	
 	public abstract T findById(long id) throws SQLException;
 	

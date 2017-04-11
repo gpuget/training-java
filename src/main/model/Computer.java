@@ -24,7 +24,10 @@ public class Computer implements Serializable{
 			case 1: this.introduced = duration[0];
 			break;
 			
-			default: return;
+			default: {
+				this.introduced = null;
+				this.discontinued = null;
+			}
 		}
 	}
 	
