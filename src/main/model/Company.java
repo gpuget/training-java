@@ -3,11 +3,11 @@ package model;
 import java.io.Serializable;
 
 public class Company implements Serializable{
-	private long id;
-	private String name;
+	private long id = 0l;
+	private String name = null;
 	
 	public Company() {
-		
+		super();
 	}
 	
 	public Company(long id, String name) {

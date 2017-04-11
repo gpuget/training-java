@@ -48,9 +48,6 @@ public class DAOTest {
 		Computer c = (Computer) DAOList.get(1).findById(12l);
 		Computer c1 = new Computer(12l, "ELF II", new Company(4l, "Netronics"), Date.valueOf("1977-1-1"));
 		Computer c2 = new Computer(12l, "Apple III", new Company(1l, "Apple Inc."), Date.valueOf("1980-05-01"));
-		System.out.println(c);
-		System.out.println(c2);
-		System.out.println(c1);
 		assertNotEquals(c1, c);
 		assertEquals(c2, c);
 	}
@@ -61,4 +58,14 @@ public class DAOTest {
 		assertEquals(574, DAOList.get(1).findAll().size());
 	}
 	
+	@Test public void ComputerDAOInsertAndDelete() throws SQLException {
+		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
+		assertNotNull(dao.create(new Computer(777l, "Test", new Company())));
+		assertNull(dao.create(new Computer(777l, "Test", new Company())));	
+		assertNotNull(dao.findById(777l));	
+
+		assertEquals(true, dao.delete(new Computer(777l, "Test", new Company())));
+		assertEquals(false, dao.delete(new Computer(777l, "Test", new Company())));
+		assertNull(dao.findById(777l));
+	}
 }

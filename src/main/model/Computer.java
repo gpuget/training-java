@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Computer implements Serializable{
-	private long id;
-	private String name;
-	private Company manufacturer;
-	private Date introduced;
-	private Date discontinued;
+	private long id = 0l;
+	private String name = null;
+	private Company manufacturer = null;
+	private Date introduced = null;
+	private Date discontinued = null;
 	
 	public Computer() {
-		
+		super();
 	}
 	
 	public Computer(long id, String name, Company manufacturer, Date... duration) {
