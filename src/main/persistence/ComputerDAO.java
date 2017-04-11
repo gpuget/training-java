@@ -18,6 +18,7 @@ public class ComputerDAO extends DAO<Computer> {
 									+ "com.name AS company_name "
 									+ "FROM computer AS  cpu "
 									+ "LEFT JOIN company as com ON cpu.id = com.id";
+	private final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
 	private final String CREATE_QUERY = "INSERT INTO computer VALUES (?, ?, ?, ?, ?)";
 	private final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
 	private final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
@@ -25,9 +26,15 @@ public class ComputerDAO extends DAO<Computer> {
 	
 	private Collection<Computer> computersList = null;
 	private Computer computer = null;
+	private static ComputerDAO instance = null;
 	
-	public ComputerDAO() {
+	private ComputerDAO() {
 		super();
+	}
+	
+	public static ComputerDAO getInstance() {
+		if(instance == null) instance = new ComputerDAO();
+		return instance;
 	}
 
 	@Override
@@ -153,6 +160,19 @@ public class ComputerDAO extends DAO<Computer> {
 		}
 		
 		return computersList;
+	}
+	
+	public int count() {
+		try {
+			PreparedStatement ps = connection.prepareCall(COUNT_QUERY);
+			ps.execute();
+			ResultSet rs = ps.getResultSet();
+			if(rs.first()) return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 	
 	private Computer loadComputer(ResultSet rs) {

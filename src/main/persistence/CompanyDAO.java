@@ -14,9 +14,15 @@ public class CompanyDAO extends DAO<Company> {
 	
 	private List<Company> companiesList = null;
 	private Company company = null;
+	private static CompanyDAO instance = null;
 	
-	public CompanyDAO() {
+	private CompanyDAO() {
 		super();
+	}
+	
+	public static CompanyDAO getInstance() {
+		if(instance == null) instance = new CompanyDAO();
+		return instance;
 	}
 
 	@Override

@@ -20,8 +20,8 @@ public class DAOTest {
 	@Before
 	public void init() {
 		DAOList = new ArrayList<>();
-		DAOList.add(new CompanyDAO());
-		DAOList.add(new ComputerDAO());
+		DAOList.add(CompanyDAO.getInstance());
+		DAOList.add(ComputerDAO.getInstance());
 	}
 	
 	@After

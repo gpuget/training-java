@@ -1,9 +1,8 @@
 package model;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-public class Computer implements Serializable{
+public class Computer{
 	private long id = 0l;
 	private String name = null;
 	private Company manufacturer = null;

@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class Company implements Serializable{
+public class Company{
 	private long id = 0l;
 	private String name = null;
 	
