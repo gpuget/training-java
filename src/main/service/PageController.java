@@ -1,15 +1,18 @@
 package service;
 
 import model.Page;
+import persistence.CompanyDAO;
 import persistence.ComputerDAO;
 
 public class PageController {
 	private Page page = null;
 	private ComputerDAO computerDao = null;
+	private CompanyDAO companyDao = null;
 	private static PageController instance = null;
 	
 	private PageController() {
 		this.computerDao = ComputerDAO.getInstance();
+		this.companyDao = CompanyDAO.getInstance();
 	}
 	
 	public static PageController getInstance() {
@@ -19,17 +22,22 @@ public class PageController {
 	
 	public void createPage() {
 		this.page = new Page();
+		this.page.setCompanies(companyDao.findAll());
 		this.update();
 	}
 	
-	public void nextPage() {
+	public int nextPage() {
 		this.page.next();
 		this.update();
+		
+		return this.page.getNumber();
 	}
 	
-	public void previousPage() {
+	public int previousPage() {
 		this.page.previous();
 		this.update();
+		
+		return this.page.getNumber();
 	}
 	
 	public void update() {

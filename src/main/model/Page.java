@@ -6,10 +6,12 @@ import java.util.ArrayList;
 public class Page {
 	public static final int MAX_PER_PAGE = 20;
 	
+	private List<Company> companies;
 	private List<Computer> computers;
 	private int number;
 
 	public Page() {
+		this.companies = new ArrayList<>();
 		this.computers = new ArrayList<>();
 		this.number = 1;
 	}
@@ -31,6 +33,14 @@ public class Page {
 	
 	public void previous() {
 		if(this.number>1) this.number--;
+	}
+
+	public List<Company> getCompanies() {
+		return companies;
+	}
+
+	public void setCompanies(List<Company> companies) {
+		this.companies = companies;
 	}
 
 	public List<Computer> getComputers() {
