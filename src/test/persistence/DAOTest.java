@@ -9,14 +9,13 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import model.Company;
 import model.Computer;
 
 public class DAOTest {
-	private List<DAO> DAOList;
+	private List<DAO<?>> DAOList;
 	
 	@Before
 	public void init() {
@@ -31,6 +30,7 @@ public class DAOTest {
 		DAOList = null;
 	}
 	
+	@SuppressWarnings("static-access")
 	@Test
 	public void DAOSameConnection() {
 		assertSame(DAOList.get(0).connection, DAOList.get(1).connection);
@@ -59,7 +59,7 @@ public class DAOTest {
 	}
 	
 	@Test
-	public void ComputerDAOFindBouded() {
+	public void ComputerDAOFindBounded() {
 		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
 		
 		assertEquals(5, dao.findAll(5, 100).size());
@@ -94,4 +94,10 @@ public class DAOTest {
 		assertEquals(c, c3);
 		assertNotEquals(c, c2);
 	}
+	
+	@Test
+	public void CompanyDAOFindAll() throws SQLException {
+		//SELECT COUNT(*) FROM company --> 42
+		assertEquals(42, DAOList.get(0).findAll().size());
+	} 
 }
