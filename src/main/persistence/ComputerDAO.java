@@ -17,7 +17,7 @@ public class ComputerDAO extends DAO<Computer> {
 	private final String FIND_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
 									+ "com.name AS company_name "
 									+ "FROM computer AS  cpu "
-									+ "LEFT JOIN company as com ON cpu.id = com.id";
+									+ "LEFT JOIN company as com ON cpu.company_id = com.id";
 	private final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
 	private final String CREATE_QUERY = "INSERT INTO computer VALUES (?, ?, ?, ?, ?)";
 	private final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
