@@ -14,7 +14,7 @@ public class Connect {
 	private final String DB_NAME = "computer-database-db";
 	*/	
 	private final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private final String DB_URL = "jdbc:mysql://localhost:3306/computer-database-db";
+	private final String DB_URL = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	
 	private final String ADMIN_LOGIN = "admincdb";
 	private final String ADMIN_PW = "qwerty1234";

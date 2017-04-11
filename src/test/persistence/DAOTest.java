@@ -58,14 +58,40 @@ public class DAOTest {
 		assertEquals(574, DAOList.get(1).findAll().size());
 	}
 	
+	@Test
+	public void ComputerDAOFindBouded() {
+		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
+		
+		assertEquals(5, dao.findAll(5, 100).size());
+		assertTrue(dao.findAll(0, 100).isEmpty());
+		assertTrue(dao.findAll(5, 1000).isEmpty());
+	}
+	
 	@Test public void ComputerDAOInsertAndDelete() throws SQLException {
 		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
 		assertNotNull(dao.create(new Computer(777l, "Test", new Company())));
 		assertNull(dao.create(new Computer(777l, "Test", new Company())));	
 		assertNotNull(dao.findById(777l));	
 
-		assertEquals(true, dao.delete(new Computer(777l, "Test", new Company())));
-		assertEquals(false, dao.delete(new Computer(777l, "Test", new Company())));
+		assertTrue(dao.delete(new Computer(777l, "Test", new Company())));
+		assertFalse(dao.delete(new Computer(777l, "Test", new Company())));
 		assertNull(dao.findById(777l));
+	}
+	
+	@Test
+	public void CompanyDAOUpdate() {
+		//| 574 | iPhone 4S | 2011-10-14 00:00:00 | NULL         |          1 |
+		//| 1 | Apple Inc. |
+		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
+		Computer c, c2, c3;
+		
+		assertNull(dao.update(new Computer(777l, "", new Company())));
+		c = dao.findById(574l);
+		assertNotNull(dao.update(new Computer(574l, "", new Company(1l, "Apple Inc."))));
+		c2 = dao.findById(574l);		
+		assertNotNull(dao.update(new Computer(574l, "iPhone 4S", new Company(1l, "Apple Inc."), Date.valueOf("2011-10-14"))));
+		c3 = dao.findById(574l);
+		assertEquals(c, c3);
+		assertNotEquals(c, c2);
 	}
 }

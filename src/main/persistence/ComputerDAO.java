@@ -1,6 +1,5 @@
 package persistence;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +13,15 @@ public class ComputerDAO extends DAO<Computer> {
 	private final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
 									+ "com.name AS company_name "
 									+ "FROM computer AS  cpu "
-									+ "LEFT OUTER JOIN company AS com ON cpu.company_id = com.id WHERE cpu.id = ?";
+									+ "LEFT JOIN company AS com ON cpu.company_id = com.id WHERE cpu.id = ?";
 	private final String FIND_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
 									+ "com.name AS company_name "
 									+ "FROM computer AS  cpu "
-									+ "LEFT OUTER JOIN company as com ON cpu.id = com.id";
+									+ "LEFT JOIN company as com ON cpu.id = com.id";
 	private final String CREATE_QUERY = "INSERT INTO computer VALUES (?, ?, ?, ?, ?)";
 	private final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
+	private final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
+	private final String BOUNDED_RST = " LIMIT ? OFFSET ?";
 	
 	private Collection<Computer> computersList = null;
 	private Computer computer = null;
@@ -30,8 +31,7 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public Computer create(Computer obj) {
-		
+	public Computer create(Computer obj) {		
 		try {
 			if(obj != null) {
 				long id = obj.getId();
@@ -78,9 +78,9 @@ public class ComputerDAO extends DAO<Computer> {
 		computer = null;
 		computersList = new ArrayList<Computer>();
 		try {
-			CallableStatement s = connection.prepareCall(FIND_ALL);
-			s.execute();
-			ResultSet rs = s.getResultSet();
+			PreparedStatement ps = connection.prepareCall(FIND_ALL);
+			ps.execute();
+			ResultSet rs = ps.getResultSet();
 			while(rs.next()){
 				computersList.add(loadComputer(rs));
 			}
@@ -97,11 +97,13 @@ public class ComputerDAO extends DAO<Computer> {
 		computer = null;
 		
 		try {
-			ps = connection.prepareStatement(FIND_QUERY);
-			ps.setLong(1, id);
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.first()) loadComputer(rs);
+			if(id != 0l) {
+				ps = connection.prepareStatement(FIND_QUERY);
+				ps.setLong(1, id);
+				ResultSet rs = ps.executeQuery();
+				
+				if(rs.first()) loadComputer(rs);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,8 +113,46 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public Computer update(Computer obj) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			if(obj != null) {
+				long id = obj.getId();
+				long comId = obj.getManufacturer().getId();
+				
+				if(findById(id)!=null) {
+					PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY);
+					ps.setString(1, obj.getName());
+					ps.setDate(2, obj.getIntroduced());
+					ps.setDate(3, obj.getDiscontinued());
+					if(comId == 0l) ps.setString(4, null);
+					else ps.setLong(4, comId);
+					ps.setLong(5, id);
+					ps.execute();
+				}else obj=null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return obj;
+	}
+
+	public Collection<Computer> findAll(int limit, int offset) {
+		computer = null;
+		computersList = new ArrayList<Computer>();
+		try {
+			PreparedStatement ps = connection.prepareCall(FIND_ALL+BOUNDED_RST);
+			ps.setInt(1, limit);
+			ps.setInt(2, offset);
+			ps.execute();
+			ResultSet rs = ps.getResultSet();
+			while(rs.next()){
+				computersList.add(loadComputer(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return computersList;
 	}
 	
 	private Computer loadComputer(ResultSet rs) {
