@@ -3,52 +3,46 @@ package com.excilys.cdb.models;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Page {
+public class Page<T> {
 	public static final int MAX_PER_PAGE = 20;
-	
-	private List<Company> companies;
-	private List<Computer> computers;
+
+	/*============*/
+	/* ATTRIBUTES */
+	/*============*/
+	private List<T> objects;
 	private int number;
 
+	/*==============*/
+	/* CONSTRUCTORS */
+	/*==============*/
 	public Page() {
-		this.companies = new ArrayList<>();
-		this.computers = new ArrayList<>();
+		this.objects = new ArrayList<>();
 		this.number = 1;
 	}
-	
+
+	/*===========*/
+	/* OVERRIDES */
+	/*===========*/
 	@Override
 	public String toString() {
 		String res = "Page "+number+" :\n";
 		
-		for(Computer cpu : computers) {
-			res = res + cpu +'\n';
+		for(T obj : objects) {
+			res = res + obj +'\n';
 		}
 		
 		return res;
 	}
-	
-	public void next() {
-		this.number++;
-	}
-	
-	public void previous() {
-		if(this.number>1) this.number--;
+
+	/*===================*/
+	/* GETTERS / SETTERS */
+	/*===================*/
+	public List<T> getObjects() {
+		return objects;
 	}
 
-	public List<Company> getCompanies() {
-		return companies;
-	}
-
-	public void setCompanies(List<Company> companies) {
-		this.companies = companies;
-	}
-
-	public List<Computer> getComputers() {
-		return computers;
-	}
-
-	public void setComputers(List<Computer> computers) {
-		this.computers = computers;
+	public void setObjects(List<T> objects) {
+		this.objects = objects;
 	}
 
 	public int getNumber() {
@@ -58,4 +52,5 @@ public class Page {
 	public void setNumber(int number) {
 		this.number = number;
 	}
+	
 }

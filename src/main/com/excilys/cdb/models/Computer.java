@@ -1,35 +1,27 @@
 package com.excilys.cdb.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Computer{
-	private long id = 0l;
-	private String name = null;
-	private Company manufacturer = null;
-	private Date introduced = null;
-	private Date discontinued = null;
-	
-	public Computer() {
-		super();
-	}
-	
-	public Computer(long id, String name, Company manufacturer, Date... duration) {
-		this.id = id;
+	/*============*/
+	/* ATTRIBUTES */
+	/*============*/
+	private Long id;
+	private String name;
+	private Company manufacturer;
+	private LocalDate introduced;
+	private LocalDate discontinued;
+
+	/*==============*/
+	/* CONSTRUCTORS */
+	/*==============*/
+	private Computer(String name) {
 		this.name = name;
-		this.manufacturer = manufacturer;
-		
-		switch(duration.length) {		
-			case 2: this.discontinued = duration[1];
-			case 1: this.introduced = duration[0];
-			break;
-			
-			default: {
-				this.introduced = null;
-				this.discontinued = null;
-			}
-		}
 	}
-	
+
+	/*===========*/
+	/* OVERRIDES */
+	/*===========*/
 	@Override
 	public int hashCode() {
 		int res;
@@ -59,73 +51,86 @@ public class Computer{
 		
 		return res;
 	}
-	
-	/**
-	 * @return the id
-	 */
+
+	/*===================*/
+	/* GETTERS / SETTERS */
+	/*===================*/
 	public long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
-	
-	/**
-	 * @param name the name to set
-	 */
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	/**
-	 * @return the manufacturer
-	 */
+
 	public Company getManufacturer() {
 		return manufacturer;
 	}
-	
-	/**
-	 * @param manufacter the manufacturer to set
-	 */
+
 	public void setManufacturer(Company manufacter) {
 		this.manufacturer = manufacter;
 	}
-	
-	/**
-	 * @return the introduced
-	 */
-	public Date getIntroduced() {
+
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
-	
-	/**
-	 * @param introduced the introduced to set
-	 */
-	public void setIntroduced(Date introduced) {
+
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
-	
-	/**
-	 * @return the discontinued
-	 */
-	public Date getDiscontinued() {
+
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
-	
-	/**
-	 * @param discontinued the discontinued to set
-	 */
-	public void setDiscontinued(Date discontinued) {
+
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
+	}	
+	
+	/*=========*/
+	/* BUILDER */
+	/*=========*/
+	private static class Builder {
+		private Computer computer;
+		
+		public Builder(String name) {
+			this.computer = new Computer(name);
+		}
+		
+		public Computer build() {
+			return computer;
+		}
+		
+		public Builder id(Long id) {
+			computer.setId(id);
+			
+			return this;
+		}
+		
+		public Builder manufacturer(Company company) {
+			computer.setManufacturer(company);
+			
+			return this;
+		}
+		
+		public Builder introduced(LocalDate date) {
+			computer.setIntroduced(date);
+			
+			return this;
+		}
+		
+		public Builder discontinued(LocalDate date) {
+			computer.setDiscontinued(date);
+			
+			return this;
+		}
 	}
 }

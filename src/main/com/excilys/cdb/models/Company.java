@@ -1,18 +1,23 @@
 package com.excilys.cdb.models;
 
 public class Company{
-	private long id;
+	/*============*/
+	/* ATTRIBUTES */
+	/*============*/
+	private Long id;
 	private String name;
 	
-	public Company() {
-		super();
-	}
+	/*==============*/
+	/* CONSTRUCTORS */
+	/*==============*/
 	
-	public Company(long id, String name) {
-		this.id = id;
+	private Company(String name) {
 		this.name = name;
 	}
 	
+	/*===========*/
+	/* OVERRIDES */
+	/*===========*/
 	@Override
 	public int hashCode() {
 		return name.hashCode();
@@ -31,34 +36,46 @@ public class Company{
 	
 	@Override
 	public String toString() {
-		return "Company "+this.name;
+		return "Company :"+this.name;
 	}
 	
-	/**
-	 * @return the id
-	 */
-	public long getId() {
+	/*===================*/
+	/* GETTERS / SETTERS */
+	/*===================*/
+	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}	
+	
+	/*=========*/
+	/* BUILDER */
+	/*=========*/
+	public static class Builder {
+		private Company company;
+		
+		public Builder(String name) {
+			this.company = new Company(name);
+		}
+		
+		public Company build() {
+			return company;
+		}
+		
+		public Builder id(Long id) {
+			company.setId(id);
+			
+			return this;
+		}
+	}
 }
