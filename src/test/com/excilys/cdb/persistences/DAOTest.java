@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import com.excilys.cdb.models.Company;
 import com.excilys.cdb.models.Computer;
-import com.excilys.cdb.persistences.CompanyDAO;
-import com.excilys.cdb.persistences.ComputerDAO;
+import com.excilys.cdb.persistences.CompanyDAOImpl;
+import com.excilys.cdb.persistences.ComputerDAOImpl;
 import com.excilys.cdb.persistences.DAO;
 
 public class DAOTest {
@@ -23,8 +23,8 @@ public class DAOTest {
 	@Before
 	public void init() {
 		DAOList = new ArrayList<>();
-		DAOList.add(CompanyDAO.getInstance());
-		DAOList.add(ComputerDAO.getInstance());
+		DAOList.add(CompanyDAOImpl.getInstance());
+		DAOList.add(ComputerDAOImpl.getInstance());
 	}
 	
 	@After
@@ -58,7 +58,7 @@ public class DAOTest {
 	
 	@Test
 	public void computerDAOFindBounded() {
-		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
+		ComputerDAOImpl dao = (ComputerDAOImpl) DAOList.get(1);
 		
 		assertEquals(5, dao.findAll(5, 100).size());
 		assertTrue(dao.findAll(0, 100).isEmpty());
@@ -66,13 +66,13 @@ public class DAOTest {
 	}
 	
 	@Test public void computerDAOInsertAndDelete() throws SQLException {
-		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
-		assertNotNull(dao.create(new Computer(777l, "Test", new Company())));
-		assertNull(dao.create(new Computer(777l, "Test", new Company())));	
+		ComputerDAOImpl dao = (ComputerDAOImpl) DAOList.get(1);
+		assertNotNull(dao.create(new Computer(777l, "Test", new Company(null, null))));
+		assertNull(dao.create(new Computer(777l, "Test", new Company(null, null))));	
 		assertNotNull(dao.findById(777l));	
 
-		assertTrue(dao.delete(new Computer(777l, "Test", new Company())));
-		assertFalse(dao.delete(new Computer(777l, "Test", new Company())));
+		assertTrue(dao.delete(new Computer(777l, "Test", new Company(null, null))));
+		assertFalse(dao.delete(new Computer(777l, "Test", new Company(null, null))));
 		assertNull(dao.findById(777l));
 	}
 	
@@ -80,10 +80,10 @@ public class DAOTest {
 	public void companyDAOUpdate() {
 		//| 574 | iPhone 4S | 2011-10-14 00:00:00 | NULL         |          1 |
 		//| 1 | Apple Inc. |
-		ComputerDAO dao = (ComputerDAO) DAOList.get(1);
+		ComputerDAOImpl dao = (ComputerDAOImpl) DAOList.get(1);
 		Computer c, c2, c3;
 		
-		assertNull(dao.update(new Computer(777l, "", new Company())));
+		assertNull(dao.update(new Computer(777l, "", new Company(null, null))));
 		c = dao.findById(574l);
 		assertNotNull(dao.update(new Computer(574l, "", new Company(1l, "Apple Inc."))));
 		c2 = dao.findById(574l);		

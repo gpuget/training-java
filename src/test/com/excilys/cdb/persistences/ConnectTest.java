@@ -6,14 +6,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.cdb.persistences.Connect;
+import com.excilys.cdb.persistences.Connector;
 
 public class ConnectTest {
-	private Connect c;
+	private Connector c;
 	
 	@Before
 	public void init() {
-		c = Connect.getInstance();
+		c = Connector.getInstance();
 	}
 	
 	@After
