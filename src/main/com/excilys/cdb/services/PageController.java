@@ -1,8 +1,8 @@
-package service;
+package com.excilys.cdb.services;
 
-import model.Page;
-import persistence.CompanyDAO;
-import persistence.ComputerDAO;
+import com.excilys.cdb.models.Page;
+import com.excilys.cdb.persistences.CompanyDAO;
+import com.excilys.cdb.persistences.ComputerDAO;
 
 public class PageController {
 	private Page page = null;

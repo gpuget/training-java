@@ -1,4 +1,4 @@
-package persistence;
+package com.excilys.cdb.persistences;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Company;
-import model.Computer;
+import com.excilys.cdb.models.Company;
+import com.excilys.cdb.models.Computer;
 
 public class ComputerDAO extends DAO<Computer> {
 	private final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "

@@ -1,4 +1,4 @@
-package persistence;
+package com.excilys.cdb.persistences;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Company;
+import com.excilys.cdb.models.Company;
 
 public class CompanyDAO extends DAO<Company> {
 	private final String FIND_ALL = "SELECT id, name FROM company";

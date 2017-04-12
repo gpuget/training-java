@@ -1,10 +1,12 @@
-package persistence;
+package com.excilys.cdb.persistences;
 
 import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.excilys.cdb.persistences.Connect;
 
 public class ConnectTest {
 	private Connect c;

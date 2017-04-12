@@ -1,4 +1,4 @@
-package service;
+package com.excilys.cdb.services;
 
 import static org.junit.Assert.*;
 
@@ -8,9 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Company;
-import model.Computer;
-import model.Page;
+import com.excilys.cdb.models.Company;
+import com.excilys.cdb.models.Computer;
+import com.excilys.cdb.models.Page;
+import com.excilys.cdb.services.PageController;
 
 public class PageControllerTest {
 	private PageController pc = null;

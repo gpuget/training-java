@@ -1,4 +1,4 @@
-package persistence;
+package com.excilys.cdb.persistences;
 
 import static org.junit.Assert.*;
 
@@ -11,8 +11,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Company;
-import model.Computer;
+import com.excilys.cdb.models.Company;
+import com.excilys.cdb.models.Computer;
+import com.excilys.cdb.persistences.CompanyDAO;
+import com.excilys.cdb.persistences.ComputerDAO;
+import com.excilys.cdb.persistences.DAO;
 
 public class DAOTest {
 	private List<DAO<?>> DAOList;
@@ -28,12 +31,6 @@ public class DAOTest {
 	public void end() {
 		DAOList.removeAll(DAOList);
 		DAOList = null;
-	}
-	
-	@SuppressWarnings("static-access")
-	@Test
-	public void daoSameConnection() {
-		assertSame(DAOList.get(0).connection, DAOList.get(1).connection);
 	}
 	
 	@Test

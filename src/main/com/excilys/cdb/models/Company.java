@@ -1,8 +1,8 @@
-package model;
+package com.excilys.cdb.models;
 
 public class Company{
-	private long id = 0l;
-	private String name = null;
+	private long id;
+	private String name;
 	
 	public Company() {
 		super();

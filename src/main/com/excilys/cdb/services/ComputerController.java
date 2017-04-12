@@ -1,4 +1,4 @@
-package service;
+package com.excilys.cdb.services;
 
 public class ComputerController {
 	private static ComputerController instance = null;

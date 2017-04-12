@@ -1,4 +1,4 @@
-package model;
+package com.excilys.cdb.models;
 
 import java.sql.Date;
 
