@@ -40,7 +40,7 @@ public enum Connector {
 	
 	public Connection getConnection(){
 		try {
-			if(connection.isClosed()) {
+			if(connection == null || connection.isClosed()) {
 				connect();
 			}
 		} catch (SQLException e) {

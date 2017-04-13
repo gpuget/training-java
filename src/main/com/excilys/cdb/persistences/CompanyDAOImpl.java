@@ -18,22 +18,22 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 	@Override
 	public List<Company> findAll() {
-		PreparedStatement ps;
-		ResultSet rs;
 		connection = Connector.INSTANCE.getConnection();
 		company = null;
 		companiesList = new ArrayList<>();
 		
-		try {
-			ps = connection.prepareCall(FIND_ALL);
-			ps.execute();
-			rs = ps.getResultSet();
+		try (
+				PreparedStatement ps = connection.prepareStatement(FIND_ALL);
+				ResultSet rs = ps.executeQuery();
+				){
 			while(rs.next()){
 				company = new Company.Builder(rs.getString("name")).id(rs.getLong("id")).build();
 				companiesList.add(company);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			Connector.INSTANCE.disconnect();
 		}
 		
 		return companiesList;

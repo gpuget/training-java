@@ -5,8 +5,9 @@ import java.util.List;
 import com.excilys.cdb.models.Computer;
 
 public interface ComputerDAO {
-	public void create(Computer computer);
-	public Computer findById(Long id);	
-	public List<Computer> findByName(String name);
+	public Computer create(Computer computer);
+	public Computer findById(Long id);
 	public List<Computer> findAll();
+	public void update(Computer computer);
+	public void delete(Computer computer);
 }
