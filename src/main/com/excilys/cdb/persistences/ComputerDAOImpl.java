@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,19 +13,18 @@ import com.excilys.cdb.models.Company;
 import com.excilys.cdb.models.Computer;
 
 public class ComputerDAOImpl implements ComputerDAO {
-	private final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
+	private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
 									+ "com.name AS company_name "
 									+ "FROM computer AS  cpu "
 									+ "LEFT JOIN company AS com ON cpu.company_id = com.id WHERE cpu.id = ?";
-	private final String FIND_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
+	private static final String FIND_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
 									+ "com.name AS company_name "
 									+ "FROM computer AS  cpu "
 									+ "LEFT JOIN company as com ON cpu.company_id = com.id";
-	private final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
-	private final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-	private final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
-	private final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-	private final String BOUNDED_RST = " LIMIT ? OFFSET ?";
+	private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
+	private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
+	private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
+	private static final String BOUNDED_RST = " LIMIT ? OFFSET ?";
 	
 	private List<Computer> computersList;
 	private Computer computer;
@@ -39,8 +38,11 @@ public class ComputerDAOImpl implements ComputerDAO {
 				){
 			if(obj != null) {
 				setStatementValues(ps, obj);
-				if(ps.executeUpdate() != 0) {
-					obj.setId(ps.getGeneratedKeys().getLong(1));
+				ps.executeUpdate();
+				ResultSet rs = ps.getGeneratedKeys();
+				if(rs.first()) {
+					obj.setId(rs.getLong(1));
+					rs.close();
 				}
 			}
 		} catch (SQLException e) {
@@ -53,11 +55,9 @@ public class ComputerDAOImpl implements ComputerDAO {
 	}
 
 	@Override
-	public void delete(Computer obj) {
-		Long id = obj.getId();
-		connection = Connector.INSTANCE.getConnection();
-		
-		if(findById(id) != null) {
+	public void delete(Long id) {		
+		if(id != null && findById(id) != null) {
+			connection = Connector.INSTANCE.getConnection();
 			try (
 					PreparedStatement ps = connection.prepareStatement(DELETE_QUERY);
 					){
@@ -94,47 +94,6 @@ public class ComputerDAOImpl implements ComputerDAO {
 	}
 
 	@Override
-	public Computer findById(Long id) {
-		computer = null;
-		connection = Connector.INSTANCE.getConnection();
-		
-		try (
-				PreparedStatement ps = connection.prepareStatement(FIND_QUERY);
-				){
-			if(id != null) {			
-				ps.setLong(1, id);
-				if(ps.executeUpdate() != 0) {
-					loadComputer(ps.getResultSet());
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			Connector.INSTANCE.disconnect();
-		}
-		
-		return computer;
-	}
-
-	@Override
-	public void update(Computer obj) {
-		connection = Connector.INSTANCE.getConnection();
-		try (
-				PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY);
-				){
-			if(obj != null) {
-				if(findById(obj.getId()) != null) {
-					setStatementValues(ps, obj);
-					ps.executeUpdate();
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally{
-			Connector.INSTANCE.disconnect();
-		}
-	}
-
 	public List<Computer> findAll(int limit, int offset) {
 		computer = null;
 		computersList = new ArrayList<Computer>();
@@ -157,31 +116,68 @@ public class ComputerDAOImpl implements ComputerDAO {
 		
 		return computersList;
 	}
-	
-	public int count() {
-		try {
-			PreparedStatement ps = connection.prepareCall(COUNT_QUERY);
-			ps.execute();
-			ResultSet rs = ps.getResultSet();
-			if(rs.first()) return rs.getInt(1);
+
+	@Override
+	public Computer findById(Long id) {
+		computer = null;
+		connection = Connector.INSTANCE.getConnection();
+		
+		try (
+				PreparedStatement ps = connection.prepareStatement(FIND_QUERY);
+				){
+			if(id != null) {			
+				ps.setLong(1, id);
+				ResultSet rs = ps.executeQuery();
+				if(rs.first()) {
+					loadComputer(rs);
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			Connector.INSTANCE.disconnect();
 		}
 		
-		return 0;
+		return computer;
+	}
+
+	@Override
+	public void update(Computer obj) {
+		if(obj != null) {
+			Long id = obj.getId();
+			if(id != null && findById(id) != null) {
+				connection = Connector.INSTANCE.getConnection();
+				try (
+						PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY);
+						){
+					setStatementValues(ps, obj);
+					ps.setLong(5, id);
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally{
+					Connector.INSTANCE.disconnect();
+				}
+			}
+		}
+		
 	}
 	
-	private Computer loadComputer(ResultSet rs) {
-		Company com = null;
+	private Computer loadComputer(ResultSet rs) throws SQLException{
+		Company com = new Company.Builder(rs.getString("company_name")).id(rs.getLong("company_id")).build();
+		Timestamp i = rs.getTimestamp("introduced");
+		Timestamp d = rs.getTimestamp("discontinued");
 		
-		try {
-			LocalDate i = rs.getDate("introduced").toLocalDate();
-			LocalDate d = rs.getDate("discontinued").toLocalDate();
-			
-			com = new Company.Builder(rs.getString("company_name")).id(rs.getLong("company_id")).build();
-			computer = new Computer.Builder(rs.getString("name")).id(rs.getLong("id")).introduced(i).discontinued(d).manufacturer(com).build();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(i != null && d != null) {
+			computer = new Computer.Builder(rs.getString("name"))
+									.id(rs.getLong("id"))
+									.introduced(i.toLocalDateTime().toLocalDate())
+									.discontinued(d.toLocalDateTime().toLocalDate())
+									.manufacturer(com).build();
+		}else {
+			computer = new Computer.Builder(rs.getString("name"))
+									.id(rs.getLong("id"))
+									.manufacturer(com).build();
 		}
 		
 		return computer;
@@ -191,8 +187,8 @@ public class ComputerDAOImpl implements ComputerDAO {
 		Long comId = computer.getManufacturer().getId();
 
 		ps.setString(1, computer.getName());
-		ps.setString(2, computer.getIntroduced().toString());
-		ps.setString(3, computer.getDiscontinued().toString());
+		ps.setObject(2, computer.getIntroduced());
+		ps.setObject(3, computer.getDiscontinued());
 		ps.setLong(4, comId);
 	}
 }

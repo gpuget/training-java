@@ -14,8 +14,9 @@ public enum Connector {
 	
 	private Connector() {
 		try {
+			properties = new Properties();
+			properties.load(new FileInputStream("src/main/resources/local.properties"));
 			connect();
-			properties.load(new FileInputStream("resources/local.properties"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,5 +49,15 @@ public enum Connector {
 		}
 		
 		return connection;
+	}
+	
+	public boolean isDisconnected() {
+		try {
+			return (connection == null || connection.isClosed());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 }

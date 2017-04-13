@@ -2,100 +2,100 @@ package com.excilys.cdb.persistences;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.cdb.models.Company;
 import com.excilys.cdb.models.Computer;
-import com.excilys.cdb.persistences.CompanyDAOImpl;
-import com.excilys.cdb.persistences.ComputerDAOImpl;
-import com.excilys.cdb.persistences.DAO;
 
 public class DAOTest {
-	private List<DAO<?>> DAOList;
+	private ComputerDAO computerDao;
 	
 	@Before
-	public void init() {
-		DAOList = new ArrayList<>();
-		DAOList.add(CompanyDAOImpl.getInstance());
-		DAOList.add(ComputerDAOImpl.getInstance());
-	}
-	
-	@After
-	public void end() {
-		DAOList.removeAll(DAOList);
-		DAOList = null;
+	public void init() {		
+		Connector.INSTANCE.disconnect();
+		computerDao = new ComputerDAOImpl();
 	}
 	
 	@Test
-	public void computerDAOFindNotNull() throws SQLException {
-		assertNotNull(DAOList.get(1).findById(1l));
-	}
-	
-	@Test
-	public void computerDAOFind() throws SQLException {
-		//Apple Inc. --> 1
-		//Apple III. --> 12
-		Computer c = (Computer) DAOList.get(1).findById(12l);
-		Computer c1 = new Computer(12l, "ELF II", new Company(4l, "Netronics"), Date.valueOf("1977-1-1"));
-		Computer c2 = new Computer(12l, "Apple III", new Company(1l, "Apple Inc."), Date.valueOf("1980-05-01"));
-		assertNotEquals(c1, c);
-		assertEquals(c2, c);
-	}
-
-	@Test
-	public void computerDAOFindAll() throws SQLException {
-		//SELECT COUNT(*) FROM computer --> 574
-		assertEquals(574, DAOList.get(1).findAll().size());
-		assertEquals(new Computer(12l, "Apple III", new Company(1l, "Apple Inc."), Date.valueOf("1980-05-01")), DAOList.get(1).findAll().get(11));
-	}
-	
-	@Test
-	public void computerDAOFindBounded() {
-		ComputerDAOImpl dao = (ComputerDAOImpl) DAOList.get(1);
+	public void companyFindAll() {
+		// SELECT COUNT(*) FROM company --> 42 (Answer to life, the universe and everything)
+		// 1 Apple Inc.
+		CompanyDAO companyDao = new CompanyDAOImpl();
 		
-		assertEquals(5, dao.findAll(5, 100).size());
-		assertTrue(dao.findAll(0, 100).isEmpty());
-		assertTrue(dao.findAll(5, 1000).isEmpty());
-	}
-	
-	@Test public void computerDAOInsertAndDelete() throws SQLException {
-		ComputerDAOImpl dao = (ComputerDAOImpl) DAOList.get(1);
-		assertNotNull(dao.create(new Computer(777l, "Test", new Company(null, null))));
-		assertNull(dao.create(new Computer(777l, "Test", new Company(null, null))));	
-		assertNotNull(dao.findById(777l));	
-
-		assertTrue(dao.delete(new Computer(777l, "Test", new Company(null, null))));
-		assertFalse(dao.delete(new Computer(777l, "Test", new Company(null, null))));
-		assertNull(dao.findById(777l));
+		assertTrue(Connector.INSTANCE.isDisconnected());
+		assertNotNull(companyDao);
+		assertNotNull(companyDao.findAll());
+		assertEquals(42, companyDao.findAll().size());
+		assertEquals("Apple Inc.", companyDao.findAll().get(0).getName());
+		assertTrue(Connector.INSTANCE.isDisconnected());
 	}
 	
 	@Test
-	public void companyDAOUpdate() {
-		//| 574 | iPhone 4S | 2011-10-14 00:00:00 | NULL         |          1 |
-		//| 1 | Apple Inc. |
-		ComputerDAOImpl dao = (ComputerDAOImpl) DAOList.get(1);
-		Computer c, c2, c3;
+	public void computerFindId() {
+		// 1	Apple Inc.
+		// 568	IPad 2		
+		assertTrue(Connector.INSTANCE.isDisconnected());
+		assertEquals(new Computer.Builder("IPad 2")
+									.manufacturer(new Company.Builder("Apple Inc.")
+																.id(1L)
+																.build())
+									.build(), computerDao.findById(568L));
 		
-		assertNull(dao.update(new Computer(777l, "", new Company(null, null))));
-		c = dao.findById(574l);
-		assertNotNull(dao.update(new Computer(574l, "", new Company(1l, "Apple Inc."))));
-		c2 = dao.findById(574l);		
-		assertNotNull(dao.update(new Computer(574l, "iPhone 4S", new Company(1l, "Apple Inc."), Date.valueOf("2011-10-14"))));
-		c3 = dao.findById(574l);
-		assertEquals(c, c3);
-		assertNotEquals(c, c2);
+		assertTrue(Connector.INSTANCE.isDisconnected());
 	}
 	
 	@Test
-	public void companyDAOFindAll() throws SQLException {
-		//SELECT COUNT(*) FROM company --> 42
-		assertEquals(42, DAOList.get(0).findAll().size());
-	} 
+	public void computerCreateAndDelete() {
+		Computer c = new Computer.Builder("CPU")
+									.manufacturer(new Company.Builder("CPY").id(1L).build())
+									.build();
+		Computer c2;
+		
+		assertTrue(Connector.INSTANCE.isDisconnected());
+		assertNull(c.getId());
+		c2 = computerDao.create(c);
+		assertEquals(c, c2);
+		assertNotNull(c2.getId());
+		assertNotNull(computerDao.findById(c2.getId()));
+		computerDao.delete(c2.getId());
+		assertNull(computerDao.findById(c2.getId()));
+		assertTrue(Connector.INSTANCE.isDisconnected());
+	}
+	
+	@Test
+	public void computerUpdate() {
+		Computer c = new Computer.Builder("CPU")
+				.manufacturer(new Company.Builder("CPY").id(1L).build())
+				.build();
+		
+		assertTrue(Connector.INSTANCE.isDisconnected());
+		c = computerDao.create(c);
+		computerDao.update(new Computer.Builder("CPU2")
+										.id(c.getId())
+										.manufacturer(new Company.Builder("CPY2").id(2L).build())
+										.build());
+		assertNotEquals(c, computerDao.findById(c.getId()));
+		computerDao.delete(c.getId());
+		assertTrue(Connector.INSTANCE.isDisconnected());
+	}
+	
+	@Test
+	public void computerFindAll() {
+		// SELECT COUNT(*) FROM computer --> 574
+		List<Computer> list;
+		
+		assertTrue(Connector.INSTANCE.isDisconnected());
+		list = computerDao.findAll(1,1);
+		assertFalse(list.isEmpty());
+		assertEquals(574, list.size());
+		list = computerDao.findAll(1,1);
+		assertEquals(1, list.size());
+		assertFalse(list.contains(computerDao.findById(1L)));
+		assertTrue(list.contains(computerDao.findById(2L)));
+		assertFalse(list.contains(computerDao.findById(3L)));
+		assertTrue(Connector.INSTANCE.isDisconnected());		
+	}
 }
