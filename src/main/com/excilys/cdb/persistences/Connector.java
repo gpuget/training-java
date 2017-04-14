@@ -16,7 +16,6 @@ public enum Connector {
 		try {
 			properties = new Properties();
 			properties.load(new FileInputStream("src/main/resources/local.properties"));
-			connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

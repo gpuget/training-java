@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,9 +15,14 @@ public class DAOTest {
 	private ComputerDAO computerDao;
 	
 	@Before
-	public void init() {		
-		Connector.INSTANCE.disconnect();
+	public void init() {
 		computerDao = new ComputerDAOImpl();
+	}
+	
+	@After
+	public void end() {		
+		Connector.INSTANCE.disconnect();
+		System.gc();
 	}
 	
 	@Test
@@ -88,7 +94,7 @@ public class DAOTest {
 		List<Computer> list;
 		
 		assertTrue(Connector.INSTANCE.isDisconnected());
-		list = computerDao.findAll(1,1);
+		list = computerDao.findAll();
 		assertFalse(list.isEmpty());
 		assertEquals(574, list.size());
 		list = computerDao.findAll(1,1);

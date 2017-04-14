@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.sql.Connection;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +13,12 @@ public class ConnectorTest {
 	@Before
 	public void init() {
 	
+	}
+	
+	@After
+	public void end() {
+		Connector.INSTANCE.disconnect();
+		System.gc();
 	}
 	
 	@Test
@@ -33,10 +40,10 @@ public class ConnectorTest {
 	
 	@Test
 	public void connectionOpenAndClose() {
-		assertFalse(Connector.INSTANCE.isDisconnected());
-		Connector.INSTANCE.disconnect();
 		assertTrue(Connector.INSTANCE.isDisconnected());
 		Connector.INSTANCE.getConnection();
 		assertFalse(Connector.INSTANCE.isDisconnected());
+		Connector.INSTANCE.disconnect();
+		assertTrue(Connector.INSTANCE.isDisconnected());
 	}
 }
