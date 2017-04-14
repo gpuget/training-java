@@ -9,8 +9,7 @@ public class Company{
 	
 	/*==============*/
 	/* CONSTRUCTORS */
-	/*==============*/
-	
+	/*==============*/	
 	private Company(String name) {
 		this.name = name;
 	}

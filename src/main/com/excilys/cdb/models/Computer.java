@@ -24,11 +24,7 @@ public class Computer{
 	/*===========*/
 	@Override
 	public int hashCode() {
-		int res;
-		
-		res = name.hashCode() + manufacturer.hashCode();
-		
-		return res;
+		return name.hashCode() + manufacturer.hashCode();
 	}
 	
 	@Override
