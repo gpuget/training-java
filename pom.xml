@@ -16,6 +16,7 @@
 		<maven-mysql.version>5.1.6</maven-mysql.version>
 		<junit.version>4.12</junit.version>
 		<org.mockito>2.7.12</org.mockito>
+		<log4j.version>1.2.17</log4j.version>
 	</properties>
 	
 	<dependencies>
@@ -39,13 +40,16 @@
 			<version>${org.mockito}</version>
 			<scope>test</scope>
 		</dependency>
-
-
+		
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>${log4j.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>		
 		<plugins>
-			<!-- Compilateur JDK Java -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
@@ -54,8 +58,7 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-
-			<!-- Ajout du checkStyle au projet-->
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -69,7 +72,6 @@
 
 	<reporting>
 		<plugins>
-			<!-- Vérificaion de styles -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
