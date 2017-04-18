@@ -5,5 +5,9 @@ import java.util.List;
 import com.excilys.cdb.models.Company;
 
 public interface CompanyDAO {
-	public List<Company> findAll();
+    /**
+     * Finds all companies in DB.
+     * @return list of all companies in DB
+     */
+    List<Company> findAll();
 }
