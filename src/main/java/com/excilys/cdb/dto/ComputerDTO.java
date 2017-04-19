@@ -10,8 +10,11 @@ public class ComputerDTO implements Serializable {
     private CompanyDTO manufacturer;
     private String introduced;
     private String discontinued;
-    
-    public ComputerDTO(){
+
+    /**
+     * Constructor.
+     */
+    public ComputerDTO() {
         this.id = "";
         this.name = "";
         this.manufacturer = new CompanyDTO();

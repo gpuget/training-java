@@ -9,6 +9,7 @@ public class Page<T> {
 
     /**
      * Constructor.
+     * @param list list of objects
      */
     public Page(List<T> list) {
         this.objects = list;
@@ -26,13 +27,19 @@ public class Page<T> {
 
         return res;
     }
-    
-    public void next(){
+
+    /**
+     * Increments the number of the page.
+     */
+    public void next() {
         this.number++;
     }
-    
-    public void previous(){
-        if (this.number > 1){
+
+    /**
+     * Decrements the number of the page.
+     */
+    public void previous() {
+        if (this.number > 1) {
             this.number--;
         }
     }
@@ -48,11 +55,4 @@ public class Page<T> {
     public int getNumber() {
         return number;
     }
-
-    public void setNumber(int number) {
-        if (number >0){
-            this.number = number;
-        }
-    }
-
 }

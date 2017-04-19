@@ -7,8 +7,11 @@ public class CompanyDTO implements Serializable {
 
     private String id;
     private String name;
-    
-    public CompanyDTO(){
+
+    /**
+     * Constructor.
+     */
+    public CompanyDTO() {
         this.id = "";
         this.name = "";
     }

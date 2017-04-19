@@ -9,13 +9,16 @@ import com.excilys.cdb.persistences.CompanyDAOImpl;
 public class CompanyService {
     private CompanyDAO companyDao;
     private Page<CompanyDTO> page;
-    
-    public CompanyService(){
+
+    /**
+     * Constructor.
+     */
+    public CompanyService() {
         this.companyDao = new CompanyDAOImpl();
         this.page = new Page<>(CompanyMapper.toCompanyDTO(companyDao.findAll()));
     }
-    
-    public Page<CompanyDTO> getPage(){
+
+    public Page<CompanyDTO> getPage() {
         return this.page;
     }
 }
