@@ -7,6 +7,11 @@ public class CompanyDTO implements Serializable {
 
     private String id;
     private String name;
+    
+    public CompanyDTO(){
+        this.id = "";
+        this.name = "";
+    }
 
     @Override
     public int hashCode() {

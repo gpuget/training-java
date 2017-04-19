@@ -1,7 +1,6 @@
 package com.excilys.cdb.models;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Page<T> {
     public static final int MAX_PER_PAGE = 20;
@@ -12,8 +11,8 @@ public class Page<T> {
     /**
      * Constructor.
      */
-    public Page() {
-        this.objects = new ArrayList<>();
+    public Page(List<T> list) {
+        this.objects = list;
         this.number = 1;
     }
 
@@ -26,6 +25,16 @@ public class Page<T> {
         }
 
         return res;
+    }
+    
+    public void next(){
+        this.number++;
+    }
+    
+    public void previous(){
+        if (this.number > 1){
+            this.number--;
+        }
     }
 
     public List<T> getObjects() {
@@ -41,7 +50,9 @@ public class Page<T> {
     }
 
     public void setNumber(int number) {
-        this.number = number;
+        if (number >0){
+            this.number = number;
+        }
     }
 
 }

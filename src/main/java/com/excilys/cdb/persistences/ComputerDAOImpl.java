@@ -189,11 +189,13 @@ public class ComputerDAOImpl implements ComputerDAO {
      */
     private void setStatementValues(PreparedStatement ps, Computer computer)
             throws SQLException {
-        Long comId = computer.getManufacturer().getId();
+        Company company = computer.getManufacturer();
 
         ps.setString(1, computer.getName());
         ps.setObject(2, computer.getIntroduced());
         ps.setObject(3, computer.getDiscontinued());
-        ps.setLong(4, comId);
+        if (company != null) {
+            ps.setLong(4, company.getId());
+        }
     }
 }
