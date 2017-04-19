@@ -1,6 +1,6 @@
 package com.excilys.cdb.mappers;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +11,8 @@ public final class ComputerMapper {
     public static final Computer toComputer(ComputerDTO computerDto){
         return new Computer.Builder(computerDto.getName())
                             .id(Long.valueOf(computerDto.getId()))
-                            .introduced(Timestamp.valueOf(computerDto.getIntroduced()).toLocalDateTime().toLocalDate())
-                            .discontinued(Timestamp.valueOf(computerDto.getDiscontinued()).toLocalDateTime().toLocalDate())
+                            .introduced(LocalDate.parse(computerDto.getIntroduced()))
+                            .discontinued(LocalDate.parse(computerDto.getDiscontinued()))
                             .manufacturer(CompanyMapper.toCompany(computerDto.getManufacturer()))
                             .build();
                 
@@ -24,9 +24,9 @@ public final class ComputerMapper {
         if (computer != null){
             computerDto.setName(computer.getName());
             computerDto.setId(computer.getId().toString());
-            computerDto.setIntroduced(computer.getIntroduced().toString());
-            computerDto.setDiscontinued(computer.getDiscontinued().toString());
-            computerDto.setName(computer.getName());
+            computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
+            computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
+            computerDto.setManufacturer(CompanyMapper.toCompanyDTO(computer.getManufacturer()));
         }
         
         return computerDto;
