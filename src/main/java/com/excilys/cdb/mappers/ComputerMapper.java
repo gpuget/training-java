@@ -1,6 +1,8 @@
 package com.excilys.cdb.mappers;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.models.Computer;
@@ -28,5 +30,15 @@ public final class ComputerMapper {
         }
         
         return computerDto;
+    }
+    
+    public static final List<ComputerDTO> toComputerDTO(List<Computer> computers){
+        List<ComputerDTO> listDto = new ArrayList<>();
+        
+        for(Computer c : computers){
+            listDto.add(toComputerDTO(c));
+        }
+        
+        return listDto;
     }
 }

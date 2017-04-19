@@ -3,16 +3,16 @@ package com.excilys.cdb.models;
 import java.util.List;
 
 public class Page<T> {
-    public static final int MAX_PER_PAGE = 20;
-
     private List<T> objects;
     private int number;
+    public int maxPerPage;
 
     /**
      * Constructor.
      */
     public Page(List<T> list) {
         this.objects = list;
+        this.maxPerPage = list.size();
         this.number = 1;
     }
 

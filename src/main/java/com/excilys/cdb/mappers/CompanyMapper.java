@@ -1,5 +1,8 @@
 package com.excilys.cdb.mappers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.models.Company;
 
@@ -19,5 +22,15 @@ public final class CompanyMapper {
         }
         
         return companyDto;
+    }
+    
+    public static final List<CompanyDTO> toCompanyDTO(List<Company> computers){
+        List<CompanyDTO> listDto = new ArrayList<>();
+        
+        for(Company c : computers){
+            listDto.add(toCompanyDTO(c));
+        }
+        
+        return listDto;
     }
 }
