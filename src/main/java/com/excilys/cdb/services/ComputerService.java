@@ -1,4 +1,4 @@
-package com.excilys.cdb.service;
+package com.excilys.cdb.services;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mappers.ComputerMapper;
