@@ -44,4 +44,10 @@ public interface ComputerDAO {
      * @param id identifier
      */
     void delete(Long id);
+    
+    /**
+     * Gets the total number of computers
+     * @return total number of computers
+     */
+    int getTotal();
 }

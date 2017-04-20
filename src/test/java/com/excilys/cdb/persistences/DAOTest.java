@@ -49,7 +49,6 @@ public class DAOTest {
 																.id(1L)
 																.build())
 									.build(), computerDao.findById(568L));
-		
 		assertTrue(Connector.INSTANCE.isDisconnected());
 	}
 	

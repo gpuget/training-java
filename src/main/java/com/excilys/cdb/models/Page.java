@@ -55,4 +55,10 @@ public class Page<T> {
     public int getNumber() {
         return number;
     }
+    
+    public void setNumber(int number){
+        if (number > 0) {
+            this.number = number;
+        }
+    }
 }

@@ -25,6 +25,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String BOUNDED_RST = " LIMIT ? OFFSET ?";
+    private static final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
 
     private List<Computer> computersList;
     private Computer computer;
@@ -124,6 +125,7 @@ public class ComputerDAOImpl implements ComputerDAO {
                 if (rs.first()) {
                     loadComputer(rs);
                 }
+                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -155,37 +157,63 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     }
 
+    @Override
+    public int getTotal() {
+        connection = Connector.INSTANCE.getConnection();
+        int res = 0;
+        
+        try (PreparedStatement ps = connection.prepareStatement(COUNT_QUERY);) {
+            ResultSet rs = ps.executeQuery();
+            if(rs.first()){
+                res = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Connector.INSTANCE.disconnect();
+        }
+        return res;
+    }
+
     /**
      * Loads the computer resulting from the query in an object Computer.
-     * @param rs result of the query
+     * 
+     * @param rs
+     *            result of the query
      * @return object Computer
-     * @throws SQLException SQL exception
+     * @throws SQLException
+     *             SQL exception
      */
     private Computer loadComputer(ResultSet rs) throws SQLException {
         Company com = new Company.Builder(rs.getString("company_name")).id(
                 rs.getLong("company_id")).build();
         Timestamp i = rs.getTimestamp("introduced");
         Timestamp d = rs.getTimestamp("discontinued");
-
-        if (i != null && d != null) {
-            computer = new Computer.Builder(rs.getString("name"))
-                    .id(rs.getLong("id"))
-                    .introduced(i.toLocalDateTime().toLocalDate())
-                    .discontinued(d.toLocalDateTime().toLocalDate())
-                    .manufacturer(com).build();
-        } else {
-            computer = new Computer.Builder(rs.getString("name"))
-                    .id(rs.getLong("id")).manufacturer(com).build();
+        
+        computer = new Computer.Builder(rs.getString("name"))
+                                .id(rs.getLong("id"))
+                                .manufacturer(com)
+                                .build();
+        if(i != null) {
+            computer.setIntroduced(i.toLocalDateTime().toLocalDate());
         }
-
+        
+        if(d != null) {
+            computer.setDiscontinued(d.toLocalDateTime().toLocalDate());
+        }
+        
         return computer;
     }
 
     /**
      * Sets values in the prepared statement.
-     * @param ps statement to be loaded
-     * @param computer computer with values to load in statement
-     * @throws SQLException SQL exception
+     * 
+     * @param ps
+     *            statement to be loaded
+     * @param computer
+     *            computer with values to load in statement
+     * @throws SQLException
+     *             SQL exception
      */
     private void setStatementValues(PreparedStatement ps, Computer computer)
             throws SQLException {

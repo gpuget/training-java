@@ -1,6 +1,5 @@
 package com.excilys.cdb.persistences;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,8 +17,7 @@ public enum Connector {
     Connector() {
         try {
             properties = new Properties();
-            properties.load(new FileInputStream(
-                    "src/main/resources/local.properties"));
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("local.properties"));
         } catch (Exception e) {
             e.printStackTrace();
         }
