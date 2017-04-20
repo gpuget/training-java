@@ -8,17 +8,16 @@ import com.excilys.cdb.persistences.ComputerDAO;
 import com.excilys.cdb.persistences.ComputerDAOImpl;
 
 public class ComputerService {
-    public static final int MAX_PER_PAGE = 10;
-
     private ComputerDAO computerDao;
     private Page<ComputerDTO> page;
+    private int maxPerPage = 10;
 
     /**
      * Constructor.
      */
     public ComputerService() {
         this.computerDao = new ComputerDAOImpl();
-        this.page = new Page<>(ComputerMapper.toComputerDTO(computerDao.findAll(MAX_PER_PAGE, 0)));
+        this.page = new Page<>(ComputerMapper.toComputerDTO(computerDao.findAll(maxPerPage, 0)));
     }
 
     /**
@@ -79,8 +78,27 @@ public class ComputerService {
         page.setObjects(ComputerMapper.toComputerDTO(computerDao.findAll(
                 page.maxPerPage, newOffset)));
     }
+    
+    /**
+     * Gets the total number of computers.
+     * @return total number of computers
+     */
+    public int getTotal(){
+        return computerDao.getTotal();
+    }
 
     public Page<ComputerDTO> getPage() {
+        updatePage();
         return this.page;
+    }
+    
+    public Page<ComputerDTO> getPage(int number){
+        page.setNumber(number);
+        updatePage();
+        return this.page;
+    }
+    
+    public int getMaxPerPage(){
+        return this.maxPerPage;
     }
 }

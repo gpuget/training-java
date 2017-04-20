@@ -16,6 +16,7 @@
 		<org.mockito.version>2.7.12</org.mockito.version>
 		<org.slf4j.version>1.7.5</org.slf4j.version>
 		<servlet.version>2.5</servlet.version>
+		<jstl.version>1.2</jstl.version>
 	</properties>
 	
 	<dependencies>
@@ -50,6 +51,12 @@
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>servlet-api</artifactId>
 		    <version>${servlet.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>jstl</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>${jstl.version}</version>
 		</dependency>
 	</dependencies>
 

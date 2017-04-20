@@ -19,7 +19,13 @@ public class ComputerServiceTest {
     public void computerServiceGetPage(){
         assertNotNull(computerService.getPage());
         assertFalse(computerService.getPage().getObjects().isEmpty());
-        assertEquals(ComputerService.MAX_PER_PAGE, computerService.getPage().maxPerPage);
-        assertEquals(ComputerService.MAX_PER_PAGE, computerService.getPage().getObjects().size());
+        assertEquals(computerService.getMaxPerPage(), computerService.getPage().maxPerPage);
+        assertEquals(computerService.getMaxPerPage(), computerService.getPage().getObjects().size());
+        System.out.println(computerService.getPage().getObjects().get(0));
+    }
+    
+    @Test
+    public void computerServiceTotal(){
+        assertNotEquals(0, computerService.getTotal());
     }
 }
