@@ -6,13 +6,13 @@
   version="3.0">
   
   <servlet>
-    <servlet-name></servlet-name>
-    <servlet-class>com.excilys.cdb.servlet</servlet-class>
+    <servlet-name>Dashboard</servlet-name>
+    <servlet-class>com.excilys.cdb.servlets.Dashboard</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name></servlet-name>
-    <url-pattern></url-pattern>
+    <servlet-name>Dashboard</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
   </servlet-mapping>
 
 </web-app>

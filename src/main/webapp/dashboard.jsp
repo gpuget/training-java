@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
+<link href="resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen">
+<link href="resources/css/font-awesome.css" type="text/css" rel="stylesheet" media="screen">
+<link href="resources/css/main.css" type="text/css" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
@@ -250,11 +252,11 @@
             <button type="button" class="btn btn-default">50</button>
             <button type="button" class="btn btn-default">100</button>
         </div>
-        </div>
+    </div>
     </footer>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/dashboard.js"></script>
+<script src="/training-java/resources/js/jquery.min.js"></script>
+<script src="/training-java/resources/js/bootstrap.min.js"></script>
+<script src="/training-java/resources/js/dashboard.js"></script>
 
 </body>
 </html>
