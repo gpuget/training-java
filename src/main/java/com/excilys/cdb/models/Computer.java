@@ -3,32 +3,35 @@ package com.excilys.cdb.models;
 import java.time.LocalDate;
 
 public class Computer {
-    private Long id;
+    private long id;
     private String name;
     private Company manufacturer;
     private LocalDate introduced;
     private LocalDate discontinued;
 
-    /**
-     * Constructor.
-     * @param name name of the computer
-     */
-    private Computer(String name) {
-        this.name = name;
-    }
-
     @Override
     public int hashCode() {
-        return name.hashCode() + manufacturer.hashCode();
+        int hash = 5;
+        
+        hash = hash * 8 + Long.hashCode(id);
+        hash = hash * 8 + name.hashCode();
+        hash = hash * 8 + manufacturer.hashCode();
+        hash = hash * 8 + introduced.hashCode();
+        hash = hash * 8 + discontinued.hashCode();
+        
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Computer) {
-            Computer c = (Computer) obj;
+        if (obj != null && obj instanceof Computer) {
+            Computer computer = (Computer) obj;
 
-            return (this.manufacturer.equals(c.manufacturer) && this.name
-                    .equals(c.name));
+            return (this.id == computer.id) &&
+                    this.name.equals(computer.name) &&
+                    this.manufacturer.equals(computer.manufacturer) &&
+                    this.introduced.equals(computer.introduced) &&
+                    this.discontinued.equals(computer.discontinued);
         }
 
         return false;
@@ -51,7 +54,7 @@ public class Computer {
      * Gets the identifier.
      * @return identifier
      */
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -59,7 +62,7 @@ public class Computer {
      * Sets the identifier.
      * @param id identifier
      */
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -134,8 +137,8 @@ public class Computer {
          * Computer builder.
          * @param name name of the computer
          */
-        public Builder(String name) {
-            this.computer = new Computer(name);
+        public Builder() {
+            computer = new Computer();
         }
 
         /**
@@ -151,9 +154,20 @@ public class Computer {
          * @param id identifier
          * @return builder current instance
          */
-        public Builder id(Long id) {
+        public Builder id(long id) {
             computer.setId(id);
 
+            return this;
+        }
+        
+        /**
+         * Adds a name to the computer.
+         * @param name name of the computer
+         * @return builder current instance
+         */
+        public Builder name(String name){
+            computer.setName(name);
+            
             return this;
         }
 

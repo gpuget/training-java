@@ -12,25 +12,20 @@ import com.excilys.cdb.models.Company;
 public class CompanyDAOImpl implements CompanyDAO {
     public static final String FIND_ALL = "SELECT id, name FROM company";
 
-    private List<Company> companiesList;
-    private Company company;
-    private Connection connection;
-
     @Override
     public List<Company> findAll() {
-        connection = Connector.INSTANCE.getConnection();
-        company = null;
-        companiesList = new ArrayList<>();
+        Connection connection = Connector.INSTANCE.getConnection();
+        ArrayList<Company> companiesList = new ArrayList<>();
 
-        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL);
-                ResultSet rs = ps.executeQuery();) {
-            while (rs.next()) {
-                company = new Company.Builder(rs.getString("name")).id(
-                        rs.getLong("id")).build();
-                companiesList.add(company);
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+                ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
+                companiesList.add(new Company.Builder()
+                                                .id(resultSet.getLong("id"))
+                                                .name(resultSet.getString("name")).build());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }

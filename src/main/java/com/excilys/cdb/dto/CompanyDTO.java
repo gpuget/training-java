@@ -12,23 +12,28 @@ public class CompanyDTO implements Serializable {
      * Constructor.
      */
     public CompanyDTO() {
-        this.id = "";
-        this.name = "";
+        id = "";
+        name = "";
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        int hash = 2;
+        
+        hash = hash * 10 + id.hashCode();       
+        hash = hash * 10 + name.hashCode();
+        
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof CompanyDTO) {
-            CompanyDTO c = (CompanyDTO) obj;
-
-            return this.name.equals(c.name);
+        if (obj != null && obj instanceof CompanyDTO){
+            CompanyDTO companyDto = (CompanyDTO) obj;
+            
+            return this.id.equals(companyDto.id) && this.name.equals(companyDto.name);
         }
-
+        
         return false;
     }
 

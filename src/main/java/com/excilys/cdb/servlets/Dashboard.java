@@ -20,8 +20,8 @@ public class Dashboard extends HttpServlet {
         ComputerService cs = new ComputerService();
         int numberPage = 1;
         
-        req.setAttribute("count", cs.getTotal());
-        req.setAttribute("pageComputer", cs.getPage(numberPage));
+        req.setAttribute("count", cs.getCount());
+        req.setAttribute("pageComputer", cs.getPage(numberPage, 10));
         
         this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
     }

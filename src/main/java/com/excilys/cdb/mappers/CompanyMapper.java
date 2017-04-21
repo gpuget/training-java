@@ -13,8 +13,9 @@ public final class CompanyMapper {
      * @return conversion result
      */
     public static Company toCompany(CompanyDTO companyDto) {
-        return new Company.Builder(companyDto.getName()).id(
-                Long.valueOf(companyDto.getId())).build();
+        return new Company.Builder()
+                            .id(Long.parseLong(companyDto.getId()))
+                            .name(companyDto.getName()).build();
     }
 
     /**
@@ -25,10 +26,8 @@ public final class CompanyMapper {
     public static CompanyDTO toCompanyDTO(Company company) {
         CompanyDTO companyDto = new CompanyDTO();
 
-        if (company != null) {
-            companyDto.setName(company.getName());
-            companyDto.setId(company.getId().toString());
-        }
+        companyDto.setId(String.valueOf(company.getId()));
+        companyDto.setName(company.getName());
 
         return companyDto;
     }
@@ -38,10 +37,10 @@ public final class CompanyMapper {
      * @param computers list to convert
      * @return conversion result
      */
-    public static List<CompanyDTO> toCompanyDTO(List<Company> computers) {
+    public static List<CompanyDTO> toCompanyDTO(List<Company> companies) {
         List<CompanyDTO> listDto = new ArrayList<>();
 
-        for (Company c : computers) {
+        for (Company c : companies) {
             listDto.add(toCompanyDTO(c));
         }
 

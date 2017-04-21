@@ -24,16 +24,27 @@ public class ComputerDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return name.hashCode() + manufacturer.hashCode();
+        int hash = 5;
+        
+        hash = hash * 11 + id.hashCode();
+        hash = hash * 11 + name.hashCode();
+        hash = hash * 11 + manufacturer.hashCode();
+        hash = hash * 11 + introduced.hashCode();
+        hash = hash * 11 + discontinued.hashCode();
+        
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ComputerDTO) {
-            ComputerDTO c = (ComputerDTO) obj;
+        if (obj != null && obj instanceof ComputerDTO) {
+            ComputerDTO computerDto = (ComputerDTO) obj;
 
-            return (this.manufacturer.equals(c.manufacturer) && this.name
-                    .equals(c.name));
+            return this.id.equals(computerDto.id) &&
+                    this.name.equals(computerDto.name) &&
+                    this.manufacturer.equals(computerDto.manufacturer) &&
+                    this.introduced.equals(computerDto.introduced) &&
+                    this.discontinued.equals(computerDto.discontinued);
         }
 
         return false;

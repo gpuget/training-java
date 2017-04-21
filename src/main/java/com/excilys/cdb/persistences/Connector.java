@@ -19,23 +19,19 @@ public enum Connector {
             properties = new Properties();
             properties.load(this.getClass().getClassLoader().getResourceAsStream("local.properties"));
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ConnectorException("Error : Properties cannot be loaded.", e);
         }
     }
 
     /**
      * Connects to the DB corresponding to the properties.
      */
-    private void connect() {
-        try {
+    private void connect() throws ClassNotFoundException, SQLException{
             Class.forName(properties.getProperty("db.driver"));
             connection = DriverManager.getConnection(
                     properties.getProperty("db.url"),
                     properties.getProperty("db.username"),
                     properties.getProperty("db.password"));
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -45,7 +41,7 @@ public enum Connector {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConnectorException("Error : Database connection has not been correctly closed.", e);
         }
     }
 
@@ -58,8 +54,8 @@ public enum Connector {
             if (connection == null || connection.isClosed()) {
                 connect();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new ConnectorException("Error : Database connection cannot be done.", e);
         }
 
         return connection;
@@ -73,9 +69,7 @@ public enum Connector {
         try {
             return (connection == null || connection.isClosed());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConnectorException("Error : Connector has encountered a problem during the connection check.", e);
         }
-
-        return false;
     }
 }

@@ -17,7 +17,7 @@ public interface ComputerDAO {
      * @param id identifier
      * @return found computer
      */
-    Computer findById(Long id);
+    Computer findById(long id);
 
     /**
      * Finds all computers in DB.
@@ -43,11 +43,11 @@ public interface ComputerDAO {
      * Deletes the computer corresponding to the identifier.
      * @param id identifier
      */
-    void delete(Long id);
+    void delete(long id);
     
     /**
      * Gets the total number of computers
      * @return total number of computers
      */
-    int getTotal();
+    int getCount();
 }

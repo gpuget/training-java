@@ -14,8 +14,9 @@ public final class ComputerMapper {
      * @return conversion result
      */
     public static Computer toComputer(ComputerDTO computerDto) {
-        return new Computer.Builder(computerDto.getName())
+        return new Computer.Builder()
                             .id(Long.valueOf(computerDto.getId()))
+                            .name(computerDto.getName())
                             .introduced(LocalDate.parse(computerDto.getIntroduced()))
                             .discontinued(LocalDate.parse(computerDto.getDiscontinued()))
                             .manufacturer(CompanyMapper.toCompany(computerDto.getManufacturer()))
@@ -30,13 +31,11 @@ public final class ComputerMapper {
     public static ComputerDTO toComputerDTO(Computer computer) {
         ComputerDTO computerDto = new ComputerDTO();
 
-        if (computer != null) {
-            computerDto.setName(computer.getName());
-            computerDto.setId(String.valueOf(computer.getId()));
-            computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
-            computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
-            computerDto.setManufacturer(CompanyMapper.toCompanyDTO(computer.getManufacturer()));
-        }
+        computerDto.setId(String.valueOf(computer.getId()));
+        computerDto.setName(computer.getName());
+        computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
+        computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
+        computerDto.setManufacturer(CompanyMapper.toCompanyDTO(computer.getManufacturer()));
 
         return computerDto;
     }

@@ -24,109 +24,103 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-    private static final String BOUNDED_RST = " LIMIT ? OFFSET ?";
+    private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
     private static final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
 
-    private List<Computer> computersList;
-    private Computer computer;
-    private Connection connection;
-
     @Override
-    public Computer create(Computer obj) {
-        connection = Connector.INSTANCE.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(CREATE_QUERY,
-                Statement.RETURN_GENERATED_KEYS);) {
-            if (obj != null) {
-                setStatementValues(ps, obj);
-                ps.executeUpdate();
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.first()) {
-                    obj.setId(rs.getLong(1));
-                    rs.close();
-                }
+    public Computer create(Computer computer) {
+        Connection connection = Connector.INSTANCE.getConnection();
+        
+        try (PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
+            Statement.RETURN_GENERATED_KEYS);) {
+            setStatementValues(statement, computer);
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.first()) {
+                computer.setId(rs.getLong(1));
+                rs.close();
+            } else {
+                throw new DAOException("Error : DAO has not been able to correctly create the entity.");
             }
+            
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error : DAO has not been able to correctly create the entity.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }
 
-        return obj;
+        return computer;
     }
 
     @Override
-    public void delete(Long id) {
-        if (id != null && findById(id) != null) {
-            connection = Connector.INSTANCE.getConnection();
-            try (PreparedStatement ps = connection
-                    .prepareStatement(DELETE_QUERY);) {
-                ps.setLong(1, id);
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                Connector.INSTANCE.disconnect();
-            }
+    public void delete(long id) {
+        Connection connection = Connector.INSTANCE.getConnection();
+        
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Error : DAO has not been able to correctly delete the entity.", e);
+        } finally {
+            Connector.INSTANCE.disconnect();
         }
     }
 
     @Override
     public List<Computer> findAll() {
-        computer = null;
-        computersList = new ArrayList<Computer>();
-        connection = Connector.INSTANCE.getConnection();
+        Connection connection = Connector.INSTANCE.getConnection();
+        ArrayList<Computer> computers = new ArrayList<>();
 
-        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL);
-                ResultSet rs = ps.executeQuery();) {
-            while (rs.next()) {
-                computersList.add(loadComputer(rs));
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+                ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
+                computers.add(loadComputer(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }
 
-        return computersList;
+        return computers;
     }
 
     @Override
     public List<Computer> findAll(int limit, int offset) {
-        computer = null;
-        computersList = new ArrayList<Computer>();
-        connection = Connector.INSTANCE.getConnection();
+        Connection connection = Connector.INSTANCE.getConnection();
+        ArrayList<Computer> computers = new ArrayList<Computer>();
 
-        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL
-                + BOUNDED_RST);) {
-            ps.setInt(1, limit);
-            ps.setInt(2, offset);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                computersList.add(loadComputer(rs));
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL
+                + BOUNDED_RESULT);) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                computers.add(loadComputer(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }
 
-        return computersList;
+        return computers;
     }
 
     @Override
-    public Computer findById(Long id) {
-        computer = null;
-        connection = Connector.INSTANCE.getConnection();
+    public Computer findById(long id) {
+        Computer computer = new Computer();
+        Connection connection = Connector.INSTANCE.getConnection();
 
-        try (PreparedStatement ps = connection.prepareStatement(FIND_QUERY);) {
-            if (id != null) {
-                ps.setLong(1, id);
-                ResultSet rs = ps.executeQuery();
-                if (rs.first()) {
-                    loadComputer(rs);
-                }
-                rs.close();
+        try (PreparedStatement statement = connection.prepareStatement(FIND_QUERY);) {
+            statement.setLong(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.first()) {
+                computer = loadComputer(rs);
+            } else {
+                throw new DAOException("Error : DAO has not been able to find the entity.");
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -137,38 +131,35 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public void update(Computer obj) {
-        if (obj != null) {
-            Long id = obj.getId();
-            if (id != null && findById(id) != null) {
-                connection = Connector.INSTANCE.getConnection();
-                try (PreparedStatement ps = connection
-                        .prepareStatement(UPDATE_QUERY);) {
-                    setStatementValues(ps, obj);
-                    ps.setLong(5, id);
-                    ps.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } finally {
-                    Connector.INSTANCE.disconnect();
-                }
-            }
+    public void update(Computer computer) {
+        Connection connection = Connector.INSTANCE.getConnection();
+        
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);) {
+            setStatementValues(statement, computer);
+            statement.setLong(5, computer.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Error : DAO has not been able to correctly update the entity.", e);
+        } finally {
+            Connector.INSTANCE.disconnect();
         }
-
     }
 
     @Override
-    public int getTotal() {
-        connection = Connector.INSTANCE.getConnection();
+    public int getCount() {
+        Connection connection = Connector.INSTANCE.getConnection();
+        
         int res = 0;
         
-        try (PreparedStatement ps = connection.prepareStatement(COUNT_QUERY);) {
-            ResultSet rs = ps.executeQuery();
-            if(rs.first()){
-                res = rs.getInt(1);
+        try (PreparedStatement statement = connection.prepareStatement(COUNT_QUERY);) {
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.first()){
+                res = resultSet.getInt(1);
+            } else {
+                throw new DAOException("Error : DAO has not been able to correctly count the entities.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error : DAO has not been able to correctly count the entities.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }
@@ -185,15 +176,16 @@ public class ComputerDAOImpl implements ComputerDAO {
      *             SQL exception
      */
     private Computer loadComputer(ResultSet rs) throws SQLException {
-        Company com = new Company.Builder(rs.getString("company_name")).id(
-                rs.getLong("company_id")).build();
+        Company com = new Company.Builder()
+                                    .id(rs.getLong("company_id"))
+                                    .name(rs.getString("company_name")).build();
         Timestamp i = rs.getTimestamp("introduced");
         Timestamp d = rs.getTimestamp("discontinued");
         
-        computer = new Computer.Builder(rs.getString("name"))
+        Computer computer = new Computer.Builder()
                                 .id(rs.getLong("id"))
-                                .manufacturer(com)
-                                .build();
+                                .name(rs.getString("name"))
+                                .manufacturer(com).build();
         if(i != null) {
             computer.setIntroduced(i.toLocalDateTime().toLocalDate());
         }
@@ -222,8 +214,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         ps.setString(1, computer.getName());
         ps.setObject(2, computer.getIntroduced());
         ps.setObject(3, computer.getDiscontinued());
-        if (company != null) {
-            ps.setLong(4, company.getId());
-        }
+        ps.setLong(4, company.getId());
     }
 }

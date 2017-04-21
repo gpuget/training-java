@@ -1,28 +1,26 @@
 package com.excilys.cdb.models;
 
 public class Company {
-    private Long id;
+    private long id;
     private String name;
-
-    /**
-     * Constructor with name.
-     * @param name name of the company
-     */
-    private Company(String name) {
-        this.name = name;
-    }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        int hash = 2;
+        
+        hash = hash * 7 + Long.hashCode(id);
+        hash = hash * 7 + name.hashCode();
+        
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Company) {
-            Company c = (Company) obj;
+        if (obj != null && obj instanceof Company) {
+            Company company = (Company) obj;
 
-            return this.name.equals(c.name);
+            return (this.id == company.getId()) &&
+                    this.name.equals(company.getName());
         }
 
         return false;
@@ -30,14 +28,14 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company :" + this.name;
+        return "Company (" + id +") " + name;
     }
 
     /**
      * Gets the identifier.
      * @return identifier
      */
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -45,7 +43,7 @@ public class Company {
      * Sets the identifier.
      * @param id identifier
      */
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -72,8 +70,8 @@ public class Company {
          * Company builder.
          * @param name name of the company created
          */
-        public Builder(String name) {
-            this.company = new Company(name);
+        public Builder() {
+            company = new Company();
         }
 
         /**
@@ -83,13 +81,24 @@ public class Company {
         public Company build() {
             return company;
         }
+        
+        /**
+         * Adds a name to the company.
+         * @param name name of the company
+         * @return builder current instance
+         */
+        public Builder name(String name){
+            company.setName(name);
+            
+            return this;
+        }
 
         /**
          * Adds an identifier to the company.
          * @param id identifier
          * @return builder current instance
          */
-        public Builder id(Long id) {
+        public Builder id(long id) {
             company.setId(id);
 
             return this;

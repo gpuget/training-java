@@ -26,6 +26,6 @@ public class ComputerServiceTest {
     
     @Test
     public void computerServiceTotal(){
-        assertNotEquals(0, computerService.getTotal());
+        assertNotEquals(0, computerService.getCount());
     }
 }

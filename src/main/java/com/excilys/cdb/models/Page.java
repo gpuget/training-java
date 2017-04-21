@@ -5,7 +5,7 @@ import java.util.List;
 public class Page<T> {
     private List<T> objects;
     private int number;
-    public int maxPerPage;
+    private int maxPerPage;
 
     /**
      * Constructor.
@@ -28,22 +28,6 @@ public class Page<T> {
         return res;
     }
 
-    /**
-     * Increments the number of the page.
-     */
-    public void next() {
-        this.number++;
-    }
-
-    /**
-     * Decrements the number of the page.
-     */
-    public void previous() {
-        if (this.number > 1) {
-            this.number--;
-        }
-    }
-
     public List<T> getObjects() {
         return objects;
     }
@@ -57,8 +41,14 @@ public class Page<T> {
     }
     
     public void setNumber(int number){
-        if (number > 0) {
-            this.number = number;
-        }
+        this.number = number;
+    }
+
+    public int getMaxPerPage() {
+        return maxPerPage;
+    }
+
+    public void setMaxPerPage(int maxPerPage) {
+        this.maxPerPage = maxPerPage;
     }
 }

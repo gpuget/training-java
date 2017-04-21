@@ -1,24 +1,21 @@
 package com.excilys.cdb.services;
 
-import com.excilys.cdb.dto.CompanyDTO;
-import com.excilys.cdb.mappers.CompanyMapper;
+import com.excilys.cdb.models.Company;
 import com.excilys.cdb.models.Page;
 import com.excilys.cdb.persistences.CompanyDAO;
 import com.excilys.cdb.persistences.CompanyDAOImpl;
 
 public class CompanyService {
     private CompanyDAO companyDao;
-    private Page<CompanyDTO> page;
 
     /**
      * Constructor.
      */
     public CompanyService() {
         this.companyDao = new CompanyDAOImpl();
-        this.page = new Page<>(CompanyMapper.toCompanyDTO(companyDao.findAll()));
     }
 
-    public Page<CompanyDTO> getPage() {
-        return this.page;
+    public Page<Company> getPage() {
+        return new Page<>(companyDao.findAll());
     }
 }
