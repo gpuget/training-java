@@ -109,7 +109,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer findById(long id) {
-        Computer computer = new Computer();
+        Computer computer = null;
         Connection connection = Connector.INSTANCE.getConnection();
 
         try (PreparedStatement statement = connection.prepareStatement(FIND_QUERY);) {
@@ -117,12 +117,10 @@ public class ComputerDAOImpl implements ComputerDAO {
             ResultSet rs = statement.executeQuery();
             if (rs.first()) {
                 computer = loadComputer(rs);
-            } else {
-                throw new DAOException("Error : DAO has not been able to find the entity.");
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error : DAO has not been able to find the entity.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }

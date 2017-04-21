@@ -22,7 +22,7 @@ public class ConnectorTest {
 	}
 	
 	@Test
-	public void connectorInstance() {
+	public void singleInstance() {
 		Connector c = Connector.INSTANCE;
 		Connector c2 = Connector.INSTANCE;
 		
@@ -30,7 +30,7 @@ public class ConnectorTest {
 	}
 	
 	@Test
-	public void connectionNotNull() {
+	public void sameConnection() {
 		Connection c1 = Connector.INSTANCE.getConnection();
 		Connection c2 = Connector.INSTANCE.getConnection();
 		
@@ -39,7 +39,7 @@ public class ConnectorTest {
 	}
 	
 	@Test
-	public void connectionOpenAndClose() {
+	public void openAndClose() {
 		assertTrue(Connector.INSTANCE.isDisconnected());
 		Connector.INSTANCE.getConnection();
 		assertFalse(Connector.INSTANCE.isDisconnected());

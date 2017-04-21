@@ -39,7 +39,9 @@ public enum Connector {
      */
     public void disconnect() {
         try {
-            connection.close();
+            if(connection != null && !connection.isClosed()){
+                connection.close();
+            }
         } catch (SQLException e) {
             throw new ConnectorException("Error : Database connection has not been correctly closed.", e);
         }

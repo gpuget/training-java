@@ -23,12 +23,18 @@ public class MappersTest {
 
     @Before
     public void init() {
-        com = new Company.Builder("Bob Inc.").id(1L).build();
-        cpu = new Computer.Builder("Bob").id(1L).introduced(LocalDate.MIN)
-                .discontinued(LocalDate.MAX).manufacturer(com).build();
+        com = new Company.Builder().id(1L).name("Bob Inc.").build();
+        cpu = new Computer.Builder()
+                            .id(1L)
+                            .name("Bob")
+                            .introduced(LocalDate.MIN)
+                            .discontinued(LocalDate.MAX)
+                            .manufacturer(com).build();
+        
         comDto = new CompanyDTO();
         comDto.setName("Bob Inc.");
         comDto.setId("1");
+        
         cpuDto = new ComputerDTO();
         cpuDto.setName("Bob");
         cpuDto.setId("1");
@@ -38,22 +44,22 @@ public class MappersTest {
     }
 
     @Test
-    public void modelToDTO() {
-        ArrayList<Computer> cpuList = new ArrayList<>();
-        ArrayList<ComputerDTO> cpuDtoList = new ArrayList<>();
-        cpuList.add(cpu);
-        cpuList.add(cpu);
-        cpuDtoList.add(cpuDto);
-        cpuDtoList.add(cpuDto);
-        
+    public void goodConversionToCompanyDTO(){
         assertEquals(comDto, CompanyMapper.toCompanyDTO(com));
-        assertEquals(cpuDto, ComputerMapper.toComputerDTO(cpu));
-        assertEquals(cpuDtoList, ComputerMapper.toComputerDTO(cpuList));
     }
 
     @Test
-    public void DTOToModel() {
+    public void goodConversionToCompany(){
         assertEquals(com, CompanyMapper.toCompany(comDto));
+    }
+
+    @Test
+    public void goodConversionToComputerDTO(){
+        assertEquals(cpuDto, ComputerMapper.toComputerDTO(cpu));
+    }
+
+    @Test
+    public void goodConversionToComputer(){
         assertEquals(cpu, ComputerMapper.toComputer(cpuDto));
     }
 }
