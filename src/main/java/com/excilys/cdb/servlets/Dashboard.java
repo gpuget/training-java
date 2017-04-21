@@ -16,11 +16,12 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Map<String, String> parameters = req.getParameterMap();        
+        Map<String, String[]> parameters = req.getParameterMap();        
         ComputerService cs = new ComputerService();
+        int numberPage = 1;
         
         req.setAttribute("count", cs.getTotal());
-        req.setAttribute("pageComputer", cs.getPage());
+        req.setAttribute("pageComputer", cs.getPage(numberPage));
         
         this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
     }
