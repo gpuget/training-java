@@ -24,8 +24,9 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
+    private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
     private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
-    private static final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
+    private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
 
     @Override
     public Computer create(Computer computer) {
@@ -153,6 +154,52 @@ public class ComputerDAOImpl implements ComputerDAO {
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.first()){
                 res = resultSet.getInt(1);
+                resultSet.close();
+            } else {
+                throw new DAOException("Error : DAO has not been able to correctly count the entities.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error : DAO has not been able to correctly count the entities.", e);
+        } finally {
+            Connector.INSTANCE.disconnect();
+        }
+        return res;
+    }
+
+    @Override
+    public List<Computer> getFilteredByName(int limit, int offset, String name) {
+        Connection connection = Connector.INSTANCE.getConnection();
+        ArrayList<Computer> computers = new ArrayList<Computer>();
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL + LIKE_NAME + BOUNDED_RESULT);) {
+            statement.setString(1, '%'+name+'%');
+            statement.setInt(2, limit);
+            statement.setInt(3, offset);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                computers.add(loadComputer(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
+        } finally {
+            Connector.INSTANCE.disconnect();
+        }
+
+        return computers;
+    }
+
+    @Override
+    public int getFilteredByNameCount(String name) {
+        Connection connection = Connector.INSTANCE.getConnection();
+        
+        int res = 0;
+        
+        try (PreparedStatement statement = connection.prepareStatement(COUNT_QUERY + LIKE_NAME);) {
+            statement.setString(1, '%'+name+'%');
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.first()){
+                res = resultSet.getInt(1);
+                resultSet.close();
             } else {
                 throw new DAOException("Error : DAO has not been able to correctly count the entities.");
             }

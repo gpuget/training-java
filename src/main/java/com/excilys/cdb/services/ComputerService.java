@@ -57,7 +57,25 @@ public class ComputerService {
         return computerDao.getCount();
     }
     
-    public Page<Computer> getPage(int number, int maxPerPage) {        
+    /**
+     * Gets the page of computers.
+     * @param number number of the page
+     * @param maxPerPage maximum of items
+     * @return
+     */
+    public Page<Computer> getPage(int number, int maxPerPage) {
         return new Page<>(computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
+    }
+    
+    public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name){
+        return new Page<>(computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
+    }
+    
+    /**
+     * Gets the total number of computers.
+     * @return total number of computers
+     */
+    public int getFilteredByNameCount(String name){
+        return computerDao.getFilteredByNameCount(name);
     }
 }

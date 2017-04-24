@@ -26,7 +26,7 @@ public interface ComputerDAO {
     List<Computer> findAll();
 
     /**
-     * Finds all computers an interval fixed by limit and offset parameters.
+     * Finds all computers in an interval fixed by limit and offset parameters.
      * @param limit limit size of the list returned
      * @param offset start of the search
      * @return list of all computers in the interval
@@ -50,4 +50,19 @@ public interface ComputerDAO {
      * @return total number of computers
      */
     int getCount();
+    
+    /**
+     * Finds all computers in an interval fixed by limit and offset parameters and filtered by name.
+     * @param limit limit size of the list returned
+     * @param offset start of the search
+     * @param name seek name
+     * @return list of computers
+     */
+    List<Computer> getFilteredByName(int limit, int offset, String name);
+    
+    /**
+     * Gets the total number of filtered computer
+     * @return total number of computers
+     */
+    int getFilteredByNameCount(String name);
 }
