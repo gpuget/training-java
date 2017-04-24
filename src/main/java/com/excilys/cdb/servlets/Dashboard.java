@@ -18,6 +18,7 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        @SuppressWarnings("unchecked")
         Map<String, String[]> parameters = req.getParameterMap();        
         ComputerService cs = new ComputerService();
         int numberPage = 1;
@@ -26,8 +27,13 @@ public class Dashboard extends HttpServlet {
         Page<Computer> page;
 
         // Number of page
-        if (parameters.containsKey("page") && parameters.get("page")[0].matches("[1-9]+")) {
+        if (parameters.containsKey("page") && parameters.get("page")[0].matches("[1-9][0-9]*")) {
             numberPage = Integer.parseInt(parameters.get("page")[0]);
+        }
+        
+        // Max per page
+        if (parameters.containsKey("max") && parameters.get("max")[0].matches("[1-9]+0")) {
+            maxPerPage = Integer.parseInt(parameters.get("max")[0]);
         }
         
         // Search
@@ -50,5 +56,4 @@ public class Dashboard extends HttpServlet {
             throws ServletException, IOException {
         super.doGet(req, resp);
     }
-
 }

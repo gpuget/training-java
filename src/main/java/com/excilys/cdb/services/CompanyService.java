@@ -16,6 +16,6 @@ public class CompanyService {
     }
 
     public Page<Company> getPage() {
-        return new Page<>(companyDao.findAll());
+        return new Page<>(1, companyDao.findAll());
     }
 }

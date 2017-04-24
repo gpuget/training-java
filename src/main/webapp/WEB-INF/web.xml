@@ -5,14 +5,40 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0">
   
-  <servlet>
-    <servlet-name>Dashboard</servlet-name>
-    <servlet-class>com.excilys.cdb.servlets.Dashboard</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>Dashboard</servlet-name>
-    <url-pattern>/dashboard</url-pattern>
-  </servlet-mapping>
+    <servlet>
+	    <servlet-name>Dashboard</servlet-name>
+	    <servlet-class>com.excilys.cdb.servlets.Dashboard</servlet-class>
+    </servlet>
 
+    <servlet>
+	    <servlet-name>AddComputer</servlet-name>
+	    <servlet-class>com.excilys.cdb.servlets.AddComputer</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>EditComputer</servlet-name>
+        <servlet-class>com.excilys.cdb.servlets.EditComputer</servlet-class>
+    </servlet>
+  
+    <servlet-mapping>
+	    <servlet-name>Dashboard</servlet-name>
+	    <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>AddComputer</servlet-name>
+        <url-pattern>/addComputer</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>EditComputer</servlet-name>
+        <url-pattern>/editComputer</url-pattern>
+    </servlet-mapping>
+    
+    <jsp-config>
+	  <taglib>
+	    <taglib-uri>mylib</taglib-uri>
+	    <taglib-location>/WEB-INF/lib/mylib.tld</taglib-location>
+	  </taglib>
+    </jsp-config>
 </web-app>

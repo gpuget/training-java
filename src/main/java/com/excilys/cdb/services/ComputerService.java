@@ -64,11 +64,11 @@ public class ComputerService {
      * @return
      */
     public Page<Computer> getPage(int number, int maxPerPage) {
-        return new Page<>(computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
+        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
     
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name){
-        return new Page<>(computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
+        return new Page<>(number, computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
     }
     
     /**

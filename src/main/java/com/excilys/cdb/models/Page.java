@@ -11,10 +11,10 @@ public class Page<T> {
      * Constructor.
      * @param list list of objects
      */
-    public Page(List<T> list) {
+    public Page(int number, List<T> list) {
         this.objects = list;
         this.maxPerPage = list.size();
-        this.number = 1;
+        this.number = number;
     }
 
     @Override
