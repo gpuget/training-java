@@ -10,7 +10,10 @@ import java.util.List;
 import com.excilys.cdb.models.Company;
 
 public class CompanyDAOImpl implements CompanyDAO {
-    public static final String FIND_ALL = "SELECT id, name FROM company";
+    private static final String FIND_ALL = "SELECT id, name FROM company";
+    private static final String FIND_QUERY = "SELECT com.id, com.name "
+            + "FROM company AS  com "
+            + "WHERE com.id = ?";
 
     @Override
     public List<Company> findAll() {
@@ -31,5 +34,31 @@ public class CompanyDAOImpl implements CompanyDAO {
         }
 
         return companiesList;
+    }
+
+    @Override
+    public Company findById(long id) {
+        Company company = null;
+        Connection connection = Connector.INSTANCE.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_QUERY);) {
+            statement.setLong(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.first()) {
+                company = loadCompany(rs);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new DAOException("Error : DAO has not been able to find the entity.", e);
+        } finally {
+            Connector.INSTANCE.disconnect();
+        }
+
+        return company;
+    }
+    
+    private Company loadCompany(ResultSet rs) throws SQLException {
+        return new Company.Builder().id(rs.getLong("id"))
+                                    .name(rs.getString("name")).build();
     }
 }

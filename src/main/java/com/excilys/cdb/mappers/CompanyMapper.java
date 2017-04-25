@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.models.Company;
+import com.excilys.cdb.models.Page;
 
 public final class CompanyMapper {
     /**
@@ -33,8 +34,8 @@ public final class CompanyMapper {
     }
 
     /**
-     * Converts a list of Computer to a list of ComputerDTO.
-     * @param computers list to convert
+     * Converts a list of Company to a list of CompanyDTO.
+     * @param companies list to convert
      * @return conversion result
      */
     public static List<CompanyDTO> toCompanyDTO(List<Company> companies) {

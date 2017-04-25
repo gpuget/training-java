@@ -54,10 +54,10 @@ public class ComputerDTO implements Serializable {
     public String toString() {
         String res;
 
-        res = "Computer : " + this.name + " (" + this.manufacturer.getName()
-                + ") " + this.introduced;
-        if (this.discontinued != null) {
-            res = res + " to " + this.discontinued;
+        res = "Computer : " + name + " (" + manufacturer.getName()
+                + ") " + introduced;
+        if (discontinued != null && !discontinued.isEmpty()) {
+            res = res + " to " + discontinued;
         }
 
         return res;
@@ -83,8 +83,8 @@ public class ComputerDTO implements Serializable {
         return manufacturer;
     }
 
-    public void setManufacturer(CompanyDTO manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setManufacturer(CompanyDTO manufacturerId) {
+        this.manufacturer = manufacturerId;
     }
 
     public String getIntroduced() {

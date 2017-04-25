@@ -10,4 +10,10 @@ public interface CompanyDAO {
      * @return list of all companies in DB
      */
     List<Company> findAll();
+
+    /**
+     * Finds the company corresponding to the identifier in DB.
+     * @return found company
+     */
+    Company findById(long id);
 }
