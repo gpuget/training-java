@@ -8,16 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.services.ComputerService;
-
 public class EditComputer extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Map<String, String[]> parameters = req.getParameterMap();        
-        ComputerService cs = new ComputerService();
+        @SuppressWarnings("unchecked")
+        Map<String, String[]> parameters = req.getParameterMap();
         
         this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(req, resp);
     }

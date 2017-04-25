@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 import com.excilys.cdb.models.Company;
@@ -257,8 +258,18 @@ public class ComputerDAOImpl implements ComputerDAO {
         Company company = computer.getManufacturer();
 
         ps.setString(1, computer.getName());
-        ps.setObject(2, computer.getIntroduced());
-        ps.setObject(3, computer.getDiscontinued());
         ps.setLong(4, company.getId());
+        
+        if (computer.getIntroduced() != null) {
+            ps.setDate(2, Date.valueOf(computer.getIntroduced()));
+        } else {
+            ps.setDate(2, null);
+        }
+        
+        if (computer.getDiscontinued() != null) {
+            ps.setDate(3, Date.valueOf(computer.getDiscontinued()));
+        }else {
+            ps.setDate(3, null);
+        }
     }
 }

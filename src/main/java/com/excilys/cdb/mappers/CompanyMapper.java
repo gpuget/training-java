@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.models.Company;
-import com.excilys.cdb.models.Page;
 
 public final class CompanyMapper {
     /**

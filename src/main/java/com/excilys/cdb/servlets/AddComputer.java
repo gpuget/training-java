@@ -2,7 +2,6 @@ package com.excilys.cdb.servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -53,6 +52,7 @@ public class AddComputer extends HttpServlet {
         
         try {
             cs.create(computer);
+            resp.sendRedirect("dashboard");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendError(500);
@@ -80,13 +80,16 @@ public class AddComputer extends HttpServlet {
         LocalDate i = null;
         LocalDate d = null;
         
-        if (parameters.containsKey("companyName")) {
+        if (parameters.containsKey("computerName")) {
             paramValue = parameters.get("computerName")[0];
+            System.out.println(paramValue);
             if (!paramValue.isEmpty() && ComputerValidator.checkName(paramValue)) {
                 computer.setName(paramValue);
             } else {
                 throw new ServletException("Sorry, the computer name is not valid : " + paramValue);
             }
+        } else {
+            throw new ServletException("Sorry, the computer is not valid.");
         }
         
         if (parameters.containsKey("introduced")) {
@@ -96,6 +99,8 @@ public class AddComputer extends HttpServlet {
             } else {
                 throw new ServletException("Sorry, the date of introduction is not valid : " + paramValue);
             }
+        } else {
+            throw new ServletException("Sorry, the computer is not valid.");
         }
         
         if (parameters.containsKey("discontinued")) {
@@ -105,6 +110,8 @@ public class AddComputer extends HttpServlet {
             } else {
                 throw new ServletException("Sorry, the date of discontinue is not valid: " + paramValue);
             }
+        } else {
+            throw new ServletException("Sorry, the computer is not valid.");
         }
         
         if (i != null && d != null) {
