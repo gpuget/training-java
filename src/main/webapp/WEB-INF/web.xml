@@ -41,4 +41,20 @@
 	    <taglib-location>/WEB-INF/lib/mylib.tld</taglib-location>
 	  </taglib>
     </jsp-config>
+    
+    <error-page>
+	    <!-- Forbidden directory listing -->
+	    <error-code>403</error-code>
+	    <location>/errors/403.jsp</location>
+	</error-page>
+	<error-page>
+	    <!-- Missing resource -->
+	    <error-code>404</error-code>
+	    <location>/errors/404.jsp</location>
+	</error-page>
+	<error-page>
+	    <!-- Uncaught exception -->
+	    <error-code>500</error-code>
+	    <location>/errors/500.jsp</location>
+	</error-page>
 </web-app>

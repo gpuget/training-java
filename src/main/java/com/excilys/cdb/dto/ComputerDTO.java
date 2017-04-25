@@ -92,7 +92,11 @@ public class ComputerDTO implements Serializable {
     }
 
     public void setIntroduced(String introduced) {
-        this.introduced = introduced;
+        if (introduced.equals("null")) {
+            this.introduced = "-";
+        } else {
+            this.introduced = introduced;
+        }
     }
 
     public String getDiscontinued() {
@@ -100,6 +104,10 @@ public class ComputerDTO implements Serializable {
     }
 
     public void setDiscontinued(String discontinued) {
-        this.discontinued = discontinued;
+        if (discontinued.equals("null")) {
+            this.discontinued = "-";
+        } else {
+            this.discontinued = discontinued;
+        }
     }
 }

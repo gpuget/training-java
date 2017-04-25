@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.models.Computer;
+import com.excilys.cdb.dto.ComputerDTO;
+import com.excilys.cdb.mappers.ComputerMapper;
 import com.excilys.cdb.models.Page;
 import com.excilys.cdb.services.ComputerService;
 
@@ -19,12 +20,11 @@ public class Dashboard extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         @SuppressWarnings("unchecked")
-        Map<String, String[]> parameters = req.getParameterMap();        
-        ComputerService cs = new ComputerService();
+        Map<String, String[]> parameters = req.getParameterMap();
         int numberPage = 1;
         int maxPerPage = 10;
         int count;
-        Page<Computer> page;
+        Page<ComputerDTO> page;
 
         // Number of page
         if (parameters.containsKey("page") && parameters.get("page")[0].matches("[1-9][0-9]*")) {
@@ -38,11 +38,11 @@ public class Dashboard extends HttpServlet {
         
         // Search
         if (parameters.containsKey("search") && !parameters.get("search")[0].isEmpty()) {
-            page = cs.getFilteredByNamePage(numberPage, maxPerPage, parameters.get("search")[0]);
-            count = cs.getFilteredByNameCount(parameters.get("search")[0]);
+            page = getFilteredByNamePage(numberPage, maxPerPage, parameters.get("search")[0]);
+            count = getFilteredByNameCount(parameters.get("search")[0]);
         } else {
-            page = cs.getPage(numberPage, maxPerPage);
-            count = cs.getCount();
+            page = getPage(numberPage, maxPerPage);
+            count = getCount();
         }
         
         req.setAttribute("pageComputer", page);
@@ -50,10 +50,20 @@ public class Dashboard extends HttpServlet {
         
         this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        super.doGet(req, resp);
+    
+    private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name){
+        return ComputerMapper.toComputerDTO(new ComputerService().getFilteredByNamePage(number, maxPerPage, name));
+    }
+    
+    private int getFilteredByNameCount(String name){
+        return new ComputerService().getFilteredByNameCount(name);
+    }
+    
+    private Page<ComputerDTO> getPage(int number, int maxPerPage){
+        return ComputerMapper.toComputerDTO(new ComputerService().getPage(number, maxPerPage));
+    }
+    
+    private int getCount(){
+        return new ComputerService().getCount();
     }
 }

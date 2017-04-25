@@ -34,7 +34,7 @@
 	                    </form>
 	                </div>
 	                <div class="pull-right">
-	                    <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a> 
+	                    <a class="btn btn-success" id="addComputer" href="/training-java/addComputer">Add Computer</a> 
 	                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
 	                </div>
 	            </div>
@@ -75,7 +75,7 @@
 		                            <a href="editComputer.html" onclick="">${obj.name}</a>
 		                        </td>
 		                        <td>${obj.introduced}</td>
-		                        <td></td>
+		                        <td>${obj.discontinued}</td>
 		                        <td>${obj.manufacturer.name}</td>
 		                    </tr>                            
 	                    </c:forEach>              
@@ -87,14 +87,14 @@
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
 	        
-	        <mylib:linkTag page="${pageComputer.number}" param="${pageContext.request.parameterMap}"/>
-	
-	        <div class="btn-group btn-group-sm pull-right" role="group">            
-                <button type="button" class="btn btn-default" name="max">10</button>
-                <button type="button" class="btn btn-default" name="max">50</button>
-                <button type="button" class="btn btn-default" name="max">100</button>
-	        </div>
-	    </div>
+		        <mylib:linkTag page="${pageComputer.number}" param="${pageContext.request.parameterMap}"/>
+		
+		        <div class="btn-group btn-group-sm pull-right" role="group">            
+	                <button type="submit" class="btn btn-default">10</button>
+	                <button type="button" class="btn btn-default">50</button>
+	                <button type="button" class="btn btn-default">100</button>
+		        </div>
+		    </div>
 	    </footer>
 	<script src="resources/js/jquery.min.js"></script>
 	<script src="resources/js/bootstrap.min.js"></script>

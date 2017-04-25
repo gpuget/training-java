@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.models.Computer;
+import com.excilys.cdb.models.Page;
 
 public final class ComputerMapper {
     /**
@@ -53,5 +54,14 @@ public final class ComputerMapper {
         }
 
         return listDto;
+    }
+    
+    /**
+     * Converts a page of Computer to a page of ComputerDTO
+     * @param page page to convert
+     * @return conversion result
+     */
+    public static Page<ComputerDTO> toComputerDTO(Page<Computer> page){
+        return new Page<>(page.getNumber(), toComputerDTO(page.getObjects()));
     }
 }
