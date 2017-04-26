@@ -23,9 +23,8 @@ public class AddComputer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        CompanyService coms = new CompanyService();
         
-        req.setAttribute("companies", CompanyMapper.toCompanyDTO(coms.getCompanies()));
+        req.setAttribute("companies", CompanyMapper.toCompanyDTO(new CompanyService().getCompanies()));
         
         this.getServletContext().getRequestDispatcher("/addComputer.jsp").forward(req, resp);
     }

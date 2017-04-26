@@ -24,7 +24,7 @@
 	    <section id="main">
 	        <div class="container">
 	            <h1 id="homeTitle">
-	               ${count} Computers found
+	               <c:out value="${count}"/> Computers found
 	            </h1>
 	            <div id="actions" class="form-horizontal">
 	                <div class="pull-left">
@@ -69,14 +69,14 @@
 	                    <c:forEach items="${pageComputer.objects}" var="obj">
 		                    <tr>
 		                        <td class="editMode">
-		                            <input type="checkbox" name="cb" class="cb" value="0">
+		                            <input type="checkbox" name="cb" class="cb" value="${obj.id}">
 		                        </td>
 		                        <td>
-		                            <a href="editComputer.html" onclick="">${obj.name}</a>
+		                            <a href="editComputer">${obj.name}</a>
 		                        </td>
-		                        <td>${obj.introduced}</td>
-		                        <td>${obj.discontinued}</td>
-		                        <td>${obj.manufacturer.name}</td>
+		                        <td><c:out value="${obj.introduced}"/></td>
+		                        <td><c:out value="${obj.discontinued}"/></td>
+		                        <td><c:out value="${obj.manufacturer.name}"/></td>
 		                    </tr>                            
 	                    </c:forEach>              
 	                </tbody>

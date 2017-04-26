@@ -1,12 +1,14 @@
 package com.excilys.cdb.servlets;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.excilys.cdb.mappers.CompanyMapper;
+import com.excilys.cdb.services.CompanyService;
 
 public class EditComputer extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
@@ -14,10 +16,17 @@ public class EditComputer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        @SuppressWarnings("unchecked")
-        Map<String, String[]> parameters = req.getParameterMap();
+        String id = req.getParameter("id");
         
-        this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(req, resp);
+        if (id == null || id.isEmpty()) {
+            resp.sendRedirect("dashboard");
+        } else {
+            
+            req.setAttribute("companies", CompanyMapper.toCompanyDTO(new CompanyService().getCompanies()));        
+            req.setAttribute("computer", null);
+            
+            this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(req, resp);
+        }
     }
 
     @Override
