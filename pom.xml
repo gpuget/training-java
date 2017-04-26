@@ -1,8 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project    xmlns="http://maven.apache.org/POM/4.0.0" 
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.excilys</groupId>
   <artifactId>training-java</artifactId>
-  <version>3.1.0-RELEASE</version>
+  <version>3.1.1-SNAPSHOT</version>
+  <packaging>war</packaging>
   <name>computer-database</name>
   
   <properties>
@@ -11,6 +15,9 @@
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 		<maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
 		<maven-checkstyle-plugin.configLocation>config/checkstyle/checkstyle.xml</maven-checkstyle-plugin.configLocation>
+		<maven-war-plugin.version>3.0.0</maven-war-plugin.version>
+		<maven-tomcat7-plugin.version>2.2</maven-tomcat7-plugin.version>
+		
 		<mysql.version>5.1.6</mysql.version>
 		<junit.version>4.12</junit.version>
 		<org.mockito.version>2.7.12</org.mockito.version>
@@ -80,6 +87,7 @@
 	<build>		
 		<plugins>
 			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
@@ -95,6 +103,24 @@
 				<configuration>
 					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
 				</configuration>
+			</plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+            </plugin>
+            
+            <plugin>  
+				<groupId>org.apache.tomcat.maven</groupId>  
+				<artifactId>tomcat7-maven-plugin</artifactId>  
+				<version>${maven-tomcat7-plugin.version}</version>  
+				<configuration>  
+					<url>http://localhost:8080/manager/text</url>  
+					<server>myserver</server>
+					<username>admin</username>  
+					<password>admin</password>   
+				</configuration>   
 			</plugin>
 		</plugins>
 	</build>
