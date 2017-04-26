@@ -25,27 +25,35 @@ public class Dashboard extends HttpServlet {
         int numberPage = 1;
         int maxPerPage = 10;
         int count;
+        String paramValue;
         Page<ComputerDTO> page;
 
         // Number of page
-        if (parameters.containsKey("page") && StringValidator.checkIsNumber(parameters.get("page")[0])) {
-            numberPage = Integer.parseInt(parameters.get("page")[0]);
+        if (parameters.containsKey("page")) {
+            paramValue = parameters.get("page")[0];
+            if (paramValue != null && StringValidator.checkIsNumber(paramValue)) {
+                numberPage = Integer.parseInt(paramValue);
+            }
         }
         
         // Max per page
-        if (parameters.containsKey("max") && StringValidator.checkIsDecade(parameters.get("max")[0])) {
-            maxPerPage = Integer.parseInt(parameters.get("max")[0]);
+        if (parameters.containsKey("max")) {
+            paramValue = parameters.get("max")[0];
+            if (paramValue != null && StringValidator.checkIsNumber(paramValue)) {
+                maxPerPage = Integer.parseInt(paramValue);
+            }
         }
         
         // Search
-        if (parameters.containsKey("search") && !parameters.get("search")[0].isEmpty()) {
-            if (StringValidator.checkNoSpecialsChars(parameters.get("search")[0])) {
-                page = getFilteredByNamePage(numberPage, maxPerPage, parameters.get("search")[0]);
-                count = getFilteredByNameCount(parameters.get("search")[0]);
+        if (parameters.containsKey("search")) {
+            paramValue = parameters.get("search")[0];
+            if (!paramValue.isEmpty() && StringValidator.checkNoSpecialsChars(paramValue)) {
+                page = getFilteredByNamePage(numberPage, maxPerPage, paramValue);
+                count = getFilteredByNameCount(paramValue);
             } else {
                 throw new ServletException("Sorry, the search value is not allowed.");
             }
-        } else {
+        } else {            
             page = getPage(numberPage, maxPerPage);
             count = getCount();
         }

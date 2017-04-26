@@ -15,7 +15,12 @@ public final class ComputerValidator {
     }
     
     public static boolean checkDate(String date) {
-        return date.matches("\\d{4}-\\d{2}-\\d{2}");
+        try {
+            LocalDate.parse(date);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
     }
     
     public static boolean checkId(String id) {
@@ -25,7 +30,7 @@ public final class ComputerValidator {
     public static Company getValidCompany(String companyId) throws ServletException {
         Company company;
         
-        if (!companyId.isEmpty() && StringValidator.checkIsNumber(companyId)) {
+        if (StringValidator.checkIsNumber(companyId)) {
             company = new CompanyService().getCompanyById(Long.parseLong(companyId));
             if (company != null) {
                 return company;
@@ -45,7 +50,7 @@ public final class ComputerValidator {
         
         if (parameters.containsKey("computerName")) {
             paramValue = parameters.get("computerName")[0];
-            if (!paramValue.isEmpty() && checkName(paramValue)) {
+            if (checkName(paramValue)) {
                 computer.setName(paramValue);
             } else {
                 throw new ServletException("Sorry, the computer name is not valid : " + paramValue);

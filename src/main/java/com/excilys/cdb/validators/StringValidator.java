@@ -6,7 +6,12 @@ public final class StringValidator {
     }
     
     public static boolean checkIsNumber(String string){
-        return string.matches("[\\d]+");
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     public static boolean checkIsDecade(String string){
