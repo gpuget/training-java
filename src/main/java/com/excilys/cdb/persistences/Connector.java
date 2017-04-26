@@ -12,6 +12,7 @@ public enum Connector {
     INSTANCE;
 
     private Connection connection;
+    private HikariDataSource dataSource;
     private Properties properties;
 
     /**
@@ -48,9 +49,8 @@ public enum Connector {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("dataSource.prepStmtCacheSqlLimit"));
         config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("dataSource.maximalPoolSize")));
         
-        HikariDataSource dataSource = new HikariDataSource(config); 
+        dataSource = new HikariDataSource(config); 
         connection = dataSource.getConnection();
-        dataSource.close();
     }
 
     /**
@@ -60,6 +60,7 @@ public enum Connector {
         try {
             if(connection != null && !connection.isClosed()){
                 connection.close();
+                dataSource.close();
             }
         } catch (SQLException e) {
             throw new ConnectorException("Error : Database connection has not been correctly closed.", e);
@@ -74,6 +75,7 @@ public enum Connector {
         try {
             if (connection == null || connection.isClosed()) {
                 connectWithHikari();
+                //connect();
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new ConnectorException("Error : Database connection cannot be done.", e);
