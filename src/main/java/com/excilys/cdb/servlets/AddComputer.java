@@ -40,88 +40,21 @@ public class AddComputer extends HttpServlet {
         
         // CompanyId
         if (parameters.containsKey("companyId")) {
-            company = getValidCompany(parameters.get("companyId")[0]);
+            company = ComputerValidator.getValidCompany(parameters.get("companyId")[0]);
         } else {
             throw new ServletException("Sorry, the computer is not valid.");
         }
         
         // ComputerName, introduced, discontinued
-        computer = getValidComputer(parameters);
+        computer = ComputerValidator.getValidComputer(parameters);
         computer.setManufacturer(company);
         
         try {
             cs.create(computer);
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
-            e.printStackTrace();
             resp.sendError(500);
+            throw new ServletException("Sorry, an error has occured.", e);
         }
-    }
-    
-    private Company getValidCompany(String companyId) throws ServletException {
-        Company company;
-        
-        if (!companyId.isEmpty() && StringValidator.checkIsNumber(companyId)) {
-            company = new CompanyService().getCompanyById(Long.parseLong(companyId));
-            if (company != null) {
-                return company;
-            } else {
-                throw new ServletException("Sorry, the company does not exist.");
-            }
-        } else {
-            throw new ServletException("Sorry, the computer is not valid.");
-        }
-    }
-    
-    private Computer getValidComputer(Map<String, String[]> parameters) throws ServletException {
-        String paramValue;
-        Computer computer = new Computer.Builder().build();
-        LocalDate i = null;
-        LocalDate d = null;
-        
-        if (parameters.containsKey("computerName")) {
-            paramValue = parameters.get("computerName")[0];
-            System.out.println(paramValue);
-            if (!paramValue.isEmpty() && ComputerValidator.checkName(paramValue)) {
-                computer.setName(paramValue);
-            } else {
-                throw new ServletException("Sorry, the computer name is not valid : " + paramValue);
-            }
-        } else {
-            throw new ServletException("Sorry, the computer is not valid.");
-        }
-        
-        if (parameters.containsKey("introduced")) {
-            paramValue = parameters.get("introduced")[0];
-            if (ComputerValidator.checkDate(paramValue)) {
-                i = LocalDate.parse(paramValue);
-            } else {
-                throw new ServletException("Sorry, the date of introduction is not valid : " + paramValue);
-            }
-        } else {
-            throw new ServletException("Sorry, the computer is not valid.");
-        }
-        
-        if (parameters.containsKey("discontinued")) {
-            paramValue = parameters.get("discontinued")[0];
-            if (ComputerValidator.checkDate(paramValue)) {
-                d = LocalDate.parse(paramValue);
-            } else {
-                throw new ServletException("Sorry, the date of discontinue is not valid: " + paramValue);
-            }
-        } else {
-            throw new ServletException("Sorry, the computer is not valid.");
-        }
-        
-        if (i != null && d != null) {
-            if (i.isBefore(d)) {
-                computer.setIntroduced(i);
-                computer.setDiscontinued(d);
-            } else {
-                throw new ServletException("Sorry, there is a problem with dates is not valid : " + i + " " + d);
-            }
-        }
-        
-        return computer;
     }
 }

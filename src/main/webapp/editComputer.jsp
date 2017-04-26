@@ -22,30 +22,30 @@
 	            <div class="row">
 	                <div class="col-xs-8 col-xs-offset-2 box">
 	                    <div class="label label-default pull-right">
-	                        id: ${computer.id}
+	                        id: <c:out value="${computer.id}"></c:out>
 	                    </div>
 	                    <h1>Edit Computer</h1>
 	
 	                    <form action="editComputer" method="POST">
-	                        <input type="hidden" value="${computer.id}" id="id"/>
+	                        <input type="hidden" value="${computer.id}" id="computerId" name="computerId"/>
 	                        <fieldset>
 	                            <div class="form-group">
 	                                <label for="computerName">Computer name</label>
-	                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" value="${computer.name}">
+	                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name" value="${computer.name}">
 	                            </div>
 	                            <div class="form-group">
 	                                <label for="introduced">Introduced date</label>
-	                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" value="${computer.introduced}">
+	                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" value="${computer.introduced}">
 	                            </div>
 	                            <div class="form-group">
 	                                <label for="discontinued">Discontinued date</label>
-	                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date" value="${computer.name}">
+	                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" value="${computer.name}">
 	                            </div>
 	                            <div class="form-group">
 	                                <label for="companyId">Company</label>
-	                                <select class="form-control" id="companyId" >
+	                                <select class="form-control" id="companyId" name="companyId" >
                                         <c:forEach items="${companies}" var="com">
-                                            <option value="${com.id}">${com.name}
+                                            <option value="${com.id}"><c:out value="${com.name}"></c:out></option>
                                         </c:forEach>
 	                                </select>
 	                            </div>            
@@ -53,7 +53,7 @@
 	                        <div class="actions pull-right">
 	                            <input type="submit" value="Edit" class="btn btn-primary">
 	                            or
-	                            <a href="dashboard.html" class="btn btn-default">Cancel</a>
+	                            <a href="dashboard" class="btn btn-default">Cancel</a>
 	                        </div>
 	                    </form>
 	                </div>
