@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 public enum Connector {
     INSTANCE;
 
@@ -27,11 +30,27 @@ public enum Connector {
      * Connects to the DB corresponding to the properties.
      */
     private void connect() throws ClassNotFoundException, SQLException{
-            Class.forName(properties.getProperty("db.driver"));
-            connection = DriverManager.getConnection(
-                    properties.getProperty("db.url"),
-                    properties.getProperty("db.username"),
-                    properties.getProperty("db.password"));
+        Class.forName(properties.getProperty("db.driver"));
+        connection = DriverManager.getConnection(
+                properties.getProperty("db.url"),
+                properties.getProperty("db.username"),
+                properties.getProperty("db.password"));
+    }
+    
+    private void connectWithHikari() throws ClassNotFoundException, SQLException {
+        HikariConfig config = new HikariConfig();
+        Class.forName(properties.getProperty("db.driver"));
+        config.setJdbcUrl(properties.getProperty("db.url"));
+        config.setUsername(properties.getProperty("db.username"));
+        config.setPassword(properties.getProperty("db.password"));
+        config.addDataSourceProperty("cachePrepStmts", properties.getProperty("dataSource.cachePrepStmts"));
+        config.addDataSourceProperty("prepStmtCacheSize", properties.getProperty("dataSource.prepStmtCacheSize"));
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("dataSource.prepStmtCacheSqlLimit"));
+        config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("dataSource.maximalPoolSize")));
+        
+        HikariDataSource dataSource = new HikariDataSource(config); 
+        connection = dataSource.getConnection();
+        dataSource.close();
     }
 
     /**
@@ -54,7 +73,7 @@ public enum Connector {
     public Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {
-                connect();
+                connectWithHikari();
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new ConnectorException("Error : Database connection cannot be done.", e);
