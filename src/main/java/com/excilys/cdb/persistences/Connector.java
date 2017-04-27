@@ -1,7 +1,6 @@
 package com.excilys.cdb.persistences;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -29,6 +28,7 @@ public enum Connector {
             config.addDataSourceProperty("cachePrepStmts", properties.getProperty("dataSource.cachePrepStmts"));
             config.addDataSourceProperty("prepStmtCacheSize", properties.getProperty("dataSource.prepStmtCacheSize"));
             config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("dataSource.prepStmtCacheSqlLimit"));
+            config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("dataSource.maximalPoolSize")));
             
             dataSource = new HikariDataSource(config);
         } catch (Exception e) {

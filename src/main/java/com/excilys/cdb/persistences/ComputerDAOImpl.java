@@ -175,7 +175,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         try (Connection connection = Connector.INSTANCE.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL + LIKE_NAME + BOUNDED_RESULT);) {
-            statement.setString(1, '%'+name+'%');
+            statement.setString(1, name+'%');
             statement.setInt(2, limit);
             statement.setInt(3, offset);
             try (ResultSet resultSet = statement.executeQuery();) {
@@ -188,28 +188,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         }
 
         return computers;
-    }
-
-    @Override
-    public int getFilteredByNameCount(String name) {
-        int res = 0;
-        
-        try (Connection connection = Connector.INSTANCE.getConnection();
-                PreparedStatement statement = connection.prepareStatement(COUNT_QUERY + LIKE_NAME);) {
-            statement.setString(1, '%'+name+'%');
-            try (ResultSet resultSet = statement.executeQuery();) {
-                if(resultSet.first()){
-                    res = resultSet.getInt(1);
-                    resultSet.close();
-                } else {
-                    throw new DAOException("Error : DAO has not been able to correctly count the entities.");
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly count the entities.", e);
-        }
-
-        return res;
     }
 
     /**

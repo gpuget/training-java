@@ -65,10 +65,4 @@ public interface ComputerDAO {
      * @return list of computers
      */
     List<Computer> getFilteredByName(int limit, int offset, String name);
-    
-    /**
-     * Gets the total number of filtered computer
-     * @return total number of computers
-     */
-    int getFilteredByNameCount(String name);
 }

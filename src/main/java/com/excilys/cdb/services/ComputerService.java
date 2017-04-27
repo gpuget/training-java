@@ -9,12 +9,14 @@ import com.excilys.cdb.persistences.ComputerDAOImpl;
 
 public class ComputerService {
     private ComputerDAO computerDao;
+    private int count;
 
     /**
      * Constructor.
      */
     public ComputerService() {
         this.computerDao = new ComputerDAOImpl();
+        this.count = computerDao.getCount();
     }
 
     /**
@@ -23,6 +25,7 @@ public class ComputerService {
      * @return inserted computer
      */
     public Computer create(Computer computer) {
+        count++;
         return computerDao.create(computer);
     }
 
@@ -32,6 +35,7 @@ public class ComputerService {
      */
     public void delete(long id) {
         computerDao.delete(id);
+        count--;
     }
 
     /**
@@ -40,6 +44,7 @@ public class ComputerService {
      */
     public void deleteList(List<Long> idsList) {
         computerDao.delete(idsList);
+        count -= idsList.size();
     }
 
     /**
@@ -64,7 +69,7 @@ public class ComputerService {
      * @return total number of computers
      */
     public int getCount(){
-        return computerDao.getCount();
+        return count;
     }
     
     /**
@@ -79,13 +84,5 @@ public class ComputerService {
     
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name){
         return new Page<>(number, computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
-    }
-    
-    /**
-     * Gets the total number of computers.
-     * @return total number of computers
-     */
-    public int getFilteredByNameCount(String name){
-        return computerDao.getFilteredByNameCount(name);
     }
 }

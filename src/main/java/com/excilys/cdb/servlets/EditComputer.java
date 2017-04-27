@@ -24,7 +24,7 @@ public class EditComputer extends HttpServlet {
             throws ServletException, IOException {
         String id = req.getParameter("id");
         
-        if (id != null && !id.isEmpty() && ComputerValidator.checkId(id)) {            
+        if (id != null && ComputerValidator.checkId(id)) {            
             req.setAttribute("companies", CompanyMapper.toCompanyDTO(new CompanyService().getCompanies()));        
             req.setAttribute("computer", ComputerMapper.toComputerDTO(new ComputerService().getDetails(Integer.parseInt(id))));
             
@@ -37,6 +37,7 @@ public class EditComputer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        long start = System.currentTimeMillis();
         @SuppressWarnings("unchecked")
         Map<String, String[]> parameters = req.getParameterMap();
         ComputerService cs = new ComputerService();
@@ -65,9 +66,9 @@ public class EditComputer extends HttpServlet {
         } else {
             throw new ServletException("Sorry, the computer is not valid.");
         }  
-        
         try {
             cs.update(computer);
+            System.out.println("[UPDATE] " + (System.currentTimeMillis() - start) + " ms");
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
             resp.sendError(500);
