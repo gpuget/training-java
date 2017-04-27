@@ -44,6 +44,12 @@ public interface ComputerDAO {
      * @param id identifier
      */
     void delete(long id);
+
+    /**
+     * Deletes the computers corresponding to the identifiers.
+     * @param idsList identifiers
+     */
+    void delete(List<Long> idsList);
     
     /**
      * Gets the total number of computers

@@ -1,5 +1,7 @@
 package com.excilys.cdb.services;
 
+import java.util.List;
+
 import com.excilys.cdb.models.Computer;
 import com.excilys.cdb.models.Page;
 import com.excilys.cdb.persistences.ComputerDAO;
@@ -30,6 +32,14 @@ public class ComputerService {
      */
     public void delete(long id) {
         computerDao.delete(id);
+    }
+
+    /**
+     * Deletes the computers corresponding to the identifiers.
+     * @param idsList identifiers
+     */
+    public void deleteList(List<Long> idsList) {
+        computerDao.delete(idsList);
     }
 
     /**

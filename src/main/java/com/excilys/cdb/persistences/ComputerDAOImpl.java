@@ -25,6 +25,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
+    private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
     private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
     private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
@@ -63,6 +64,25 @@ public class ComputerDAOImpl implements ComputerDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Error : DAO has not been able to correctly delete the entity.", e);
+        } finally {
+            Connector.INSTANCE.disconnect();
+        }
+    }
+
+    @Override
+    public void delete(List<Long> idsList) {
+        Connection connection = Connector.INSTANCE.getConnection();
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(idsList.get(0));
+        for (int i = 1; i < idsList.size(); i++) {
+            sb.append(", ").append(idsList.get(i));
+        }
+        
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_IN + '(' + sb.toString() + ')');) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Error : DAO has not been able to correctly delete entities.", e);
         } finally {
             Connector.INSTANCE.disconnect();
         }

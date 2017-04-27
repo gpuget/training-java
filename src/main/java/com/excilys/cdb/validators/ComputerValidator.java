@@ -1,6 +1,8 @@
 package com.excilys.cdb.validators;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -24,13 +26,17 @@ public final class ComputerValidator {
     }
     
     public static boolean checkId(String id) {
-        return id.matches("\\d+") && Integer.parseInt(id) > 0;
+        try {
+            return Long.parseLong(id) > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     public static Company getValidCompany(String companyId) throws ServletException {
         Company company;
         
-        if (StringValidator.checkIsNumber(companyId)) {
+        if (checkId(companyId)) {
             company = new CompanyService().getCompanyById(Long.parseLong(companyId));
             if (company != null) {
                 return company;
@@ -90,10 +96,26 @@ public final class ComputerValidator {
                 computer.setIntroduced(i);
                 computer.setDiscontinued(d);
             } else {
-                throw new ServletException("Sorry, there is a problem with dates is not valid : " + i + " " + d);
+                throw new ServletException("Sorry, there is a problem with dates : " + i + " " + d);
             }
         }
         
         return computer;
+    }
+    
+    public static List<Long> getValidIdList(String ids) throws ServletException {
+        List<Long> idsList = new ArrayList<>();
+        String[] idsTab = ids.split(",");
+        for(String id : idsTab) {
+            if (checkId(id)) {
+                idsList.add(Long.parseLong(id));
+            }
+        }
+        
+        if (idsList.isEmpty()) {
+            throw new ServletException("Sorry, the selection is not valid.");
+        }
+        
+        return idsList;
     }
 }
