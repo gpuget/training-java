@@ -18,9 +18,8 @@ public class DAOTest {
 	}
 	
 	@After
-	public void end() {		
-		Connector.INSTANCE.disconnect();
-		System.gc();
+	public void end() {
+
 	}
 	
 	@Test
@@ -38,14 +37,12 @@ public class DAOTest {
                                     .manufacturer(new Company.Builder().id(1L).name("CPY").build()).build();
         Computer c2;
         
-        assertTrue(Connector.INSTANCE.isDisconnected());
         assertEquals(0l, c.getId());
         c2 = computerDao.create(c);
         assertNotNull(c2.getId());
         assertNotNull(computerDao.findById(c2.getId()));
         computerDao.delete(c2.getId());
         assertNull(computerDao.findById(c2.getId()));
-        assertTrue(Connector.INSTANCE.isDisconnected());
     }
     
     @Test
@@ -54,7 +51,6 @@ public class DAOTest {
                                 .name("CPU")
                                 .manufacturer(new Company.Builder().id(1L).name("CPY").build()).build();
         
-        assertTrue(Connector.INSTANCE.isDisconnected());
         c = computerDao.create(c);
         computerDao.update(new Computer.Builder()
                                         .id(c.getId())
@@ -62,6 +58,5 @@ public class DAOTest {
                                         .manufacturer(new Company.Builder().id(2L).name("CPY2").build()).build());
         assertNotEquals(c, computerDao.findById(c.getId()));
         computerDao.delete(c.getId());
-        assertTrue(Connector.INSTANCE.isDisconnected());
     }
 }

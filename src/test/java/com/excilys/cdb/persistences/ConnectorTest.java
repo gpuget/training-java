@@ -17,8 +17,7 @@ public class ConnectorTest {
 	
 	@After
 	public void end() {
-		Connector.INSTANCE.disconnect();
-		System.gc();
+
 	}
 	
 	@Test
@@ -36,14 +35,5 @@ public class ConnectorTest {
 		
 		assertNotNull(c1);
 		assertSame(c1, c2);
-	}
-	
-	@Test
-	public void openAndClose() {
-		assertTrue(Connector.INSTANCE.isDisconnected());
-		Connector.INSTANCE.getConnection();
-		assertFalse(Connector.INSTANCE.isDisconnected());
-		Connector.INSTANCE.disconnect();
-		assertTrue(Connector.INSTANCE.isDisconnected());
 	}
 }

@@ -17,10 +17,10 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> findAll() {
-        Connection connection = Connector.INSTANCE.getConnection();
         ArrayList<Company> companiesList = new ArrayList<>();
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+        try (Connection connection = Connector.INSTANCE.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL);
                 ResultSet resultSet = statement.executeQuery();) {
             while (resultSet.next()) {
                 companiesList.add(new Company.Builder()
@@ -29,8 +29,6 @@ public class CompanyDAOImpl implements CompanyDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
-        } finally {
-            Connector.INSTANCE.disconnect();
         }
 
         return companiesList;
@@ -39,19 +37,17 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     public Company findById(long id) {
         Company company = null;
-        Connection connection = Connector.INSTANCE.getConnection();
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_QUERY);) {
+        try (Connection connection = Connector.INSTANCE.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_QUERY);) {
             statement.setLong(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (rs.first()) {
-                company = loadCompany(rs);
+            try (ResultSet rs = statement.executeQuery();) {
+                if (rs.first()) {
+                    company = loadCompany(rs);
+                }
             }
-            rs.close();
         } catch (SQLException e) {
             throw new DAOException("Error : DAO has not been able to find the entity.", e);
-        } finally {
-            Connector.INSTANCE.disconnect();
         }
 
         return company;

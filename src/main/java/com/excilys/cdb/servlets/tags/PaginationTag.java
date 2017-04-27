@@ -7,7 +7,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-public class LinkTag extends SimpleTagSupport{
+public class PaginationTag extends SimpleTagSupport{
     public static final int NUMBER_OF_PAGES = 5;
     
     private int page;

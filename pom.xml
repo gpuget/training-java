@@ -17,6 +17,7 @@
 		<maven-checkstyle-plugin.configLocation>config/checkstyle/checkstyle.xml</maven-checkstyle-plugin.configLocation>
 		<maven-war-plugin.version>2.6</maven-war-plugin.version>
 		<maven-tomcat7-plugin.version>2.2</maven-tomcat7-plugin.version>
+        <maven-gatling-plugin.version>2.1.7</maven-gatling-plugin.version>
 		
 		<mysql.version>5.1.6</mysql.version>
 		<junit.version>4.12</junit.version>
@@ -82,6 +83,13 @@
 		    <artifactId>logback-classic</artifactId>
 		    <version>${logback-classic.version}</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>io.gatling.highcharts</groupId>
+            <artifactId>gatling-charts-highcharts</artifactId>
+            <version>${maven-gatling-plugin.version}</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<build>		
@@ -121,6 +129,12 @@
 					<username>admin</username>  
 					<password>admin</password>   
 				</configuration>   
+			</plugin>
+
+			<plugin>
+				 <groupId>io.gatling</groupId>
+				 <artifactId>gatling-maven-plugin</artifactId>
+				 <version>${maven-gatling-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</build>

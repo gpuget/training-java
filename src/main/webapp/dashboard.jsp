@@ -87,7 +87,7 @@
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
 	        
-		        <mylib:linkTag page="${pageComputer.number}" param="${pageContext.request.parameterMap}"/>
+		        <mylib:paginationTag page="${pageComputer.number}" param="${pageContext.request.parameterMap}"/>
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">            
 	                <button type="submit" class="btn btn-default">10</button>

@@ -8,8 +8,8 @@
 	<tlib-version>2.1</tlib-version>
 	<short-name>mylib</short-name>
 	<tag>
-	    <name>linkTag</name>
-	    <tag-class>com.excilys.cdb.servlets.tags.LinkTag</tag-class>
+	    <name>paginationTag</name>
+	    <tag-class>com.excilys.cdb.servlets.tags.PaginationTag</tag-class>
 	    <body-content>empty</body-content>
 	    <attribute>
 		    <name>page</name>

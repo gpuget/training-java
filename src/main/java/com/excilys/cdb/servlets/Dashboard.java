@@ -39,8 +39,8 @@ public class Dashboard extends HttpServlet {
         }
         
         // Max per page
-        if (parameters.containsKey("max")) {
-            paramValue = parameters.get("max")[0];
+        if (parameters.containsKey("pageSize")) {
+            paramValue = parameters.get("pageSize")[0];
             if (paramValue != null && StringValidator.checkIsNumber(paramValue)) {
                 maxPerPage = Integer.parseInt(paramValue);
             }
