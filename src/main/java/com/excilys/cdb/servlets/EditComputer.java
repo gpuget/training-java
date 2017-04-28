@@ -37,8 +37,6 @@ public class EditComputer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        long start = System.currentTimeMillis();
-        @SuppressWarnings("unchecked")
         Map<String, String[]> parameters = req.getParameterMap();
         ComputerService cs = new ComputerService();
         Company company;
@@ -68,7 +66,6 @@ public class EditComputer extends HttpServlet {
         }  
         try {
             cs.update(computer);
-            System.out.println("[UPDATE] " + (System.currentTimeMillis() - start) + " ms");
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
             resp.sendError(500);

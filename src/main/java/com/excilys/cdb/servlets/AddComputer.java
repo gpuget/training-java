@@ -1,7 +1,6 @@
 package com.excilys.cdb.servlets;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -15,7 +14,6 @@ import com.excilys.cdb.models.Computer;
 import com.excilys.cdb.services.CompanyService;
 import com.excilys.cdb.services.ComputerService;
 import com.excilys.cdb.validators.ComputerValidator;
-import com.excilys.cdb.validators.StringValidator;
 
 public class AddComputer extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
@@ -32,7 +30,6 @@ public class AddComputer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        @SuppressWarnings("unchecked")
         Map<String, String[]> parameters = req.getParameterMap();
         ComputerService cs = new ComputerService();
         Company company;

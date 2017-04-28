@@ -7,9 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.models.Company;
 
 public class CompanyDAOImpl implements CompanyDAO {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOImpl.class);
+	
     private static final String FIND_ALL = "SELECT id, name FROM company";
     private static final String FIND_QUERY = "SELECT com.id, com.name "
             + "FROM company AS  com "
@@ -17,6 +22,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> findAll() {
+    	LOGGER.info("Find all companies.");
         ArrayList<Company> companiesList = new ArrayList<>();
 
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -28,7 +34,9 @@ public class CompanyDAOImpl implements CompanyDAO {
                                                 .name(resultSet.getString("name")).build());
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
+        	String message = "Error : DAO has not been able to find the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return companiesList;
@@ -36,6 +44,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Company findById(long id) {
+    	LOGGER.info("Find company by id : " + id);
         Company company = null;
 
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -47,7 +56,9 @@ public class CompanyDAOImpl implements CompanyDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to find the entity.", e);
+        	String message = "Error : DAO has not been able to find the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return company;

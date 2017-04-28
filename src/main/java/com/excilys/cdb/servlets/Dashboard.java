@@ -22,7 +22,6 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        @SuppressWarnings("unchecked")
         Map<String, String[]> parameters = req.getParameterMap();
         int numberPage = 1;
         int maxPerPage = 10;
@@ -66,7 +65,6 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        @SuppressWarnings("unchecked")
         Map<String, String[]> parameters = req.getParameterMap();
         
         if (parameters.containsKey("selection")) {

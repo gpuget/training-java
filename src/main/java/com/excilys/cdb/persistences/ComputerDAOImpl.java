@@ -10,10 +10,15 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.models.Company;
 import com.excilys.cdb.models.Computer;
 
 public class ComputerDAOImpl implements ComputerDAO {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
+	
     private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
             + "com.name AS company_name "
             + "FROM computer AS  cpu "
@@ -32,7 +37,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer create(Computer computer) {
-        
+        LOGGER.info("Create computer : " + computer);
         try (Connection connection = Connector.INSTANCE.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);) {
             setStatementValues(statement, computer);
@@ -46,7 +51,9 @@ public class ComputerDAOImpl implements ComputerDAO {
             }
             
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly create the entity.", e);
+        	String message = "Error : DAO has not been able to correctly create the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return computer;
@@ -54,18 +61,21 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public void delete(long id) {
-        
+        LOGGER.info("Delete computer by id : " + id);
         try (Connection connection = Connector.INSTANCE.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly delete the entity.", e);
+        	String message = "Error : DAO has not been able to correctly delete the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
     }
 
     @Override
     public void delete(List<Long> idsList) {
+    	LOGGER.info("Delete all computer in : " + idsList);
         StringBuilder sb = new StringBuilder();
         
         sb.append(idsList.get(0));
@@ -77,12 +87,15 @@ public class ComputerDAOImpl implements ComputerDAO {
                 PreparedStatement statement = connection.prepareStatement(DELETE_IN + '(' + sb.toString() + ')');) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly delete entities.", e);
+        	String message = "Error : DAO has not been able to correctly delete entities.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
     }
 
     @Override
     public List<Computer> findAll() {
+    	LOGGER.info("Find all computers.");
         ArrayList<Computer> computers = new ArrayList<>();
 
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -92,7 +105,9 @@ public class ComputerDAOImpl implements ComputerDAO {
                 computers.add(loadComputer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
+        	String message = "Error : DAO has not been able to correctly find all entities.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return computers;
@@ -100,6 +115,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public List<Computer> findAll(int limit, int offset) {
+    	LOGGER.info("Find all computers : " + limit + " " + offset);
         ArrayList<Computer> computers = new ArrayList<Computer>();
 
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -112,7 +128,9 @@ public class ComputerDAOImpl implements ComputerDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
+        	String message = "Error : DAO has not been able to correctly find all entities.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return computers;
@@ -120,6 +138,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer findById(long id) {
+    	LOGGER.info("Find computer by id : " + id);
         Computer computer = null;
 
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -131,7 +150,9 @@ public class ComputerDAOImpl implements ComputerDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to find the entity.", e);
+        	String message = "Error : DAO has not been able to find the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return computer;
@@ -139,19 +160,22 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public void update(Computer computer) {
-        
+        LOGGER.info("Update computer :" + computer);
         try (Connection connection = Connector.INSTANCE.getConnection();
                 PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);) {
             setStatementValues(statement, computer);
             statement.setLong(5, computer.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly update the entity.", e);
+        	String message = "Error : DAO has not been able to correctly update the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
     }
 
     @Override
     public int getCount() {
+    	LOGGER.info("Count computers");
         int res = 0;
         
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -163,7 +187,9 @@ public class ComputerDAOImpl implements ComputerDAO {
                 throw new DAOException("Error : DAO has not been able to correctly count the entities.");
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly count the entities.", e);
+        	String message = "Error : DAO has not been able to correctly count the entities.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
         
         return res;
@@ -171,6 +197,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public List<Computer> getFilteredByName(int limit, int offset, String name) {
+    	LOGGER.info("Find all computer with name : " + name);
         ArrayList<Computer> computers = new ArrayList<Computer>();
 
         try (Connection connection = Connector.INSTANCE.getConnection();
@@ -184,7 +211,9 @@ public class ComputerDAOImpl implements ComputerDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error : DAO has not been able to correctly find all entities.", e);
+        	String message = "Error : DAO has not been able to correctly find all entities.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
         }
 
         return computers;

@@ -9,7 +9,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public enum Connector {
     INSTANCE;
-
+	
     private HikariDataSource dataSource;
     private Properties properties;
 
@@ -28,7 +28,7 @@ public enum Connector {
             config.addDataSourceProperty("cachePrepStmts", properties.getProperty("dataSource.cachePrepStmts"));
             config.addDataSourceProperty("prepStmtCacheSize", properties.getProperty("dataSource.prepStmtCacheSize"));
             config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("dataSource.prepStmtCacheSqlLimit"));
-            config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("dataSource.maximalPoolSize")));
+            config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("dataSource.maximumPoolSize")));
             
             dataSource = new HikariDataSource(config);
         } catch (Exception e) {
