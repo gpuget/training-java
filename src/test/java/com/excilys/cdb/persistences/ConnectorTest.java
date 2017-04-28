@@ -27,13 +27,4 @@ public class ConnectorTest {
 		
 		assertSame(c, c2);
 	}
-	
-	@Test
-	public void sameConnection() {
-		Connection c1 = Connector.INSTANCE.getConnection();
-		Connection c2 = Connector.INSTANCE.getConnection();
-		
-		assertNotNull(c1);
-		assertSame(c1, c2);
-	}
 }
