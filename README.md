@@ -8,6 +8,7 @@ README
 ** In Eclipse plug-in : JST Server Adapter 
 * MySQL Server / Client : https://www.mysql.fr/downloads/
 * Tomcat 8.5.14 : https://tomcat.apache.org/download-80.cgi#8.5.14
+* Maven 3.5.0 : https://maven.apache.org/download.cgi
 
 #Docker
 
