@@ -55,3 +55,19 @@ sudo docker stop my-maven-test
 
 sudo docker rm -v my-maven-test;
 ```
+
+## Run maven prod
+```
+sudo cp -rf /var/jenkins_home/workspace/$JOB_NAME/. /project
+sudo rm -rf ./*
+
+if [ $(sudo docker ps -aqf name=my-maven-prod) ];
+then sudo docker rm -v my-maven-prod;
+fi
+
+sudo docker run -v maven-home-prod:/root/.m2 -v project:/usr/src/app --network=prod-network --ip 192.168.2.2 --name my-maven-prod gaetan/maven-prod
+
+sudo docker stop my-maven-prod
+
+sudo docker rm -v my-maven-prod;
+```
