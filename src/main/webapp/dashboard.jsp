@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="mylib" uri="mylib" %>
+<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -86,8 +86,8 @@
 	
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
-	        
-		        <mylib:paginationTag page="${pageComputer.number}" param="${pageContext.request.parameterMap}"/>
+		        
+		        <mytag:pagination request="${pageContext.request}" page="${pageComputer.number}"></mytag:pagination>
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">            
 	                <button type="submit" class="btn btn-default">10</button>

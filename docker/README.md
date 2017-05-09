@@ -29,11 +29,11 @@ docker image prune
 ```
 
 # Jenkins
-* Workspace in /var/jenkins_home/
-* Initial password in /var/jenkins_home/initialAdminPassword
-* Expose 8080 for main web interface
-* Expose 50000 attached slave agent
-* User : jenkins
+* Workspace in '/var/jenkins_home/'
+* Initial password in '/var/jenkins_home/initialAdminPassword'
+* Expose '8080' for main web interface
+* Expose '50000' attached slave agent
+* User : 'jenkins'
 
 ## Run jenkins
 ```
