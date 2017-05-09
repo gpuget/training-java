@@ -7,4 +7,4 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 #Run the build
-CMD mvn clean package
+CMD mvn clean package -DskipTests
