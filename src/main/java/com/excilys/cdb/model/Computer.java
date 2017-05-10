@@ -40,9 +40,16 @@ public class Computer {
     @Override
     public String toString() {
         String res;
-
-        res = "Computer : " + this.name + " (" + this.manufacturer.getName()
-                + ") " + this.introduced;
+        
+        res = "Computer : " + this.name;
+        if (this.manufacturer != null) {
+        	res = res + " (" + this.manufacturer.getName();
+        }
+        
+        if (this.introduced != null) {
+            res = res + " from " + this.introduced;
+        }
+        
         if (this.discontinued != null) {
             res = res + " to " + this.discontinued;
         }

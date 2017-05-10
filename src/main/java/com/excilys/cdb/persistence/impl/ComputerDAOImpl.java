@@ -102,6 +102,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
 	public void deleteFromCompany(long companyId, Connection connection) {
     	LOGGER.info("Delete computer from company : " + companyId);
+    	LOGGER.debug("Connection used : " + connection);
     	try (PreparedStatement statement = connection.prepareStatement(DELETE_FROM_COMPANY)) {
     		statement.setLong(1, companyId);
     		statement.executeUpdate();

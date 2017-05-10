@@ -85,6 +85,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     
 	public void delete(long id, Connection connection) {
     	LOGGER.info("Delete company by id : " + id);
+    	LOGGER.debug("Connection used : " + connection);
     	try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
     		statement.setLong(1, id);
     		statement.executeUpdate();

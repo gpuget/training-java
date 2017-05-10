@@ -24,6 +24,10 @@ public enum CompanyService {
         return CompanyDAOImpl.INSTANCE.findById(id);
     }
     
+    public Company create(Company company) {
+    	return CompanyDAOImpl.INSTANCE.create(company);
+    }
+    
     public void delete(long id) {
     	ThreadLocal<Connection> sharedConnectionThread = new ThreadLocal<>();
     	
