@@ -22,7 +22,7 @@ public class AddComputer extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        req.setAttribute("companies", CompanyMapper.toCompanyDTO(new CompanyService().getCompanies()));
+        req.setAttribute("companies", CompanyMapper.toCompanyDTO(CompanyService.INSTANCE.getCompanies()));
         
         this.getServletContext().getRequestDispatcher("/addComputer.jsp").forward(req, resp);
     }
@@ -31,7 +31,6 @@ public class AddComputer extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Map<String, String[]> parameters = req.getParameterMap();
-        ComputerService cs = new ComputerService();
         Company company;
         Computer computer;
         
@@ -47,7 +46,7 @@ public class AddComputer extends HttpServlet {
         computer.setManufacturer(company);
         
         try {
-            cs.create(computer);
+        	ComputerService.INSTANCE.create(computer);
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
             resp.sendError(500);

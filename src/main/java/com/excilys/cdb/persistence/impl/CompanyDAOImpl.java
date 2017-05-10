@@ -15,13 +15,15 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.Connector;
 
-public class CompanyDAOImpl implements CompanyDAO {
+public enum CompanyDAOImpl implements CompanyDAO {
+	INSTANCE;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOImpl.class);
 	
     private static final String FIND_ALL = "SELECT id, name FROM company";
     private static final String FIND_QUERY = "SELECT com.id, com.name "
-            + "FROM company AS  com "
-            + "WHERE com.id = ?";
+									            + "FROM company AS  com "
+									            + "WHERE com.id = ?";
 
     @Override
     public List<Company> findAll() {

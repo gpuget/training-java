@@ -7,16 +7,16 @@ import com.excilys.cdb.model.Page;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
-public class ComputerService {
-    private ComputerDAO computerDao;
+public enum ComputerService {
+	INSTANCE;
+	
     private int count;
 
     /**
      * Constructor.
      */
-    public ComputerService() {
-        this.computerDao = new ComputerDAOImpl();
-        this.count = computerDao.getCount();
+    private ComputerService() {
+        this.count = ComputerDAOImpl.INSTANCE.getCount();
     }
 
     /**
@@ -26,7 +26,12 @@ public class ComputerService {
      */
     public Computer create(Computer computer) {
         count++;
-        return computerDao.create(computer);
+        try {
+			return ComputerDAOImpl.INSTANCE.create(computer);
+		} catch (Exception e) {
+			count--;
+			throw e;
+		}
     }
 
     /**
@@ -34,7 +39,7 @@ public class ComputerService {
      * @param id identifier
      */
     public void delete(long id) {
-        computerDao.delete(id);
+    	ComputerDAOImpl.INSTANCE.delete(id);
         count--;
     }
 
@@ -43,7 +48,7 @@ public class ComputerService {
      * @param idsList identifiers
      */
     public void deleteList(List<Long> idsList) {
-        computerDao.delete(idsList);
+    	ComputerDAOImpl.INSTANCE.delete(idsList);
         count -= idsList.size();
     }
 
@@ -52,7 +57,7 @@ public class ComputerService {
      * @param computer computer to modify
      */
     public void update(Computer computer) {
-        computerDao.update(computer);
+    	ComputerDAOImpl.INSTANCE.update(computer);
     }
 
     /**
@@ -61,7 +66,7 @@ public class ComputerService {
      * @return computer
      */
     public Computer getDetails(long id) {
-        return computerDao.findById(id);
+        return ComputerDAOImpl.INSTANCE.findById(id);
     }
     
     /**
@@ -79,10 +84,10 @@ public class ComputerService {
      * @return
      */
     public Page<Computer> getPage(int number, int maxPerPage) {
-        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
+        return new Page<>(number, ComputerDAOImpl.INSTANCE.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
     
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name){
-        return new Page<>(number, computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
+        return new Page<>(number, ComputerDAOImpl.INSTANCE.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
     }
 }

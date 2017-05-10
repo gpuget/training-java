@@ -3,8 +3,8 @@ package com.excilys.cdb.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.dto.CompanyDTO;
 
 public final class CompanyMapper {
     /**

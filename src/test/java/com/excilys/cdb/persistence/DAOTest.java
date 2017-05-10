@@ -2,27 +2,14 @@ package com.excilys.cdb.persistence;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public class DAOTest {
-	private ComputerDAO computerDao;
-	
-	@Before
-	public void init() {
-		computerDao = new ComputerDAOImpl();
-	}
-	
-	@After
-	public void end() {
-
-	}
+	private ComputerDAOImpl computerDao = ComputerDAOImpl.INSTANCE;
 	
 	@Test
 	public void correctComputerListSize(){

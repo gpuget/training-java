@@ -19,7 +19,9 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.Connector;
 
-public class ComputerDAOImpl implements ComputerDAO {
+public enum ComputerDAOImpl implements ComputerDAO {
+	INSTANCE;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
 	
     private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "

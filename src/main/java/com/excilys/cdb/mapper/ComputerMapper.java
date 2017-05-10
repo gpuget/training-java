@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.model.dto.ComputerDTO;
 
 public final class ComputerMapper {
     /**

@@ -7,12 +7,12 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.cdb.dto.CompanyDTO;
-import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.dto.CompanyDTO;
+import com.excilys.cdb.model.dto.ComputerDTO;
 
 public class MappersTest {
     Company com;

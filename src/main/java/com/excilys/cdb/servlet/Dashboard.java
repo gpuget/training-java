@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.StringValidator;
@@ -75,18 +75,18 @@ public class Dashboard extends HttpServlet {
     }
 
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name){
-        return ComputerMapper.toComputerDTO(new ComputerService().getFilteredByNamePage(number, maxPerPage, name));
+        return ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getFilteredByNamePage(number, maxPerPage, name));
     }
     
     private Page<ComputerDTO> getPage(int number, int maxPerPage){
-        return ComputerMapper.toComputerDTO(new ComputerService().getPage(number, maxPerPage));
+        return ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getPage(number, maxPerPage));
     }
     
     private int getCount(){
-        return new ComputerService().getCount();
+        return ComputerService.INSTANCE.getCount();
     }
     
     private void deleteList(List<Long> idsList) {
-        new ComputerService().deleteList(idsList);
+        ComputerService.INSTANCE.deleteList(idsList);
     }
 }

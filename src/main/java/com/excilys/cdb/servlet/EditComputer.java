@@ -26,8 +26,8 @@ public class EditComputer extends HttpServlet {
         String id = req.getParameter("id");
         
         if (ComputerValidator.checkId(id)) {            
-            req.setAttribute("companies", CompanyMapper.toCompanyDTO(new CompanyService().getCompanies()));        
-            req.setAttribute("computer", ComputerMapper.toComputerDTO(new ComputerService().getDetails(Long.parseLong(id))));
+            req.setAttribute("companies", CompanyMapper.toCompanyDTO(CompanyService.INSTANCE.getCompanies()));        
+            req.setAttribute("computer", ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getDetails(Long.parseLong(id))));
             
             this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(req, resp);
         } else {
@@ -39,7 +39,6 @@ public class EditComputer extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Map<String, String[]> parameters = req.getParameterMap();
-        ComputerService cs = new ComputerService();
         Company company;
         Computer computer;
         
@@ -67,7 +66,7 @@ public class EditComputer extends HttpServlet {
         }
         
         try {
-            cs.update(computer);
+        	ComputerService.INSTANCE.update(computer);
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
             resp.sendError(500);

@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 public final class ComputerValidator {
     public static boolean checkName(String name){
@@ -45,7 +46,7 @@ public final class ComputerValidator {
         Company company;
         
         if (checkId(companyId)) {
-            company = new CompanyService().getCompanyById(Long.parseLong(companyId));
+            company = CompanyService.INSTANCE.getCompanyById(Long.parseLong(companyId));
             if (company != null) {
                 return company;
             } else {
