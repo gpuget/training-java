@@ -20,5 +20,12 @@ public interface CompanyDAO {
     /**
      * Deletes the company corresponding to the identifier in DB.
      */
-    void delete(long id);    
+    void delete(long id);
+    
+    /**
+     * Inserts a company in DB.
+     * @param company company to insert
+     * @return inserted company with its identifier
+     */
+    Company create(Company company);
 }

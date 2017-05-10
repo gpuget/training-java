@@ -10,7 +10,6 @@ import javax.servlet.ServletException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
 
 public final class ComputerValidator {
     public static boolean checkName(String name){

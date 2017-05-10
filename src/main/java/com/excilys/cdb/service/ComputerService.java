@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
-import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public enum ComputerService {

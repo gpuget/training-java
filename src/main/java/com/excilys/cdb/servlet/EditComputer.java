@@ -1,7 +1,6 @@
 package com.excilys.cdb.servlet;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Map;
 
 import javax.servlet.ServletException;

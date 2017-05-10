@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     private static final String FIND_QUERY = "SELECT com.id, com.name "
 									            + "FROM company AS  com "
 									            + "WHERE com.id = ?";
+    private static final String CREATE_QUERY = "INSERT INTO company (name) VALUES (?)";
     private static final String DELETE_QUERY = "DELETE FROM company WHERE company.id = ?";
 
     @Override
@@ -92,6 +94,30 @@ public enum CompanyDAOImpl implements CompanyDAO {
             throw new DAOException(message, e);
         }
 	}
+	
+	@Override
+	public Company create(Company company) {
+        LOGGER.info("Create Company : " + company);
+        try (Connection connection = Connector.INSTANCE.getConnection();
+                PreparedStatement statement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);) {
+        	statement.setString(1, company.getName());
+            statement.executeUpdate();
+            try (ResultSet rs = statement.getGeneratedKeys();){
+                if (rs.first()) {
+                	company.setId(rs.getLong(1));
+                } else {
+                    throw new DAOException("Error : DAO has not been able to correctly create the entity.");
+                }
+            }
+            
+        } catch (SQLException e) {
+        	String message = "Error : DAO has not been able to correctly create the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+
+        return company;
+    }
 
 	private Company loadCompany(ResultSet rs) throws SQLException {
         return new Company.Builder().id(rs.getLong("id"))

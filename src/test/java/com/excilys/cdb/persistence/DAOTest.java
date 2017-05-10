@@ -6,10 +6,12 @@ import org.junit.Test;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.persistence.impl.CompanyDAOImpl;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public class DAOTest {
 	private ComputerDAOImpl computerDao = ComputerDAOImpl.INSTANCE;
+	private CompanyDAOImpl companyDao = CompanyDAOImpl.INSTANCE;
 	
 	@Test
 	public void correctComputerListSize(){
@@ -28,7 +30,7 @@ public class DAOTest {
         
         assertEquals(0l, c.getId());
         c2 = computerDao.create(c);
-        assertNotNull(c2.getId());
+        assertNotEquals(0L, c2.getId());
         assertNotNull(computerDao.findById(c2.getId()));
         computerDao.delete(c2.getId());
         assertNull(computerDao.findById(c2.getId()));
@@ -47,5 +49,23 @@ public class DAOTest {
                                         .manufacturer(new Company.Builder().id(2L).name("CPY2").build()).build());
         assertNotEquals(c, computerDao.findById(c.getId()));
         computerDao.delete(c.getId());
+    }
+    
+    @Test
+    public void correctCompanyListSize() {
+    	assertEquals(42, companyDao.findAll().size());
+    }
+    
+    @Test
+    public void companyCreateAndDelete() {
+    	Company com = new Company.Builder().name("Bob Inc.").build();
+    	Company com2;
+    	
+    	assertEquals(0L, com.getId());
+    	com2 = companyDao.create(com);
+    	assertNotEquals(0L, com2.getId());
+    	assertNotNull(companyDao.findById(com2.getId()));
+    	companyDao.delete(com2.getId());
+    	assertNull(companyDao.findById(com2.getId()));
     }
 }
