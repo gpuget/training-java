@@ -1,8 +1,8 @@
-package com.excilys.cdb.persistences;
+package com.excilys.cdb.persistence;
 
 import java.util.List;
 
-import com.excilys.cdb.models.Company;
+import com.excilys.cdb.model.Company;
 
 public interface CompanyDAO {
     /**

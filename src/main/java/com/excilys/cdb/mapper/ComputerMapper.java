@@ -1,12 +1,12 @@
-package com.excilys.cdb.mappers;
+package com.excilys.cdb.mapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.models.Computer;
-import com.excilys.cdb.models.Page;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.Page;
 
 public final class ComputerMapper {
     /**

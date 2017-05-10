@@ -1,4 +1,4 @@
-package com.excilys.cdb.models;
+package com.excilys.cdb.model;
 
 public class Company {
     private long id;

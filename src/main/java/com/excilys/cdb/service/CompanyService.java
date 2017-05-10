@@ -1,10 +1,10 @@
-package com.excilys.cdb.services;
+package com.excilys.cdb.service;
 
 import java.util.List;
 
-import com.excilys.cdb.models.Company;
-import com.excilys.cdb.persistences.CompanyDAO;
-import com.excilys.cdb.persistences.CompanyDAOImpl;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.persistence.CompanyDAO;
+import com.excilys.cdb.persistence.impl.CompanyDAOImpl;
 
 public class CompanyService {
     private CompanyDAO companyDao;

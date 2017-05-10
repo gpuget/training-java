@@ -1,4 +1,4 @@
-package com.excilys.cdb.servlets;
+package com.excilys.cdb.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.mappers.ComputerMapper;
-import com.excilys.cdb.models.Page;
-import com.excilys.cdb.services.ComputerService;
-import com.excilys.cdb.validators.ComputerValidator;
-import com.excilys.cdb.validators.StringValidator;
+import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.model.Page;
+import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validator.ComputerValidator;
+import com.excilys.cdb.validator.StringValidator;
 
 public class Dashboard extends HttpServlet {
     private static final long serialVersionUID = -4333507256112472526L;
@@ -31,7 +31,7 @@ public class Dashboard extends HttpServlet {
         // Number of page
         if (parameters.containsKey("page")) {
             paramValue = parameters.get("page")[0];
-            if (paramValue != null && StringValidator.checkIsNumber(paramValue)) {
+            if (StringValidator.checkIsNumber(paramValue)) {
                 numberPage = Integer.parseInt(paramValue);
             }
         }
@@ -39,7 +39,7 @@ public class Dashboard extends HttpServlet {
         // Max per page
         if (parameters.containsKey("pageSize")) {
             paramValue = parameters.get("pageSize")[0];
-            if (paramValue != null && StringValidator.checkIsNumber(paramValue)) {
+            if (StringValidator.checkIsNumber(paramValue)) {
                 maxPerPage = Integer.parseInt(paramValue);
             }
         }

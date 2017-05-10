@@ -1,11 +1,11 @@
-package com.excilys.cdb.services;
+package com.excilys.cdb.service;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.cdb.services.ComputerService;
+import com.excilys.cdb.service.ComputerService;
 
 public class ComputerServiceTest {
     private ComputerService computerService;

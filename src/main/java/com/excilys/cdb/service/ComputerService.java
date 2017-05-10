@@ -1,11 +1,11 @@
-package com.excilys.cdb.services;
+package com.excilys.cdb.service;
 
 import java.util.List;
 
-import com.excilys.cdb.models.Computer;
-import com.excilys.cdb.models.Page;
-import com.excilys.cdb.persistences.ComputerDAO;
-import com.excilys.cdb.persistences.ComputerDAOImpl;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.Page;
+import com.excilys.cdb.persistence.ComputerDAO;
+import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public class ComputerService {
     private ComputerDAO computerDao;

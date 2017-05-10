@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.mappers.CompanyMapper;
-import com.excilys.cdb.mappers.ComputerMapper;
-import com.excilys.cdb.models.Company;
-import com.excilys.cdb.models.Computer;
+import com.excilys.cdb.mapper.CompanyMapper;
+import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
 
 public class MappersTest {
     Company com;

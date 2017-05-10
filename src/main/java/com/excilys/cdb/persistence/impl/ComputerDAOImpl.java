@@ -1,4 +1,4 @@
-package com.excilys.cdb.persistences;
+package com.excilys.cdb.persistence.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.models.Company;
-import com.excilys.cdb.models.Computer;
+import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.persistence.ComputerDAO;
+import com.excilys.cdb.persistence.Connector;
 
 public class ComputerDAOImpl implements ComputerDAO {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);

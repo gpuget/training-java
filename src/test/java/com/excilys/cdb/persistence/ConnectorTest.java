@@ -1,12 +1,12 @@
-package com.excilys.cdb.persistences;
+package com.excilys.cdb.persistence;
 
 import static org.junit.Assert.*;
-
-import java.sql.Connection;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.excilys.cdb.persistence.Connector;
 
 public class ConnectorTest {
 	

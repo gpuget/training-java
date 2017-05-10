@@ -1,4 +1,4 @@
-package com.excilys.cdb.validators;
+package com.excilys.cdb.validator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,19 +7,23 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 
-import com.excilys.cdb.models.Company;
-import com.excilys.cdb.models.Computer;
-import com.excilys.cdb.services.CompanyService;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.CompanyService;
 
 public final class ComputerValidator {
     public static boolean checkName(String name){
-        return name.matches("[\\d\\w\\+\\-\\ \\.\\']+");
+        return name != null && name.matches("[\\d\\w\\+\\-\\ \\.\\']+");
     }
     
     public static boolean checkDate(String date) {
         try {
-            LocalDate.parse(date);
-            return true;
+            if (date != null) {
+            	LocalDate.parse(date);
+            	return true;
+            } else {
+            	return false;
+            }
         } catch(Exception e) {
             return false;
         }
@@ -27,7 +31,11 @@ public final class ComputerValidator {
     
     public static boolean checkId(String id) {
         try {
-            return Long.parseLong(id) > 0;
+            if (id != null) {
+            	return Long.parseLong(id) > 0;
+            } else {
+            	return false;
+            }
         } catch (Exception e) {
             return false;
         }

@@ -1,9 +1,10 @@
-package com.excilys.cdb.persistences;
+package com.excilys.cdb.persistence;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.excilys.cdb.exception.ConnectorException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 

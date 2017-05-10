@@ -1,4 +1,4 @@
-package com.excilys.cdb.servlets;
+package com.excilys.cdb.servlet;
 
 import java.io.IOException;
 import java.util.Map;
@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.mappers.CompanyMapper;
-import com.excilys.cdb.models.Company;
-import com.excilys.cdb.models.Computer;
-import com.excilys.cdb.services.CompanyService;
-import com.excilys.cdb.services.ComputerService;
-import com.excilys.cdb.validators.ComputerValidator;
+import com.excilys.cdb.mapper.CompanyMapper;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validator.ComputerValidator;
 
 public class AddComputer extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
