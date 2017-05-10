@@ -36,6 +36,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
+    private static final String DELETE_FROM_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
     private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
@@ -99,6 +100,19 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+	public void deleteFromCompany(long companyId, Connection connection) {
+    	LOGGER.info("Delete computer from company : " + companyId);
+    	try (PreparedStatement statement = connection.prepareStatement(DELETE_FROM_COMPANY)) {
+    		statement.setLong(1, companyId);
+    		statement.executeUpdate();
+    	} catch (SQLException e) {
+        	String message = "Error : DAO has not been able to correctly delete entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+	@Override
     public List<Computer> findAll() {
     	LOGGER.info("Find all computers.");
         ArrayList<Computer> computers = new ArrayList<>();

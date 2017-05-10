@@ -1,5 +1,6 @@
 package com.excilys.cdb.persistence;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.cdb.model.Computer;
@@ -50,6 +51,12 @@ public interface ComputerDAO {
      * @param idsList identifiers
      */
     void delete(List<Long> idsList);
+
+    /**
+     * Deletes the computers from company corresponding to the identifier.
+     * @param id company identifier
+     */
+    void deleteFromCompany(long companyId, Connection connection);
     
     /**
      * Gets the total number of computers

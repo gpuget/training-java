@@ -24,6 +24,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     private static final String FIND_QUERY = "SELECT com.id, com.name "
 									            + "FROM company AS  com "
 									            + "WHERE com.id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM company WHERE company.id = ?";
 
     @Override
     public List<Company> findAll() {
@@ -69,7 +70,30 @@ public enum CompanyDAOImpl implements CompanyDAO {
         return company;
     }
     
-    private Company loadCompany(ResultSet rs) throws SQLException {
+    @Override
+	public void delete(long id) {
+    	try (Connection connection = Connector.INSTANCE.getConnection()) {
+    		delete(id, connection);
+    	} catch (SQLException e) {
+        	String message = "Error : DAO has not been able to correctly connect to the database.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+	}
+    
+	public void delete(long id, Connection connection) {
+    	LOGGER.info("Delete company by id : " + id);
+    	try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+    		statement.setLong(1, id);
+    		statement.executeUpdate();
+    	} catch (SQLException e) {
+        	String message = "Error : DAO has not been able to correctly delete the entity.";
+        	LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+	}
+
+	private Company loadCompany(ResultSet rs) throws SQLException {
         return new Company.Builder().id(rs.getLong("id"))
                                     .name(rs.getString("name")).build();
     }
