@@ -25,6 +25,7 @@ public class Dashboard extends HttpServlet {
         Map<String, String[]> parameters = req.getParameterMap();
         int numberPage = 1;
         int maxPerPage = 10;
+        String search = null;
         String paramValue;
         Page<ComputerDTO> page;
 
@@ -37,8 +38,8 @@ public class Dashboard extends HttpServlet {
         }
         
         // Max per page
-        if (parameters.containsKey("pageSize")) {
-            paramValue = parameters.get("pageSize")[0];
+        if (parameters.containsKey("max")) {
+            paramValue = parameters.get("max")[0];
             if (StringValidator.checkIsNumber(paramValue)) {
                 maxPerPage = Integer.parseInt(paramValue);
             }
@@ -46,9 +47,9 @@ public class Dashboard extends HttpServlet {
         
         // Search
         if (parameters.containsKey("search")) {
-            paramValue = parameters.get("search")[0];
-            if (StringValidator.checkNoSpecialsChars(paramValue)) {
-                page = getFilteredByNamePage(numberPage, maxPerPage, paramValue);
+            search = parameters.get("search")[0];
+            if (StringValidator.checkNoSpecialsChars(search)) {
+                page = getFilteredByNamePage(numberPage, maxPerPage, search);
             } else {
                 throw new ServletException("Sorry, the search value is not allowed.");
             }
@@ -58,6 +59,7 @@ public class Dashboard extends HttpServlet {
         
         req.setAttribute("pageComputer", page);
         req.setAttribute("count", getCount());
+        req.setAttribute("search", search);
         
         this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
     }

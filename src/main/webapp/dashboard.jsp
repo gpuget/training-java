@@ -89,10 +89,22 @@
 		        
 		        <mytag:pagination request="${pageContext.request}" page="${pageComputer.number}"></mytag:pagination>
 		
-		        <div class="btn-group btn-group-sm pull-right" role="group">            
-	                <button type="submit" class="btn btn-default">10</button>
-	                <button type="button" class="btn btn-default">50</button>
-	                <button type="button" class="btn btn-default">100</button>
+		        <div class="btn-group btn-group-sm pull-right" role="group">
+		        	<mytag:link page="${pageComputer.number}"
+		        				search="${search}"
+		        				max="10"
+		        				value="10" 
+		        				target="dashboard"/>
+		        	<mytag:link page="${pageComputer.number}"
+		        				search="${search}"
+		        				max="50"
+		        				value="50" 
+		        				target="dashboard"/>
+		        	<mytag:link page="${pageComputer.number}"
+		        				search="${search}"
+		        				max="100"
+		        				value="100" 
+		        				target="dashboard"/>
 		        </div>
 		    </div>
 	    </footer>
