@@ -57,10 +57,11 @@ public enum ComputerService {
     /**
      * Updates the computer corresponding to the identifier after conversion.
      *
-     * @param computer computer to modify
+     * @param computer modified computer
+     * @return modified computer
      */
-    public void update(Computer computer) {
-        ComputerDAOImpl.INSTANCE.update(computer);
+    public Computer update(Computer computer) {
+        return ComputerDAOImpl.INSTANCE.update(computer);
     }
 
     /**

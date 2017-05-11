@@ -181,7 +181,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public void update(Computer computer) {
+    public Computer update(Computer computer) {
         LOGGER.info("Update computer :" + computer);
         try (Connection connection = Connector.INSTANCE.getConnection();
                 PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);) {
@@ -193,6 +193,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOGGER.error(message);
             throw new DAOException(message, e);
         }
+        
+        return computer;
     }
 
     @Override

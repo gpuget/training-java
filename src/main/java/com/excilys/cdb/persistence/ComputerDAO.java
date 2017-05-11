@@ -42,8 +42,9 @@ public interface ComputerDAO {
      * Updates the computer corresponding to the identifier.
      *
      * @param computer modified computer
+     * @return modified computer
      */
-    void update(Computer computer);
+    Computer update(Computer computer);
 
     /**
      * Deletes the computer corresponding to the identifier.
