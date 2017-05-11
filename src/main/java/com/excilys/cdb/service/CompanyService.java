@@ -16,7 +16,13 @@ public enum CompanyService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
 
+    /**
+     * Returns all companies.
+     *
+     * @return found companies
+     */
     public List<Company> getCompanies() {
+        LOGGER.trace("Get companies");
         return CompanyDAOImpl.INSTANCE.findAll();
     }
 
@@ -27,6 +33,7 @@ public enum CompanyService {
      * @return found company
      */
     public Company getCompanyById(long id) {
+        LOGGER.trace("Get company by id : " + id);
         return CompanyDAOImpl.INSTANCE.findById(id);
     }
 
@@ -37,6 +44,7 @@ public enum CompanyService {
      * @return company with identifier
      */
     public Company create(Company company) {
+        LOGGER.trace("Create company : " + company);
         return CompanyDAOImpl.INSTANCE.create(company);
     }
 
@@ -46,18 +54,23 @@ public enum CompanyService {
      * @param id identifier
      */
     public void delete(long id) {
+        LOGGER.trace("Delete company by id : " + id);
         ThreadLocal<Connection> sharedConnectionThread = new ThreadLocal<>();
 
         try (Connection connection = Connector.INSTANCE.getConnection()) {
+            LOGGER.debug("Connection : " + connection);
+            LOGGER.debug("Connection auto commit : false");
             connection.setAutoCommit(false);
             sharedConnectionThread.set(connection);
             try {
                 ComputerDAOImpl.INSTANCE.deleteFromCompany(id, sharedConnectionThread.get());
                 CompanyDAOImpl.INSTANCE.delete(id, sharedConnectionThread.get());
             } catch (Exception e) {
+                LOGGER.debug("Connection rollback");
                 connection.rollback();
                 throw e;
             }
+            LOGGER.debug("Connection commit");
             connection.commit();
         } catch (Exception e) {
             String message = "Error : Service has not been able to correctly delete the company and its computers.";
@@ -65,6 +78,7 @@ public enum CompanyService {
             throw new RuntimeException(message, e);
         } finally {
             sharedConnectionThread.remove();
+            LOGGER.debug("Garbage collector called");
             System.gc();
         }
     }
