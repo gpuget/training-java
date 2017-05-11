@@ -58,7 +58,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery();) {
                 if (rs.first()) {
-                    company = loadCompany(rs);
+                    company = mapResultSet(rs);
                 }
             }
         } catch (SQLException e) {
@@ -76,19 +76,6 @@ public enum CompanyDAOImpl implements CompanyDAO {
             delete(id, connection);
         } catch (SQLException e) {
             String message = "Error : DAO has not been able to correctly connect to the database.";
-            LOGGER.error(message);
-            throw new DAOException(message, e);
-        }
-    }
-
-    public void delete(long id, Connection connection) {
-        LOGGER.info("Delete company by id : " + id);
-        LOGGER.debug("Connection used : " + connection);
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-            statement.setLong(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            String message = "Error : DAO has not been able to correctly delete the entity.";
             LOGGER.error(message);
             throw new DAOException(message, e);
         }
@@ -120,7 +107,33 @@ public enum CompanyDAOImpl implements CompanyDAO {
         return company;
     }
 
-    private Company loadCompany(ResultSet rs) throws SQLException {
+    /**
+     * Deletes the company corresponding to the identifier in DB.
+     *
+     * @param id identifier
+     * @param connection provided connection
+     */
+    public void delete(long id, Connection connection) {
+        LOGGER.info("Delete company by id : " + id);
+        LOGGER.debug("Connection used : " + connection);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            String message = "Error : DAO has not been able to correctly delete the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+    /**
+     * Create a Company with a result set.
+     *
+     * @param rs provided result set
+     * @return mapped company
+     * @throws SQLException if result set is not validate
+     */
+    private Company mapResultSet(ResultSet rs) throws SQLException {
         return new Company.Builder().id(rs.getLong("id")).name(rs.getString("name")).build();
     }
 }

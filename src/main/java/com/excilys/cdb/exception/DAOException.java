@@ -3,23 +3,51 @@ package com.excilys.cdb.exception;
 public class DAOException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Default constructor.
+     */
     public DAOException() {
         super();
     }
 
-    public DAOException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
-        super(arg0, arg1, arg2, arg3);
+    /**
+     * Superclass constructor.
+     *
+     * @param message message
+     * @param cause cause
+     * @param enableSuppression suppression
+     * @param writableStackTrace stack trace
+     */
+    public DAOException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
-    public DAOException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
+    /**
+     * Superclass constructor.
+     *
+     * @param message message
+     * @param cause cause
+     */
+    public DAOException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public DAOException(String arg0) {
-        super(arg0);
+    /**
+     * Superclass constructor.
+     *
+     * @param message message
+     */
+    public DAOException(String message) {
+        super(message);
     }
 
-    public DAOException(Throwable arg0) {
-        super(arg0);
+    /**
+     * Superclass constructor.
+     *
+     * @param cause cause
+     */
+    public DAOException(Throwable cause) {
+        super(cause);
     }
 }

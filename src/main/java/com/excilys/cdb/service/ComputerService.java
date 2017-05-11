@@ -86,7 +86,7 @@ public enum ComputerService {
      * Gets the page of computers.
      *
      * @param number number of the page
-     * @param maxPerPage maximum of items
+     * @param maxPerPage maximum number of items
      * @return page page of computers
      */
     public Page<Computer> getPage(int number, int maxPerPage) {
@@ -94,6 +94,14 @@ public enum ComputerService {
                 ComputerDAOImpl.INSTANCE.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
 
+    /**
+     * Gets the pages of computers corresponding to specified name.
+     *
+     * @param number number of the page
+     * @param maxPerPage maximum number of items
+     * @param name seek name
+     * @return page of filtered computers
+     */
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name) {
         return new Page<>(number, ComputerDAOImpl.INSTANCE.getFilteredByName(maxPerPage,
                 maxPerPage * (number - 1), name));

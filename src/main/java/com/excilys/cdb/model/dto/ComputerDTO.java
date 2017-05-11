@@ -89,6 +89,11 @@ public class ComputerDTO implements Serializable {
         return introduced;
     }
 
+    /**
+     * Sets the date of introduction.
+     *
+     * @param introduced date of introduction - '-' if equals "null"
+     */
     public void setIntroduced(String introduced) {
         if (introduced.equals("null")) {
             this.introduced = "-";
@@ -101,6 +106,11 @@ public class ComputerDTO implements Serializable {
         return discontinued;
     }
 
+    /**
+     * Sets the date of discontinue.
+     *
+     * @param discontinued date of discontinue - '-' if equals "null"
+     */
     public void setDiscontinued(String discontinued) {
         if (discontinued.equals("null")) {
             this.discontinued = "-";

@@ -20,14 +20,31 @@ public enum CompanyService {
         return CompanyDAOImpl.INSTANCE.findAll();
     }
 
+    /**
+     * Returns the Company corresponding to the identifier.
+     *
+     * @param id identifier
+     * @return found company
+     */
     public Company getCompanyById(long id) {
         return CompanyDAOImpl.INSTANCE.findById(id);
     }
 
+    /**
+     * Inserts a company in DB.
+     *
+     * @param company to insert
+     * @return company with identifier
+     */
     public Company create(Company company) {
         return CompanyDAOImpl.INSTANCE.create(company);
     }
 
+    /**
+     * Deletes the company corresponding to the identifier and its computers.
+     *
+     * @param id identifier
+     */
     public void delete(long id) {
         ThreadLocal<Connection> sharedConnectionThread = new ThreadLocal<>();
 

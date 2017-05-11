@@ -3,20 +3,51 @@ package com.excilys.cdb.exception;
 public class ConnectorException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public ConnectorException(String arg0) {
-        super(arg0);
+    /**
+     * Default constructor.
+     */
+    public ConnectorException() {
+        super();
     }
 
-    public ConnectorException(Throwable arg0) {
-        super(arg0);
+    /**
+     * Superclass constructor.
+     *
+     * @param message message
+     * @param cause cause
+     * @param enableSuppression suppression
+     * @param writableStackTrace stack trace
+     */
+    public ConnectorException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
-    public ConnectorException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
+    /**
+     * Superclass constructor.
+     *
+     * @param message message
+     * @param cause cause
+     */
+    public ConnectorException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public ConnectorException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
-        super(arg0, arg1, arg2, arg3);
+    /**
+     * Superclass constructor.
+     *
+     * @param message message
+     */
+    public ConnectorException(String message) {
+        super(message);
     }
 
+    /**
+     * Superclass constructor.
+     *
+     * @param cause cause
+     */
+    public ConnectorException(Throwable cause) {
+        super(cause);
+    }
 }

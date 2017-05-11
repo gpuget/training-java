@@ -76,19 +76,44 @@ public class Dashboard extends HttpServlet {
         resp.sendRedirect("dashboard");
     }
 
+    /**
+     * Gets the pages of computers corresponding to specified name.
+     *
+     * @param number number of the page
+     * @param maxPerPage maximum number of items
+     * @param name seek name
+     * @return page of filtered computers
+     */
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
         return ComputerMapper.toComputerDTO(
                 ComputerService.INSTANCE.getFilteredByNamePage(number, maxPerPage, name));
     }
 
+    /**
+     * Gets the page of computers.
+     *
+     * @param number number of the page
+     * @param maxPerPage maximum number of items
+     * @return page page of computers
+     */
     private Page<ComputerDTO> getPage(int number, int maxPerPage) {
         return ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getPage(number, maxPerPage));
     }
 
+    /**
+     * Gets the total number of computers.
+     *
+     * @return total number of computers
+     */
     private int getCount() {
         return ComputerService.INSTANCE.getCount();
     }
 
+    /**
+     * Deletes the computers corresponding to the identifiers.
+     *
+     * @param idsList identifiers
+     */
     private void deleteList(List<Long> idsList) {
         ComputerService.INSTANCE.deleteList(idsList);
     }

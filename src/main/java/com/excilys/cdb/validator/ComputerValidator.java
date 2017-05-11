@@ -12,10 +12,22 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 
 public final class ComputerValidator {
+    /**
+     * Checks if the name is correct.
+     *
+     * @param name name to check
+     * @return true if correct name
+     */
     public static boolean checkName(String name) {
         return name != null && name.matches("[\\d\\w\\+\\-\\ \\.\\']+");
     }
 
+    /**
+     * Checks if the date is correct.
+     *
+     * @param date date to check
+     * @return true if correct date
+     */
     public static boolean checkDate(String date) {
         try {
             if (date != null) {
@@ -29,6 +41,12 @@ public final class ComputerValidator {
         }
     }
 
+    /**
+     * Checks if the identifier is correct.
+     *
+     * @param id identifier to check
+     * @return true if correct identifier
+     */
     public static boolean checkId(String id) {
         try {
             if (id != null) {
@@ -41,6 +59,13 @@ public final class ComputerValidator {
         }
     }
 
+    /**
+     * Returns a valid company to insert.
+     *
+     * @param companyId identifier of the company
+     * @return valid company
+     * @throws ServletException if the company or computer are not validate
+     */
     public static Company getValidCompany(String companyId) throws ServletException {
         Company company;
 
@@ -56,6 +81,14 @@ public final class ComputerValidator {
         }
     }
 
+
+    /**
+     * Returns a valid computer to insert.
+     *
+     * @param parameters request parameters
+     * @return valid company
+     * @throws ServletException if the computer is not validate
+     */
     public static Computer getValidComputer(Map<String, String[]> parameters)
             throws ServletException {
         String paramValue;
@@ -114,6 +147,13 @@ public final class ComputerValidator {
         return computer;
     }
 
+    /**
+     * Returns a valid list of identifiers.
+     *
+     * @param ids list of identifiers to check
+     * @return list of identifiers
+     * @throws ServletException if the selection is not validate
+     */
     public static List<Long> getValidIdList(String ids) throws ServletException {
         List<Long> idsList = new ArrayList<>();
         String[] idsTab = ids.split(",");
