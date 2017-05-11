@@ -25,13 +25,13 @@ public class ComputerDTO implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        
+
         hash = hash * 11 + id.hashCode();
         hash = hash * 11 + name.hashCode();
         hash = hash * 11 + manufacturer.hashCode();
         hash = hash * 11 + introduced.hashCode();
         hash = hash * 11 + discontinued.hashCode();
-        
+
         return hash;
     }
 
@@ -40,11 +40,10 @@ public class ComputerDTO implements Serializable {
         if (obj != null && obj instanceof ComputerDTO) {
             ComputerDTO computerDto = (ComputerDTO) obj;
 
-            return this.id.equals(computerDto.id) &&
-                    this.name.equals(computerDto.name) &&
-                    this.manufacturer.equals(computerDto.manufacturer) &&
-                    this.introduced.equals(computerDto.introduced) &&
-                    this.discontinued.equals(computerDto.discontinued);
+            return this.id.equals(computerDto.id) && this.name.equals(computerDto.name)
+                    && this.manufacturer.equals(computerDto.manufacturer)
+                    && this.introduced.equals(computerDto.introduced)
+                    && this.discontinued.equals(computerDto.discontinued);
         }
 
         return false;
@@ -54,8 +53,7 @@ public class ComputerDTO implements Serializable {
     public String toString() {
         String res;
 
-        res = "Computer : " + name + " (" + manufacturer.getName()
-                + ") " + introduced;
+        res = "Computer : " + name + " (" + manufacturer.getName() + ") " + introduced;
         if (discontinued != null && !discontinued.isEmpty()) {
             res = res + " to " + discontinued;
         }

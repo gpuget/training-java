@@ -9,6 +9,8 @@ public class Page<T> {
 
     /**
      * Constructor.
+     *
+     * @param number number of page
      * @param list list of objects
      */
     public Page(int number, List<T> list) {
@@ -39,8 +41,8 @@ public class Page<T> {
     public int getNumber() {
         return number;
     }
-    
-    public void setNumber(int number){
+
+    public void setNumber(int number) {
         this.number = number;
     }
 

@@ -23,11 +23,13 @@ public class EditComputer extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String id = req.getParameter("id");
-        
-        if (ComputerValidator.checkId(id)) {            
-            req.setAttribute("companies", CompanyMapper.toCompanyDTO(CompanyService.INSTANCE.getCompanies()));        
-            req.setAttribute("computer", ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getDetails(Long.parseLong(id))));
-            
+
+        if (ComputerValidator.checkId(id)) {
+            req.setAttribute("companies",
+                    CompanyMapper.toCompanyDTO(CompanyService.INSTANCE.getCompanies()));
+            req.setAttribute("computer", ComputerMapper
+                    .toComputerDTO(ComputerService.INSTANCE.getDetails(Long.parseLong(id))));
+
             this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(req, resp);
         } else {
             throw new ServletException("Sorry, an error has occured.");
@@ -40,14 +42,14 @@ public class EditComputer extends HttpServlet {
         Map<String, String[]> parameters = req.getParameterMap();
         Company company;
         Computer computer;
-        
+
         // CompanyId
         if (parameters.containsKey("companyId")) {
             company = ComputerValidator.getValidCompany(parameters.get("companyId")[0]);
         } else {
             throw new ServletException("Sorry, the computer is not valid.");
-        }      
-        
+        }
+
         // ComputerName, introduced, discontinued
         computer = ComputerValidator.getValidComputer(parameters);
         computer.setManufacturer(company);
@@ -63,9 +65,9 @@ public class EditComputer extends HttpServlet {
         } else {
             throw new ServletException("Sorry, the computer is not valid.");
         }
-        
+
         try {
-        	ComputerService.INSTANCE.update(computer);
+            ComputerService.INSTANCE.update(computer);
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
             resp.sendError(500);

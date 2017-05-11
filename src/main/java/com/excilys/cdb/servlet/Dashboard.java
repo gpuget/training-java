@@ -36,7 +36,7 @@ public class Dashboard extends HttpServlet {
                 numberPage = Integer.parseInt(paramValue);
             }
         }
-        
+
         // Max per page
         if (parameters.containsKey("max")) {
             paramValue = parameters.get("max")[0];
@@ -44,7 +44,7 @@ public class Dashboard extends HttpServlet {
                 maxPerPage = Integer.parseInt(paramValue);
             }
         }
-        
+
         // Search
         if (parameters.containsKey("search")) {
             search = parameters.get("search")[0];
@@ -53,41 +53,42 @@ public class Dashboard extends HttpServlet {
             } else {
                 throw new ServletException("Sorry, the search value is not allowed.");
             }
-        } else {            
+        } else {
             page = getPage(numberPage, maxPerPage);
         }
-        
+
         req.setAttribute("pageComputer", page);
         req.setAttribute("count", getCount());
         req.setAttribute("search", search);
-        
+
         this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Map<String, String[]> parameters = req.getParameterMap();
-        
+
         if (parameters.containsKey("selection")) {
             deleteList(ComputerValidator.getValidIdList(parameters.get("selection")[0]));
         }
-        
+
         resp.sendRedirect("dashboard");
     }
 
-    private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name){
-        return ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getFilteredByNamePage(number, maxPerPage, name));
+    private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
+        return ComputerMapper.toComputerDTO(
+                ComputerService.INSTANCE.getFilteredByNamePage(number, maxPerPage, name));
     }
-    
-    private Page<ComputerDTO> getPage(int number, int maxPerPage){
+
+    private Page<ComputerDTO> getPage(int number, int maxPerPage) {
         return ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getPage(number, maxPerPage));
     }
-    
-    private int getCount(){
+
+    private int getCount() {
         return ComputerService.INSTANCE.getCount();
     }
-    
+
     private void deleteList(List<Long> idsList) {
         ComputerService.INSTANCE.deleteList(idsList);
     }

@@ -12,13 +12,13 @@ public class Computer {
     @Override
     public int hashCode() {
         int hash = 5;
-        
+
         hash = hash * 8 + Long.hashCode(id);
         hash = hash * 8 + name.hashCode();
         hash = hash * 8 + manufacturer.hashCode();
         hash = hash * 8 + introduced.hashCode();
         hash = hash * 8 + discontinued.hashCode();
-        
+
         return hash;
     }
 
@@ -27,11 +27,10 @@ public class Computer {
         if (obj != null && obj instanceof Computer) {
             Computer computer = (Computer) obj;
 
-            return (this.id == computer.id) &&
-                    this.name.equals(computer.name) &&
-                    this.manufacturer.equals(computer.manufacturer) &&
-                    this.introduced.equals(computer.introduced) &&
-                    this.discontinued.equals(computer.discontinued);
+            return (this.id == computer.id) && this.name.equals(computer.name)
+                    && this.manufacturer.equals(computer.manufacturer)
+                    && this.introduced.equals(computer.introduced)
+                    && this.discontinued.equals(computer.discontinued);
         }
 
         return false;
@@ -40,16 +39,16 @@ public class Computer {
     @Override
     public String toString() {
         String res;
-        
+
         res = "Computer : " + this.name;
         if (this.manufacturer != null) {
-        	res = res + " (" + this.manufacturer.getName();
+            res = res + " (" + this.manufacturer.getName();
         }
-        
+
         if (this.introduced != null) {
             res = res + " from " + this.introduced;
         }
-        
+
         if (this.discontinued != null) {
             res = res + " to " + this.discontinued;
         }
@@ -59,6 +58,7 @@ public class Computer {
 
     /**
      * Gets the identifier.
+     *
      * @return identifier
      */
     public long getId() {
@@ -67,6 +67,7 @@ public class Computer {
 
     /**
      * Sets the identifier.
+     *
      * @param id identifier
      */
     public void setId(long id) {
@@ -75,6 +76,7 @@ public class Computer {
 
     /**
      * Gets the name of the computer.
+     *
      * @return name of the computer
      */
     public String getName() {
@@ -83,6 +85,7 @@ public class Computer {
 
     /**
      * Sets the name of the computer.
+     *
      * @param name name of the computer
      */
     public void setName(String name) {
@@ -91,6 +94,7 @@ public class Computer {
 
     /**
      * Gets the manufacturing company.
+     *
      * @return manufacturing company
      */
     public Company getManufacturer() {
@@ -99,6 +103,7 @@ public class Computer {
 
     /**
      * Sets the manufacturing company.
+     *
      * @param manufacter manufacturing company
      */
     public void setManufacturer(Company manufacter) {
@@ -107,6 +112,7 @@ public class Computer {
 
     /**
      * Gets the date of the first apparition.
+     *
      * @return date of the first apparition
      */
     public LocalDate getIntroduced() {
@@ -115,6 +121,7 @@ public class Computer {
 
     /**
      * Sets the date of the first apparition.
+     *
      * @param introduced date of the first apparition
      */
     public void setIntroduced(LocalDate introduced) {
@@ -123,6 +130,7 @@ public class Computer {
 
     /**
      * Gets the date of the last apparition.
+     *
      * @return date of the last apparition
      */
     public LocalDate getDiscontinued() {
@@ -131,6 +139,7 @@ public class Computer {
 
     /**
      * Sets the date of the last apparition.
+     *
      * @param discontinued date of the last apparition
      */
     public void setDiscontinued(LocalDate discontinued) {
@@ -142,7 +151,6 @@ public class Computer {
 
         /**
          * Computer builder.
-         * @param name name of the computer
          */
         public Builder() {
             computer = new Computer();
@@ -150,6 +158,7 @@ public class Computer {
 
         /**
          * Performs the construction.
+         *
          * @return new computer
          */
         public Computer build() {
@@ -158,6 +167,7 @@ public class Computer {
 
         /**
          * Adds an identifier to the computer.
+         *
          * @param id identifier
          * @return builder current instance
          */
@@ -166,20 +176,22 @@ public class Computer {
 
             return this;
         }
-        
+
         /**
          * Adds a name to the computer.
+         *
          * @param name name of the computer
          * @return builder current instance
          */
-        public Builder name(String name){
+        public Builder name(String name) {
             computer.setName(name);
-            
+
             return this;
         }
 
         /**
          * Adds a manufacturer to the computer.
+         *
          * @param company manufacturer
          * @return builder current instance
          */
@@ -191,6 +203,7 @@ public class Computer {
 
         /**
          * Adds a date of the first apparition to the computer.
+         *
          * @param date date of the first apparition
          * @return builder current instance
          */
@@ -202,6 +215,7 @@ public class Computer {
 
         /**
          * Adds a date of the last apparition to the computer.
+         *
          * @param date date of the last apparition
          * @return builder current instance
          */

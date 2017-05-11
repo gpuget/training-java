@@ -22,5 +22,4 @@ public class DAOException extends RuntimeException {
     public DAOException(Throwable arg0) {
         super(arg0);
     }
-    
 }

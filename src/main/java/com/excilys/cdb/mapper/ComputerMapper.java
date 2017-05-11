@@ -11,21 +11,21 @@ import com.excilys.cdb.model.dto.ComputerDTO;
 public final class ComputerMapper {
     /**
      * Converts a ComputerDTO to a Computer.
+     *
      * @param computerDto DTO to convert
      * @return conversion result
      */
     public static Computer toComputer(ComputerDTO computerDto) {
-        return new Computer.Builder()
-                            .id(Long.valueOf(computerDto.getId()))
-                            .name(computerDto.getName())
-                            .introduced(LocalDate.parse(computerDto.getIntroduced()))
-                            .discontinued(LocalDate.parse(computerDto.getDiscontinued()))
-                            .manufacturer(CompanyMapper.toCompany(computerDto.getManufacturer()))
-                            .build();
+        return new Computer.Builder().id(Long.valueOf(computerDto.getId()))
+                .name(computerDto.getName())
+                .introduced(LocalDate.parse(computerDto.getIntroduced()))
+                .discontinued(LocalDate.parse(computerDto.getDiscontinued()))
+                .manufacturer(CompanyMapper.toCompany(computerDto.getManufacturer())).build();
     }
 
     /**
      * Converts a Computer to a ComputerDTO.
+     *
      * @param computer computer to convert
      * @return conversion result
      */
@@ -43,6 +43,7 @@ public final class ComputerMapper {
 
     /**
      * Converts a list of Computer to a list of ComputerDTO.
+     *
      * @param computers list to convert
      * @return conversion result
      */
@@ -55,13 +56,15 @@ public final class ComputerMapper {
 
         return listDto;
     }
-    
+
     /**
-     * Converts a page of Computer to a page of ComputerDTO
+     * Converts a page of Computer to a page of ComputerDTO.
+     *
      * @param page page to convert
+     *
      * @return conversion result
      */
-    public static Page<ComputerDTO> toComputerDTO(Page<Computer> page){
+    public static Page<ComputerDTO> toComputerDTO(Page<Computer> page) {
         return new Page<>(page.getNumber(), toComputerDTO(page.getObjects()));
     }
 }

@@ -19,21 +19,21 @@ public class CompanyDTO implements Serializable {
     @Override
     public int hashCode() {
         int hash = 2;
-        
-        hash = hash * 10 + id.hashCode();       
+
+        hash = hash * 10 + id.hashCode();
         hash = hash * 10 + name.hashCode();
-        
+
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && obj instanceof CompanyDTO){
+        if (obj != null && obj instanceof CompanyDTO) {
             CompanyDTO companyDto = (CompanyDTO) obj;
-            
+
             return this.id.equals(companyDto.id) && this.name.equals(companyDto.name);
         }
-        
+
         return false;
     }
 

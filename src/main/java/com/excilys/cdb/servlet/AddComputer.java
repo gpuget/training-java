@@ -21,9 +21,10 @@ public class AddComputer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        
-        req.setAttribute("companies", CompanyMapper.toCompanyDTO(CompanyService.INSTANCE.getCompanies()));
-        
+
+        req.setAttribute("companies",
+                CompanyMapper.toCompanyDTO(CompanyService.INSTANCE.getCompanies()));
+
         this.getServletContext().getRequestDispatcher("/addComputer.jsp").forward(req, resp);
     }
 
@@ -33,20 +34,20 @@ public class AddComputer extends HttpServlet {
         Map<String, String[]> parameters = req.getParameterMap();
         Company company;
         Computer computer;
-        
+
         // CompanyId
         if (parameters.containsKey("companyId")) {
             company = ComputerValidator.getValidCompany(parameters.get("companyId")[0]);
         } else {
             throw new ServletException("Sorry, the computer is not valid.");
         }
-        
+
         // ComputerName, introduced, discontinued
         computer = ComputerValidator.getValidComputer(parameters);
         computer.setManufacturer(company);
-        
+
         try {
-        	ComputerService.INSTANCE.create(computer);
+            ComputerService.INSTANCE.create(computer);
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
             resp.sendError(500);
