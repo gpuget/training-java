@@ -16,9 +16,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.Connector;
 
-public enum CompanyDAOImpl implements CompanyDAO {
-    INSTANCE;
-
+public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOImpl.class);
 
     private static final String FIND_ALL = "SELECT id, name FROM company";
@@ -27,12 +25,18 @@ public enum CompanyDAOImpl implements CompanyDAO {
     private static final String CREATE_QUERY = "INSERT INTO company (name) VALUES (?)";
     private static final String DELETE_QUERY = "DELETE FROM company WHERE company.id = ?";
 
+    private Connector connector;
+
+    public void setConnector(Connector connector) {
+        this.connector = connector;
+    }
+
     @Override
     public List<Company> findAll() {
         LOGGER.trace("Find all companies.");
         ArrayList<Company> companies = new ArrayList<>();
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL);
                 ResultSet resultSet = statement.executeQuery()) {
             LOGGER.debug("Query : " + statement);
@@ -55,7 +59,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
         LOGGER.trace("Find company by id : " + id);
         Company company = null;
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_QUERY)) {
             statement.setLong(1, id);
             LOGGER.debug("Query : " + statement);
@@ -77,7 +81,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public void delete(long id) {
         LOGGER.trace("Delete company by id : " + id);
-        try (Connection connection = Connector.INSTANCE.getConnection()) {
+        try (Connection connection = connector.getConnection()) {
             delete(id, connection);
         } catch (SQLException e) {
             String message = "Error : DAO has not been able to correctly connect to the database.";
@@ -91,7 +95,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
         LOGGER.trace("Create Company : " + company);
         String message = "Error : DAO has not been able to correctly create the entity.";
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, company.getName());

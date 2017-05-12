@@ -23,7 +23,7 @@ public enum CompanyService {
      */
     public List<Company> getCompanies() {
         LOGGER.trace("Get companies");
-        return CompanyDAOImpl.INSTANCE.findAll();
+        return new CompanyDAOImpl().findAll();
     }
 
     /**
@@ -34,7 +34,7 @@ public enum CompanyService {
      */
     public Company getCompanyById(long id) {
         LOGGER.trace("Get company by id : " + id);
-        return CompanyDAOImpl.INSTANCE.findById(id);
+        return new CompanyDAOImpl().findById(id);
     }
 
     /**
@@ -45,7 +45,7 @@ public enum CompanyService {
      */
     public Company create(Company company) {
         LOGGER.trace("Create company : " + company);
-        return CompanyDAOImpl.INSTANCE.create(company);
+        return new CompanyDAOImpl().create(company);
     }
 
     /**
@@ -57,14 +57,14 @@ public enum CompanyService {
         LOGGER.trace("Delete company by id : " + id);
         ThreadLocal<Connection> sharedConnectionThread = new ThreadLocal<>();
 
-        try (Connection connection = Connector.INSTANCE.getConnection()) {
+        try (Connection connection = new Connector().getConnection()) {
             LOGGER.debug("Connection : " + connection);
             LOGGER.debug("Connection auto commit : false");
             connection.setAutoCommit(false);
             sharedConnectionThread.set(connection);
             try {
-                ComputerDAOImpl.INSTANCE.deleteFromCompany(id, sharedConnectionThread.get());
-                CompanyDAOImpl.INSTANCE.delete(id, sharedConnectionThread.get());
+                new ComputerDAOImpl().deleteFromCompany(id, sharedConnectionThread.get());
+                new CompanyDAOImpl().delete(id, sharedConnectionThread.get());
             } catch (Exception e) {
                 LOGGER.debug("Connection rollback");
                 connection.rollback();

@@ -19,9 +19,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.Connector;
 
-public enum ComputerDAOImpl implements ComputerDAO {
-    INSTANCE;
-
+public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
     private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
@@ -39,12 +37,18 @@ public enum ComputerDAOImpl implements ComputerDAO {
     private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
 
+    private Connector connector;
+
+    public void setConnector(Connector connector) {
+        this.connector = connector;
+    }
+
     @Override
     public Computer create(Computer computer) {
         LOGGER.trace("Create computer : " + computer);
         String message = "Error : DAO has not been able to correctly create the entity.";
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
                         Statement.RETURN_GENERATED_KEYS);) {
             setStatementValues(statement, computer);
@@ -72,7 +76,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public void delete(long id) {
         LOGGER.trace("Delete computer by id : " + id);
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setLong(1, id);
             LOGGER.debug("Query : " + statement);
@@ -94,7 +98,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             sb.append(", ").append(idsList.get(i));
         }
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(DELETE_IN + '(' + sb.toString() + ')')) {
             LOGGER.debug("Query : " + statement);
@@ -126,7 +130,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         LOGGER.trace("Find all computers.");
         ArrayList<Computer> computers = new ArrayList<>();
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL);
                 ResultSet resultSet = statement.executeQuery()) {
             LOGGER.debug("Query : " + statement);
@@ -148,7 +152,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         LOGGER.trace("Find all computers : " + limit + " " + offset);
         ArrayList<Computer> computers = new ArrayList<Computer>();
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(FIND_ALL + BOUNDED_RESULT)) {
             statement.setInt(1, limit);
@@ -174,7 +178,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         LOGGER.trace("Find computer by id : " + id);
         Computer computer = null;
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_QUERY)) {
             statement.setLong(1, id);
             LOGGER.debug("Query : " + statement);
@@ -196,7 +200,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public Computer update(Computer computer) {
         LOGGER.trace("Update computer :" + computer);
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             setStatementValues(statement, computer);
             statement.setLong(5, computer.getId());
@@ -217,7 +221,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         String message = "Error : DAO has not been able to correctly count the entities.";
         int res = 0;
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(COUNT_QUERY);
                 ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.first()) {
@@ -239,7 +243,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         LOGGER.trace("Find all computer with name : " + name);
         ArrayList<Computer> computers = new ArrayList<Computer>();
 
-        try (Connection connection = Connector.INSTANCE.getConnection();
+        try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(FIND_ALL + LIKE_NAME + BOUNDED_RESULT)) {
             statement.setString(1, name + '%');

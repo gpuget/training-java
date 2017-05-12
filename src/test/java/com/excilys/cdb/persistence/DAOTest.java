@@ -10,8 +10,8 @@ import com.excilys.cdb.persistence.impl.CompanyDAOImpl;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public class DAOTest {
-	private ComputerDAOImpl computerDao = ComputerDAOImpl.INSTANCE;
-	private CompanyDAOImpl companyDao = CompanyDAOImpl.INSTANCE;
+	private ComputerDAOImpl computerDao = new ComputerDAOImpl();
+	private CompanyDAOImpl companyDao = new CompanyDAOImpl();
 	
 	@Test
 	public void correctComputerListSize(){

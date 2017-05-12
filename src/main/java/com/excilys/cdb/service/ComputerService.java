@@ -20,7 +20,7 @@ public enum ComputerService {
      * Constructor.
      */
     ComputerService() {
-        this.count = ComputerDAOImpl.INSTANCE.getCount();
+        this.count = new ComputerDAOImpl().getCount();
     }
 
     /**
@@ -33,7 +33,7 @@ public enum ComputerService {
         LOGGER.trace("Create computer : " + computer);
         count++;
         try {
-            return ComputerDAOImpl.INSTANCE.create(computer);
+            return new ComputerDAOImpl().create(computer);
         } catch (Exception e) {
             count--;
             throw e;
@@ -47,7 +47,7 @@ public enum ComputerService {
      */
     public void delete(long id) {
         LOGGER.trace("Delete computer by id : " + id);
-        ComputerDAOImpl.INSTANCE.delete(id);
+        new ComputerDAOImpl().delete(id);
         count--;
     }
 
@@ -58,7 +58,7 @@ public enum ComputerService {
      */
     public void deleteList(List<Long> idsList) {
         LOGGER.trace("Delete computers by ids : " + idsList);
-        ComputerDAOImpl.INSTANCE.delete(idsList);
+        new ComputerDAOImpl().delete(idsList);
         count -= idsList.size();
     }
 
@@ -70,7 +70,7 @@ public enum ComputerService {
      */
     public Computer update(Computer computer) {
         LOGGER.trace("Update computer : " + computer);
-        return ComputerDAOImpl.INSTANCE.update(computer);
+        return new ComputerDAOImpl().update(computer);
     }
 
     /**
@@ -81,7 +81,7 @@ public enum ComputerService {
      */
     public Computer getDetails(long id) {
         LOGGER.trace("Get computer details with id : " + id);
-        return ComputerDAOImpl.INSTANCE.findById(id);
+        return new ComputerDAOImpl().findById(id);
     }
 
     /**
@@ -104,7 +104,7 @@ public enum ComputerService {
     public Page<Computer> getPage(int number, int maxPerPage) {
         LOGGER.trace("Get page of computer : number " + number + "with " + maxPerPage + "computers");
         return new Page<>(number,
-                ComputerDAOImpl.INSTANCE.findAll(maxPerPage, maxPerPage * (number - 1)));
+                new ComputerDAOImpl().findAll(maxPerPage, maxPerPage * (number - 1)));
     }
 
     /**
@@ -117,7 +117,7 @@ public enum ComputerService {
      */
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name) {
         LOGGER.trace("Get page of filtered computer : (" + name + ") number " + number + "with " + maxPerPage + "computers");
-        return new Page<>(number, ComputerDAOImpl.INSTANCE.getFilteredByName(maxPerPage,
+        return new Page<>(number, new ComputerDAOImpl().getFilteredByName(maxPerPage,
                 maxPerPage * (number - 1), name));
     }
 }

@@ -15,7 +15,7 @@ public class ComputerServiceTest {
     @Test
     public void correctPage(){        
         assertEquals(10, computerService.getPage(1, 10).getObjects().size());
-        assertEquals(ComputerDAOImpl.INSTANCE.findById(12L), computerService.getPage(2, 10).getObjects().get(1));
+        assertEquals(new ComputerDAOImpl().findById(12L), computerService.getPage(2, 10).getObjects().get(1));
     }
     
     @Test
