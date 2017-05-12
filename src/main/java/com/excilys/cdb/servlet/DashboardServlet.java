@@ -19,9 +19,9 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.StringValidator;
 
-public class Dashboard extends HttpServlet {
+public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = -4333507256112472526L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

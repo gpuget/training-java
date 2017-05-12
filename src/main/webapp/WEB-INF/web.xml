@@ -7,17 +7,17 @@
   
     <servlet>
 	    <servlet-name>Dashboard</servlet-name>
-	    <servlet-class>com.excilys.cdb.servlets.Dashboard</servlet-class>
+	    <servlet-class>com.excilys.cdb.servlets.DashboardServlet</servlet-class>
     </servlet>
 
     <servlet>
 	    <servlet-name>AddComputer</servlet-name>
-	    <servlet-class>com.excilys.cdb.servlets.AddComputer</servlet-class>
+	    <servlet-class>com.excilys.cdb.servlets.AddComputerServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>EditComputer</servlet-name>
-        <servlet-class>com.excilys.cdb.servlets.EditComputer</servlet-class>
+        <servlet-class>com.excilys.cdb.servlets.EditComputerServlet</servlet-class>
     </servlet>
   
     <servlet-mapping>
@@ -34,13 +34,6 @@
         <servlet-name>EditComputer</servlet-name>
         <url-pattern>/editComputer</url-pattern>
     </servlet-mapping>
-    
-    <jsp-config>
-	  <taglib>
-	    <taglib-uri>mylib</taglib-uri>
-	    <taglib-location>/WEB-INF/lib/mylib.tld</taglib-location>
-	  </taglib>
-    </jsp-config>
     
     <error-page>
 	    <!-- Forbidden directory listing -->

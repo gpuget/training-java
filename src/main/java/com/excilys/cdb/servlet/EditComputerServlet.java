@@ -22,9 +22,9 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 
-public class EditComputer extends HttpServlet {
+public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditComputerServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
