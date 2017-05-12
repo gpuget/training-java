@@ -7,11 +7,16 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 
 public final class ComputerValidator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerValidator.class);
+
     /**
      * Checks if the name is correct.
      *
@@ -19,7 +24,10 @@ public final class ComputerValidator {
      * @return true if correct name
      */
     public static boolean checkName(String name) {
-        return name != null && name.matches("[\\d\\w\\+\\-\\ \\.\\']+");
+        String regex = "[\\d\\w\\+\\-\\ \\.\\']+";
+        LOGGER.trace("Check name : " + name);
+        LOGGER.debug("Regex : " + regex);
+        return name != null && name.matches(regex);
     }
 
     /**
@@ -29,16 +37,10 @@ public final class ComputerValidator {
      * @return true if correct date
      */
     public static boolean checkDate(String date) {
-        try {
-            if (date != null) {
-                LocalDate.parse(date);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        String regex = "\\d{4}\\-\\d{2}\\-\\d{2}";
+        LOGGER.trace("Check date : " + date);
+        LOGGER.debug("Regex : " + regex);
+        return date != null && date.matches(regex);
     }
 
     /**
@@ -48,15 +50,10 @@ public final class ComputerValidator {
      * @return true if correct identifier
      */
     public static boolean checkId(String id) {
-        try {
-            if (id != null) {
-                return Long.parseLong(id) > 0;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        String regex = "[1-9][\\d]*";
+        LOGGER.trace("Check id : " + id);
+        LOGGER.debug("Regex : " + regex);
+        return id != null && id.matches(regex);
     }
 
     /**
@@ -67,20 +64,25 @@ public final class ComputerValidator {
      * @throws ServletException if the company or computer are not validate
      */
     public static Company getValidCompany(String companyId) throws ServletException {
+        LOGGER.trace("Get valid company with id: " + companyId);
         Company company;
 
         if (checkId(companyId)) {
+            LOGGER.debug("Long parse id : " + companyId);
             company = CompanyService.INSTANCE.getCompanyById(Long.parseLong(companyId));
             if (company != null) {
                 return company;
             } else {
-                throw new ServletException("Sorry, the company does not exist.");
+                String message = "Sorry, the company does not exist.";
+                LOGGER.error(message);
+                throw new ServletException(message);
             }
         } else {
-            throw new ServletException("Sorry, the computer is not valid.");
+            String message = "Sorry, the computer is not valid.";
+            LOGGER.error(message);
+            throw new ServletException(message);
         }
     }
-
 
     /**
      * Returns a valid computer to insert.
@@ -91,20 +93,26 @@ public final class ComputerValidator {
      */
     public static Computer getValidComputer(Map<String, String[]> parameters)
             throws ServletException {
+        LOGGER.trace("Get valid computer with parameters : " + parameters.entrySet());
         String paramValue;
         Computer computer = new Computer.Builder().build();
         LocalDate i = null;
         LocalDate d = null;
+        String message;
 
         if (parameters.containsKey("computerName")) {
             paramValue = parameters.get("computerName")[0];
             if (checkName(paramValue)) {
                 computer.setName(paramValue);
             } else {
-                throw new ServletException("Sorry, the computer name is not valid : " + paramValue);
+                message = "Sorry, the computer name is not valid : " + paramValue;
+                LOGGER.error(message);
+                throw new ServletException(message);
             }
         } else {
-            throw new ServletException("Sorry, the computer is not valid.");
+            message = "Sorry, the computer is not valid.";
+            LOGGER.error(message);
+            throw new ServletException(message);
         }
 
         if (parameters.containsKey("introduced")) {
@@ -113,8 +121,9 @@ public final class ComputerValidator {
                 if (checkDate(paramValue)) {
                     i = LocalDate.parse(paramValue);
                 } else {
-                    throw new ServletException(
-                            "Sorry, the date of introduction is not valid : " + paramValue);
+                    message = "Sorry, the date of introduction is not valid : " + paramValue;
+                    LOGGER.error(message);
+                    throw new ServletException(message);
                 }
             }
         } else {
@@ -127,12 +136,15 @@ public final class ComputerValidator {
                 if (checkDate(paramValue)) {
                     d = LocalDate.parse(paramValue);
                 } else {
-                    throw new ServletException(
-                            "Sorry, the date of introduction is not valid : " + paramValue);
+                    message = "Sorry, the date of discontinue is not valid : " + paramValue;
+                    LOGGER.error(message);
+                    throw new ServletException(message);
                 }
             }
         } else {
-            throw new ServletException("Sorry, the computer is not valid.");
+            message = "Sorry, the computer is not valid.";
+            LOGGER.error(message);
+            throw new ServletException(message);
         }
 
         if (i != null && d != null) {
@@ -140,7 +152,9 @@ public final class ComputerValidator {
                 computer.setIntroduced(i);
                 computer.setDiscontinued(d);
             } else {
-                throw new ServletException("Sorry, there is a problem with dates : " + i + " " + d);
+                message = "Sorry, there is a problem with dates : " + i + " " + d;
+                LOGGER.error(message);
+                throw new ServletException(message);
             }
         }
 
@@ -155,6 +169,7 @@ public final class ComputerValidator {
      * @throws ServletException if the selection is not validate
      */
     public static List<Long> getValidIdList(String ids) throws ServletException {
+        LOGGER.trace("Get valid list of id : " + ids);
         List<Long> idsList = new ArrayList<>();
         String[] idsTab = ids.split(",");
         for (String id : idsTab) {
@@ -164,7 +179,9 @@ public final class ComputerValidator {
         }
 
         if (idsList.isEmpty()) {
-            throw new ServletException("Sorry, the selection is not valid.");
+            String message = "Sorry, the selection is not valid.";
+            LOGGER.error(message);
+            throw new ServletException(message);
         }
 
         return idsList;

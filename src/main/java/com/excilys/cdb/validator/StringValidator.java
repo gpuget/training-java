@@ -1,6 +1,11 @@
 package com.excilys.cdb.validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class StringValidator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StringValidator.class);
+
     /**
      * Checks if there are specials characters.
      *
@@ -8,7 +13,10 @@ public final class StringValidator {
      * @return true if correct string
      */
     public static boolean checkNoSpecialsChars(String string) {
-        return string != null && string.matches("[\\w\\+\\-\\ ]*");
+        String regex = "[\\w\\+\\-\\ ]*";
+        LOGGER.trace("Check specials characters : " + string);
+        LOGGER.debug("Regex : " + regex);
+        return string != null && string.matches(regex);
     }
 
     /**
@@ -18,16 +26,10 @@ public final class StringValidator {
      * @return true if correct string
      */
     public static boolean checkIsNumber(String string) {
-        try {
-            if (string != null) {
-                Integer.parseInt(string);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        String regex = "[\\d]+";
+        LOGGER.trace("Check number : " + string);
+        LOGGER.debug("Regex : " + regex);
+        return string != null && string.matches(regex);
     }
 
     /**
@@ -37,6 +39,9 @@ public final class StringValidator {
      * @return true if correct string
      */
     public static boolean checkIsDecade(String string) {
-        return string != null && string.matches("[\\d]+0");
+        String regex = "[\\d]+0";
+        LOGGER.trace("Check decade : " + string);
+        LOGGER.debug("Regex : " + regex);
+        return string != null && string.matches(regex);
     }
 }
