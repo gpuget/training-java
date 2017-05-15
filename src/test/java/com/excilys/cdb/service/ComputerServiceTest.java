@@ -10,7 +10,7 @@ import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 import com.excilys.cdb.service.ComputerService;
 
 public class ComputerServiceTest {
-	private ComputerService computerService = ComputerService.INSTANCE;
+	private ComputerService computerService;
 	
     @Test
     public void correctPage(){        

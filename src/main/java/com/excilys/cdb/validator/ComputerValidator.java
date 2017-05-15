@@ -10,9 +10,7 @@ import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
 
 public final class ComputerValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerValidator.class);
@@ -54,34 +52,6 @@ public final class ComputerValidator {
         LOGGER.trace("Check id : " + id);
         LOGGER.debug("Regex : " + regex);
         return id != null && id.matches(regex);
-    }
-
-    /**
-     * Returns a valid company to insert.
-     *
-     * @param companyId identifier of the company
-     * @return valid company
-     * @throws ServletException if the company or computer are not validate
-     */
-    public static Company getValidCompany(String companyId) throws ServletException {
-        LOGGER.trace("Get valid company with id: " + companyId);
-        Company company;
-
-        if (checkId(companyId)) {
-            LOGGER.debug("Long parse id : " + companyId);
-            company = CompanyService.INSTANCE.getCompanyById(Long.parseLong(companyId));
-            if (company != null) {
-                return company;
-            } else {
-                String message = "Sorry, the company does not exist.";
-                LOGGER.error(message);
-                throw new ServletException(message);
-            }
-        } else {
-            String message = "Sorry, the computer is not valid.";
-            LOGGER.error(message);
-            throw new ServletException(message);
-        }
     }
 
     /**

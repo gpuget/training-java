@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Page;
@@ -22,6 +24,9 @@ import com.excilys.cdb.validator.StringValidator;
 public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = -4333507256112472526L;
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
+
+    ApplicationContext context = new ClassPathXmlApplicationContext("spring/service/computerService.xml");        
+    private ComputerService computerService = (ComputerService) context.getBean("computerService");    
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -110,7 +115,7 @@ public class DashboardServlet extends HttpServlet {
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
         LOGGER.trace("Get filtered by name page : (" + name + ") number" + number + "with max " + maxPerPage);
         return ComputerMapper.toComputerDTO(
-                ComputerService.INSTANCE.getFilteredByNamePage(number, maxPerPage, name));
+                computerService.getFilteredByNamePage(number, maxPerPage, name));
     }
 
     /**
@@ -122,7 +127,7 @@ public class DashboardServlet extends HttpServlet {
      */
     private Page<ComputerDTO> getPage(int number, int maxPerPage) {
         LOGGER.trace("Get filtered by name page : number" + number + "with max " + maxPerPage);
-        return ComputerMapper.toComputerDTO(ComputerService.INSTANCE.getPage(number, maxPerPage));
+        return ComputerMapper.toComputerDTO(computerService.getPage(number, maxPerPage));
     }
 
     /**
@@ -132,7 +137,7 @@ public class DashboardServlet extends HttpServlet {
      */
     private int getCount() {
         LOGGER.trace("Count of computers");
-        return ComputerService.INSTANCE.getCount();
+        return computerService.getCount();
     }
 
     /**
@@ -142,6 +147,11 @@ public class DashboardServlet extends HttpServlet {
      */
     private void deleteList(List<Long> idsList) {
         LOGGER.trace("Delete list : " + idsList);
-        ComputerService.INSTANCE.deleteList(idsList);
+        computerService.deleteList(idsList);
+    }
+
+    public void setComputerService(ComputerService computerService) {
+        LOGGER.trace("Set computer service");
+        this.computerService = computerService;
     }
 }

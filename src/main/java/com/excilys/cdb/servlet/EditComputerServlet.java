@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
@@ -26,6 +28,10 @@ public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditComputerServlet.class);
 
+    ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/service/computerService.xml", "spring/service/companyService.xml"});
+    private ComputerService computerService = (ComputerService) context.getBean("computerService");
+    private CompanyService companyService = (CompanyService) context.getBean("companyService");
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -33,9 +39,9 @@ public class EditComputerServlet extends HttpServlet {
         LOGGER.debug("Servlet parameter id");
         String id = req.getParameter("id");
         List<CompanyDTO> companiesDto = CompanyMapper
-                .toCompanyDTO(CompanyService.INSTANCE.getCompanies());
+                .toCompanyDTO(companyService.getCompanies());
         ComputerDTO computerDto = ComputerMapper
-                .toComputerDTO(ComputerService.INSTANCE.getDetails(Long.parseLong(id)));
+                .toComputerDTO(computerService.getDetails(Long.parseLong(id)));
 
         if (ComputerValidator.checkId(id)) {
             LOGGER.debug("Set attribute companies : " + companiesDto);
@@ -63,7 +69,20 @@ public class EditComputerServlet extends HttpServlet {
         // CompanyId
         LOGGER.debug("Servlet parameter companyId");
         if (parameters.containsKey("companyId")) {
-            company = ComputerValidator.getValidCompany(parameters.get("companyId")[0]);
+            String companyId = parameters.get("companyId")[0];
+            if (ComputerValidator.checkId(companyId)) {
+                LOGGER.debug("Long parse id : " + companyId);
+                company = companyService.getCompanyById(Long.parseLong(companyId));
+                if (company == null) {
+                    String message = "Sorry, the company does not exist.";
+                    LOGGER.error(message);
+                    throw new ServletException(message);
+                }
+            } else {
+                String message = "Sorry, the computer is not valid.";
+                LOGGER.error(message);
+                throw new ServletException(message);
+            }
             LOGGER.debug("Valid company : " + company);
         } else {
             String message = "Sorry, the company id is not valid.";
@@ -95,7 +114,7 @@ public class EditComputerServlet extends HttpServlet {
         }
 
         try {
-            ComputerService.INSTANCE.update(computer);
+            computerService.update(computer);
             LOGGER.debug("Redirect dashboard");
             resp.sendRedirect("dashboard");
         } catch (Exception e) {
@@ -104,5 +123,13 @@ public class EditComputerServlet extends HttpServlet {
             resp.sendError(500);
             throw new ServletException(message, e);
         }
+    }
+
+    public void setCompanyService(CompanyService companyService) {
+        this.companyService = companyService;
+    }
+
+    public void setComputerService(ComputerService computerService) {
+        this.computerService = computerService;
     }
 }

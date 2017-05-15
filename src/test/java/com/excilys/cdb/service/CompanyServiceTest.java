@@ -8,7 +8,8 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
 public class CompanyServiceTest {
-	private CompanyService companyService = CompanyService.INSTANCE;
+	private CompanyService companyService;
+	ComputerService computerService;
 	
 	@Test
 	public void createAndDelete() {
@@ -19,9 +20,7 @@ public class CompanyServiceTest {
 	}
 	
 	@Test
-	public void deleteWithComputer() {
-		ComputerService computerService = ComputerService.INSTANCE;
-		
+	public void deleteWithComputer() {		
 		Company com = new Company.Builder().name("Bob Inc.").build();
 		
 		com = companyService.create(com);
