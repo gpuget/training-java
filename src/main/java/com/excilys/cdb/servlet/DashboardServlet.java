@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.model.dto.ComputerDTO;
@@ -25,9 +25,17 @@ public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = -4333507256112472526L;
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
 
-    ApplicationContext context = new ClassPathXmlApplicationContext(
-            "spring/service/computerService.xml");
-    private ComputerService computerService = (ComputerService) context.getBean("computerService");
+    private ComputerService computerService;
+
+    /**
+     * 
+     */
+    public DashboardServlet() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+                SpringConfig.class);
+        computerService = (ComputerService) context.getBean("computerService");
+        context.close();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

@@ -2,24 +2,31 @@ package com.excilys.cdb.service.impl;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
-import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
+import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.service.ComputerService;
 
+@Service("computerService")
 public class ComputerServiceImpl implements ComputerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerServiceImpl.class);
 
-    private ComputerDAOImpl computerDao;
+    @Autowired
+    private ComputerDAO computerDao;
     private int count;
 
     /**
      * Bean initialization.
      */
+    @PostConstruct
     private void init() {
         this.count = computerDao.getCount();
     }
@@ -128,7 +135,7 @@ public class ComputerServiceImpl implements ComputerService {
      *
      * @param computerDao computer DAO to use
      */
-    public void setComputerDao(ComputerDAOImpl computerDao) {
+    public void setComputerDao(ComputerDAO computerDao) {
         LOGGER.info("Set computer DAO");
         this.computerDao = computerDao;
     }

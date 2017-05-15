@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.model.Company;
@@ -19,6 +21,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.Connector;
 
+@Repository("computerDao")
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
@@ -37,6 +40,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
 
+    @Autowired
     private Connector connector;
 
     @Override

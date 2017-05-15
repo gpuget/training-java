@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
@@ -28,9 +30,20 @@ public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditComputerServlet.class);
 
-    ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/service/computerService.xml", "spring/service/companyService.xml"});
-    private ComputerService computerService = (ComputerService) context.getBean("computerService");
-    private CompanyService companyService = (CompanyService) context.getBean("companyService");
+    private ComputerService computerService;
+    private CompanyService companyService;
+
+    /**
+     * 
+     */
+    public EditComputerServlet() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+                SpringConfig.class);
+        companyService = (CompanyService) context.getBean("companyService");
+        computerService = (ComputerService) context.getBean("computerService");
+        context.close();
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

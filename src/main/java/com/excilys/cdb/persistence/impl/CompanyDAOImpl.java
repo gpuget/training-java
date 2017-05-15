@@ -10,12 +10,15 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.Connector;
 
+@Repository("companyDao")
 public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOImpl.class);
 
@@ -25,6 +28,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     private static final String CREATE_QUERY = "INSERT INTO company (name) VALUES (?)";
     private static final String DELETE_QUERY = "DELETE FROM company WHERE company.id = ?";
 
+    @Autowired
     private Connector connector;
 
     @Override
