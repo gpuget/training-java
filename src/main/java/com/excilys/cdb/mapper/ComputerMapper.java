@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.model.dto.ComputerDTO;
 
 public final class ComputerMapper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
+
     /**
      * Converts a ComputerDTO to a Computer.
      *
@@ -16,6 +21,7 @@ public final class ComputerMapper {
      * @return conversion result
      */
     public static Computer toComputer(ComputerDTO computerDto) {
+        LOGGER.info("Computer DTO to model : " + computerDto);
         return new Computer.Builder().id(Long.valueOf(computerDto.getId()))
                 .name(computerDto.getName())
                 .introduced(LocalDate.parse(computerDto.getIntroduced()))
@@ -30,6 +36,7 @@ public final class ComputerMapper {
      * @return conversion result
      */
     public static ComputerDTO toComputerDTO(Computer computer) {
+        LOGGER.info("Computer model to DTO : " + computer);
         ComputerDTO computerDto = new ComputerDTO();
 
         computerDto.setId(String.valueOf(computer.getId()));
@@ -48,6 +55,7 @@ public final class ComputerMapper {
      * @return conversion result
      */
     public static List<ComputerDTO> toComputerDTO(List<Computer> computers) {
+        LOGGER.info("Computer list model to DTO");
         List<ComputerDTO> listDto = new ArrayList<>();
 
         for (Computer c : computers) {
@@ -61,10 +69,10 @@ public final class ComputerMapper {
      * Converts a page of Computer to a page of ComputerDTO.
      *
      * @param page page to convert
-     *
      * @return conversion result
      */
     public static Page<ComputerDTO> toComputerDTO(Page<Computer> page) {
+        LOGGER.info("Computer page model to DTO");
         return new Page<>(page.getNumber(), toComputerDTO(page.getObjects()));
     }
 }

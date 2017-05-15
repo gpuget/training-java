@@ -14,18 +14,16 @@ public class Page<T> {
      * @param list list of objects
      */
     public Page(int number, List<T> list) {
-        this.objects = list;
-        this.maxPerPage = list.size();
+        objects = list;
+        maxPerPage = list.size();
         this.number = number;
     }
 
     @Override
     public String toString() {
-        String res = "Page " + number + " :\n";
+        String res = "Page " + number + " : ";
 
-        for (T obj : objects) {
-            res = res + obj + '\n';
-        }
+        res = res + objects;
 
         return res;
     }

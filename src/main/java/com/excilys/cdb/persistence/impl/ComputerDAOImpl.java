@@ -41,7 +41,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer create(Computer computer) {
-        LOGGER.trace("Create computer : " + computer);
+        LOGGER.info("Create computer : " + computer);
         String message = "Error : DAO has not been able to correctly create the entity.";
 
         try (Connection connection = connector.getConnection();
@@ -71,7 +71,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public void delete(long id) {
-        LOGGER.trace("Delete computer by id : " + id);
+        LOGGER.info("Delete computer by id : " + id);
         try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setLong(1, id);
@@ -86,7 +86,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public void delete(List<Long> idsList) {
-        LOGGER.trace("Delete all computer in : " + idsList);
+        LOGGER.info("Delete all computer in : " + idsList);
         StringBuilder sb = new StringBuilder();
 
         sb.append(idsList.get(0));
@@ -108,7 +108,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public void deleteFromCompany(long companyId, Connection connection) {
-        LOGGER.trace("Delete computer from company : " + companyId);
+        LOGGER.info("Delete computer from company : " + companyId);
         LOGGER.debug("Connection used : " + connection);
         try (PreparedStatement statement = connection.prepareStatement(DELETE_FROM_COMPANY)) {
             statement.setLong(1, companyId);
@@ -123,7 +123,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public List<Computer> findAll() {
-        LOGGER.trace("Find all computers.");
+        LOGGER.info("Find all computers.");
         ArrayList<Computer> computers = new ArrayList<>();
 
         try (Connection connection = connector.getConnection();
@@ -145,7 +145,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public List<Computer> findAll(int limit, int offset) {
-        LOGGER.trace("Find all computers : " + limit + " " + offset);
+        LOGGER.info("Find all computers : " + limit + " " + offset);
         ArrayList<Computer> computers = new ArrayList<Computer>();
 
         try (Connection connection = connector.getConnection();
@@ -171,7 +171,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer findById(long id) {
-        LOGGER.trace("Find computer by id : " + id);
+        LOGGER.info("Find computer by id : " + id);
         Computer computer = null;
 
         try (Connection connection = connector.getConnection();
@@ -195,7 +195,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer update(Computer computer) {
-        LOGGER.trace("Update computer :" + computer);
+        LOGGER.info("Update computer :" + computer);
         try (Connection connection = connector.getConnection();
                 PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             setStatementValues(statement, computer);
@@ -213,7 +213,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public int getCount() {
-        LOGGER.trace("Count computers");
+        LOGGER.info("Count computers");
         String message = "Error : DAO has not been able to correctly count the entities.";
         int res = 0;
 
@@ -236,7 +236,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public List<Computer> getFilteredByName(int limit, int offset, String name) {
-        LOGGER.trace("Find all computer with name : " + name);
+        LOGGER.info("Find all computer with name : " + name);
         ArrayList<Computer> computers = new ArrayList<Computer>();
 
         try (Connection connection = connector.getConnection();
@@ -269,7 +269,7 @@ public class ComputerDAOImpl implements ComputerDAO {
      * @throws SQLException SQL exception
      */
     private Computer loadComputer(ResultSet rs) throws SQLException {
-        LOGGER.trace("Get a Computer from result set");
+        LOGGER.info("Get a Computer from result set");
         Company com = new Company.Builder().id(rs.getLong("company_id"))
                 .name(rs.getString("company_name")).build();
         Timestamp i = rs.getTimestamp("introduced");
@@ -296,7 +296,7 @@ public class ComputerDAOImpl implements ComputerDAO {
      * @throws SQLException SQL exception
      */
     private void setStatementValues(PreparedStatement ps, Computer computer) throws SQLException {
-        LOGGER.trace("Set values in statement");
+        LOGGER.info("Set values in statement");
         Company company = computer.getManufacturer();
 
         ps.setString(1, computer.getName());
@@ -321,7 +321,7 @@ public class ComputerDAOImpl implements ComputerDAO {
      * @param connector connector to use
      */
     public void setConnector(Connector connector) {
-        LOGGER.trace("Set connector");
+        LOGGER.info("Set connector : " + connector);
         this.connector = connector;
     }
 }

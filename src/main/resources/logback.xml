@@ -3,7 +3,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n</Pattern>
         </layout>
     </appender>
 
@@ -11,11 +11,7 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="com.excilys.cdb" level="all" additivity="false">
+    <logger name="com.excilys.cdb" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
-
-    <root level="debug">
-        <appender-ref ref="STDOUT" />
-    </root>
 </configuration>

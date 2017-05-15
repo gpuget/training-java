@@ -29,7 +29,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> findAll() {
-        LOGGER.trace("Find all companies.");
+        LOGGER.info("Find all companies.");
         ArrayList<Company> companies = new ArrayList<>();
 
         try (Connection connection = connector.getConnection();
@@ -52,7 +52,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Company findById(long id) {
-        LOGGER.trace("Find company by id : " + id);
+        LOGGER.info("Find company by id : " + id);
         Company company = null;
 
         try (Connection connection = connector.getConnection();
@@ -76,7 +76,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public void delete(long id) {
-        LOGGER.trace("Delete company by id : " + id);
+        LOGGER.info("Delete company by id : " + id);
         try (Connection connection = connector.getConnection()) {
             delete(id, connection);
         } catch (SQLException e) {
@@ -87,8 +87,23 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
+    public void delete(long id, Connection connection) {
+        LOGGER.info("Delete company by id : " + id);
+        LOGGER.debug("Connection used : " + connection);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+            statement.setLong(1, id);
+            LOGGER.debug("Query : " + statement);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            String message = "Error : DAO has not been able to correctly delete the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+    @Override
     public Company create(Company company) {
-        LOGGER.trace("Create Company : " + company);
+        LOGGER.info("Create Company : " + company);
         String message = "Error : DAO has not been able to correctly create the entity.";
 
         try (Connection connection = connector.getConnection();
@@ -117,26 +132,6 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     /**
-     * Deletes the company corresponding to the identifier in DB.
-     *
-     * @param id identifier
-     * @param connection provided connection
-     */
-    public void delete(long id, Connection connection) {
-        LOGGER.trace("Delete company by id : " + id);
-        LOGGER.debug("Connection used : " + connection);
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-            statement.setLong(1, id);
-            LOGGER.debug("Query : " + statement);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            String message = "Error : DAO has not been able to correctly delete the entity.";
-            LOGGER.error(message);
-            throw new DAOException(message, e);
-        }
-    }
-
-    /**
      * Create a Company with a result set.
      *
      * @param rs provided result set
@@ -144,7 +139,7 @@ public class CompanyDAOImpl implements CompanyDAO {
      * @throws SQLException if result set is not validate
      */
     private Company mapResultSet(ResultSet rs) throws SQLException {
-        LOGGER.trace("Get a Company from result set");
+        LOGGER.info("Get a Company from result set");
         return new Company.Builder().id(rs.getLong("id")).name(rs.getString("name")).build();
     }
 
@@ -154,7 +149,7 @@ public class CompanyDAOImpl implements CompanyDAO {
      * @param connector connector to use
      */
     public void setConnector(Connector connector) {
-        LOGGER.trace("Set connector");
+        LOGGER.info("Set connector : " + connector);
         this.connector = connector;
     }
 }

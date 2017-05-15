@@ -21,7 +21,7 @@ public class Connector {
      * @return data base connection
      */
     public Connection getConnection() {
-        LOGGER.trace("Get connection");
+        LOGGER.info("Get connection");
         String message;
 
         try {
@@ -45,7 +45,17 @@ public class Connector {
      * @param dataSource data source to use
      */
     public void setDataSource(DataSource dataSource) {
-        LOGGER.trace("Set datasource : " + dataSource);
+        LOGGER.info("Set datasource : " + dataSource);
         this.dataSource = dataSource;
+    }
+
+    /**
+     * Gets the data source.
+     *
+     * @return data source
+     */
+    public DataSource getDataSource() {
+        LOGGER.info("Get datasource");
+        return dataSource;
     }
 }

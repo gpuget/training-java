@@ -7,10 +7,10 @@ import org.junit.Test;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
-import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
 public class ComputerServiceTest {
-	private ComputerService computerService;
+	private ComputerServiceImpl computerService;
 	
     @Test
     public void correctPage(){        

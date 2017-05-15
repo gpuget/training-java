@@ -34,7 +34,7 @@ public class AddComputerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        LOGGER.trace("addComputer GET");
+        LOGGER.info("addComputer GET");
 
         List<CompanyDTO> companies = CompanyMapper.toCompanyDTO(companyService.getCompanies());
         LOGGER.debug("Set attribute compagnies : " + companies);
@@ -47,7 +47,7 @@ public class AddComputerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        LOGGER.trace("addComputer POST");
+        LOGGER.info("addComputer POST");
         Map<String, String[]> parameters = req.getParameterMap();
         Company company;
         Computer computer;
@@ -100,7 +100,7 @@ public class AddComputerServlet extends HttpServlet {
      * @param computerService computer service to use
      */
     public void setComputerService(ComputerService computerService) {
-        LOGGER.trace("Set computer service");
+        LOGGER.info("Set computer service : " + computerService);
         this.computerService = computerService;
     }
 
@@ -110,7 +110,7 @@ public class AddComputerServlet extends HttpServlet {
      * @param companyService company service to use
      */
     public void setCompanyService(CompanyService companyService) {
-        LOGGER.trace("Set company service");
+        LOGGER.info("Set company service : " + companyService);
         this.companyService = companyService;
     }
 }

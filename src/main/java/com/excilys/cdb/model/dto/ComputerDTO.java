@@ -15,11 +15,11 @@ public class ComputerDTO implements Serializable {
      * Constructor.
      */
     public ComputerDTO() {
-        this.id = "";
-        this.name = "";
-        this.manufacturer = new CompanyDTO();
-        this.introduced = "";
-        this.discontinued = "";
+        id = "";
+        name = "";
+        manufacturer = new CompanyDTO();
+        introduced = "";
+        discontinued = "";
     }
 
     @Override
@@ -53,8 +53,16 @@ public class ComputerDTO implements Serializable {
     public String toString() {
         String res;
 
-        res = "Computer : " + name + " (" + manufacturer.getName() + ") " + introduced;
-        if (discontinued != null && !discontinued.isEmpty()) {
+        res = "Computer (" + id + ") " + name;
+        if (manufacturer != null) {
+            res = res + " [" + manufacturer.getName() + "]";
+        }
+
+        if (introduced != null || !introduced.equals('-')) {
+            res = res + " from " + introduced;
+        }
+
+        if (discontinued != null || !discontinued.equals('-')) {
             res = res + " to " + discontinued;
         }
 

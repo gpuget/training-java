@@ -10,7 +10,7 @@
    
    <import resource="../persistence/companyDao.xml"/>
    
-   <bean id="companyService" class="com.excilys.cdb.service.CompanyService" scope="singleton">
+   <bean id="companyService" class="com.excilys.cdb.service.impl.CompanyServiceImpl" scope="singleton">
    		<property name="companyDao" ref="companyDao"/>
    </bean>
 </beans>

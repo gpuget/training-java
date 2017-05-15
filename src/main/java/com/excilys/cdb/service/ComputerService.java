@@ -2,25 +2,10 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
-import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
-public class ComputerService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
-
-    private ComputerDAOImpl computerDao;
-    private int count;
-
-    /**
-     * Bean initialization.
-     */
-    private void init() {
-        this.count = computerDao.getCount();
-    }
+public interface ComputerService {
 
     /**
      * Inserts the computer.
@@ -28,38 +13,21 @@ public class ComputerService {
      * @param computer computer to insert
      * @return inserted computer
      */
-    public Computer create(Computer computer) {
-        LOGGER.trace("Create computer : " + computer);
-        count++;
-        try {
-            return computerDao.create(computer);
-        } catch (Exception e) {
-            count--;
-            throw e;
-        }
-    }
+    Computer create(Computer computer);
 
     /**
      * Deletes the computer corresponding to the identifier.
      *
      * @param id identifier
      */
-    public void delete(long id) {
-        LOGGER.trace("Delete computer by id : " + id);
-        computerDao.delete(id);
-        count--;
-    }
+    void delete(long id);
 
     /**
      * Deletes the computers corresponding to the identifiers.
      *
      * @param idsList identifiers
      */
-    public void deleteList(List<Long> idsList) {
-        LOGGER.trace("Delete computers by ids : " + idsList);
-        computerDao.delete(idsList);
-        count -= idsList.size();
-    }
+    void deleteList(List<Long> idsList);
 
     /**
      * Updates the computer corresponding to the identifier after conversion.
@@ -67,10 +35,7 @@ public class ComputerService {
      * @param computer modified computer
      * @return modified computer
      */
-    public Computer update(Computer computer) {
-        LOGGER.trace("Update computer : " + computer);
-        return computerDao.update(computer);
-    }
+    Computer update(Computer computer);
 
     /**
      * Gets the details of the computer corresponding to the identifier.
@@ -78,20 +43,14 @@ public class ComputerService {
      * @param id identifier
      * @return computer
      */
-    public Computer getDetails(long id) {
-        LOGGER.trace("Get computer details with id : " + id);
-        return computerDao.findById(id);
-    }
+    Computer getDetails(long id);
 
     /**
      * Gets the total number of computers.
      *
      * @return total number of computers
      */
-    public int getCount() {
-        LOGGER.trace("Count of computers : " + count);
-        return count;
-    }
+    int getCount();
 
     /**
      * Gets the page of computers.
@@ -100,11 +59,7 @@ public class ComputerService {
      * @param maxPerPage maximum number of items
      * @return page page of computers
      */
-    public Page<Computer> getPage(int number, int maxPerPage) {
-        LOGGER.trace(
-                "Get page of computer : number " + number + "with " + maxPerPage + "computers");
-        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
-    }
+    Page<Computer> getPage(int number, int maxPerPage);
 
     /**
      * Gets the pages of computers corresponding to specified name.
@@ -114,20 +69,5 @@ public class ComputerService {
      * @param name seek name
      * @return page of filtered computers
      */
-    public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name) {
-        LOGGER.trace("Get page of filtered computer : (" + name + ") number " + number + "with "
-                + maxPerPage + "computers");
-        return new Page<>(number,
-                computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
-    }
-
-    /**
-     * Sets the computer DAO.
-     *
-     * @param computerDao computer DAO to use
-     */
-    public void setComputerDao(ComputerDAOImpl computerDao) {
-        LOGGER.trace("Set computer DAO");
-        this.computerDao = computerDao;
-    }
+    Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name);
 }

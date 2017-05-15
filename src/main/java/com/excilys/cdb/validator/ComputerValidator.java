@@ -23,7 +23,7 @@ public final class ComputerValidator {
      */
     public static boolean checkName(String name) {
         String regex = "[\\d\\w\\+\\-\\ \\.\\']+";
-        LOGGER.trace("Check name : " + name);
+        LOGGER.info("Check name : " + name);
         LOGGER.debug("Regex : " + regex);
         return name != null && name.matches(regex);
     }
@@ -36,7 +36,7 @@ public final class ComputerValidator {
      */
     public static boolean checkDate(String date) {
         String regex = "\\d{4}\\-\\d{2}\\-\\d{2}";
-        LOGGER.trace("Check date : " + date);
+        LOGGER.info("Check date : " + date);
         LOGGER.debug("Regex : " + regex);
         return date != null && date.matches(regex);
     }
@@ -49,7 +49,7 @@ public final class ComputerValidator {
      */
     public static boolean checkId(String id) {
         String regex = "[1-9][\\d]*";
-        LOGGER.trace("Check id : " + id);
+        LOGGER.info("Check id : " + id);
         LOGGER.debug("Regex : " + regex);
         return id != null && id.matches(regex);
     }
@@ -63,7 +63,7 @@ public final class ComputerValidator {
      */
     public static Computer getValidComputer(Map<String, String[]> parameters)
             throws ServletException {
-        LOGGER.trace("Get valid computer with parameters : " + parameters.entrySet());
+        LOGGER.info("Get valid computer with parameters : " + parameters.entrySet());
         String paramValue;
         Computer computer = new Computer.Builder().build();
         LocalDate i = null;
@@ -139,7 +139,7 @@ public final class ComputerValidator {
      * @throws ServletException if the selection is not validate
      */
     public static List<Long> getValidIdList(String ids) throws ServletException {
-        LOGGER.trace("Get valid list of id : " + ids);
+        LOGGER.info("Get valid list of id : " + ids);
         List<Long> idsList = new ArrayList<>();
         String[] idsTab = ids.split(",");
         for (String id : idsTab) {

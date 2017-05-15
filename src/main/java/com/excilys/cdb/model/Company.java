@@ -19,7 +19,7 @@ public class Company {
     if (obj != null && obj instanceof Company) {
       Company company = (Company) obj;
 
-      return (this.id == company.getId()) && this.name.equals(company.getName());
+      return (this.id == company.id) && this.name.equals(company.name);
     }
 
     return false;

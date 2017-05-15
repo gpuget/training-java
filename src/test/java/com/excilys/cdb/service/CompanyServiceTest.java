@@ -6,10 +6,12 @@ import org.junit.Test;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.impl.CompanyServiceImpl;
+import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
 public class CompanyServiceTest {
-	private CompanyService companyService;
-	ComputerService computerService;
+	private CompanyServiceImpl companyService;
+	ComputerServiceImpl computerService;
 	
 	@Test
 	public void createAndDelete() {

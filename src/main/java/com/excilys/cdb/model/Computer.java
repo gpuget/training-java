@@ -40,9 +40,9 @@ public class Computer {
     public String toString() {
         String res;
 
-        res = "Computer : " + this.name;
+        res = "Computer (" + this.id + ") " + this.name;
         if (this.manufacturer != null) {
-            res = res + " (" + this.manufacturer.getName();
+            res = res + " [" + this.manufacturer.getName() + "]";
         }
 
         if (this.introduced != null) {

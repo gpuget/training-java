@@ -14,7 +14,7 @@ public final class StringValidator {
      */
     public static boolean checkNoSpecialsChars(String string) {
         String regex = "[\\w\\+\\-\\ ]*";
-        LOGGER.trace("Check specials characters : " + string);
+        LOGGER.info("Check specials characters : " + string);
         LOGGER.debug("Regex : " + regex);
         return string != null && string.matches(regex);
     }
@@ -27,7 +27,7 @@ public final class StringValidator {
      */
     public static boolean checkIsNumber(String string) {
         String regex = "[\\d]+";
-        LOGGER.trace("Check number : " + string);
+        LOGGER.info("Check number : " + string);
         LOGGER.debug("Regex : " + regex);
         return string != null && string.matches(regex);
     }
@@ -40,7 +40,7 @@ public final class StringValidator {
      */
     public static boolean checkIsDecade(String string) {
         String regex = "[\\d]+0";
-        LOGGER.trace("Check decade : " + string);
+        LOGGER.info("Check decade : " + string);
         LOGGER.debug("Regex : " + regex);
         return string != null && string.matches(regex);
     }

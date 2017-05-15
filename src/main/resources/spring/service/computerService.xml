@@ -10,7 +10,7 @@
    
    <import resource="../persistence/computerDao.xml"/>
    
-   <bean id="computerService" class="com.excilys.cdb.service.ComputerService" scope="singleton"
+   <bean id="computerService" class="com.excilys.cdb.service.impl.ComputerServiceImpl" scope="singleton"
    			init-method="init">
    		<property name="computerDao" ref="computerDao"/>
    </bean>

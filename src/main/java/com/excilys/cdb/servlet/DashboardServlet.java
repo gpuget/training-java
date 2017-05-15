@@ -32,7 +32,7 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        LOGGER.trace("dashboard GET");
+        LOGGER.info("dashboard GET");
         Map<String, String[]> parameters = req.getParameterMap();
         int numberPage = 1;
         int maxPerPage = 10;
@@ -93,7 +93,7 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        LOGGER.trace("dashboard POST");
+        LOGGER.info("dashboard POST");
         Map<String, String[]> parameters = req.getParameterMap();
 
         LOGGER.debug("Servlet parameter selection");
@@ -114,7 +114,7 @@ public class DashboardServlet extends HttpServlet {
      * @return page of filtered computers
      */
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
-        LOGGER.trace("Get filtered by name page : (" + name + ") number" + number + "with max "
+        LOGGER.info("Get filtered by name page : (" + name + ") number" + number + "with max "
                 + maxPerPage);
         return ComputerMapper
                 .toComputerDTO(computerService.getFilteredByNamePage(number, maxPerPage, name));
@@ -128,7 +128,7 @@ public class DashboardServlet extends HttpServlet {
      * @return page page of computers
      */
     private Page<ComputerDTO> getPage(int number, int maxPerPage) {
-        LOGGER.trace("Get filtered by name page : number" + number + "with max " + maxPerPage);
+        LOGGER.info("Get filtered by name page : number" + number + "with max " + maxPerPage);
         return ComputerMapper.toComputerDTO(computerService.getPage(number, maxPerPage));
     }
 
@@ -138,7 +138,7 @@ public class DashboardServlet extends HttpServlet {
      * @return total number of computers
      */
     private int getCount() {
-        LOGGER.trace("Count of computers");
+        LOGGER.info("Count of computers");
         return computerService.getCount();
     }
 
@@ -148,7 +148,7 @@ public class DashboardServlet extends HttpServlet {
      * @param idsList identifiers
      */
     private void deleteList(List<Long> idsList) {
-        LOGGER.trace("Delete list : " + idsList);
+        LOGGER.info("Delete list : " + idsList);
         computerService.deleteList(idsList);
     }
 
@@ -158,7 +158,7 @@ public class DashboardServlet extends HttpServlet {
      * @param computerService computer service to use
      */
     public void setComputerService(ComputerService computerService) {
-        LOGGER.trace("Set computer service");
+        LOGGER.info("Set computer service : " + computerService);
         this.computerService = computerService;
     }
 }
