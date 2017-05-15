@@ -11,10 +11,19 @@ import com.excilys.cdb.persistence.Connector;
 import com.excilys.cdb.persistence.impl.CompanyDAOImpl;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
-public enum CompanyService {
-    INSTANCE;
-
+public class CompanyService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
+    
+    private CompanyDAOImpl companyDao;
+    private ComputerDAOImpl computerDao;
+
+    public void setCompanyDao(CompanyDAOImpl companyDao) {
+        this.companyDao = companyDao;
+    }
+
+    public void setComputerDao(ComputerDAOImpl computerDao) {
+        this.computerDao = computerDao;
+    }
 
     /**
      * Returns all companies.
@@ -23,7 +32,7 @@ public enum CompanyService {
      */
     public List<Company> getCompanies() {
         LOGGER.trace("Get companies");
-        return new CompanyDAOImpl().findAll();
+        return companyDao.findAll();
     }
 
     /**
@@ -34,7 +43,7 @@ public enum CompanyService {
      */
     public Company getCompanyById(long id) {
         LOGGER.trace("Get company by id : " + id);
-        return new CompanyDAOImpl().findById(id);
+        return companyDao.findById(id);
     }
 
     /**
@@ -45,7 +54,7 @@ public enum CompanyService {
      */
     public Company create(Company company) {
         LOGGER.trace("Create company : " + company);
-        return new CompanyDAOImpl().create(company);
+        return companyDao.create(company);
     }
 
     /**
@@ -63,8 +72,8 @@ public enum CompanyService {
             connection.setAutoCommit(false);
             sharedConnectionThread.set(connection);
             try {
-                new ComputerDAOImpl().deleteFromCompany(id, sharedConnectionThread.get());
-                new CompanyDAOImpl().delete(id, sharedConnectionThread.get());
+                computerDao.deleteFromCompany(id, sharedConnectionThread.get());
+                companyDao.delete(id, sharedConnectionThread.get());
             } catch (Exception e) {
                 LOGGER.debug("Connection rollback");
                 connection.rollback();

@@ -9,18 +9,18 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
-public enum ComputerService {
-    INSTANCE;
-
+public class ComputerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
-
+    
+    private ComputerDAOImpl computerDao;
     private int count;
 
-    /**
-     * Constructor.
-     */
-    ComputerService() {
-        this.count = new ComputerDAOImpl().getCount();
+    public void setComputerDao(ComputerDAOImpl computerDao) {
+        this.computerDao = computerDao;
+    }
+    
+    private void init() {
+        this.count = computerDao.getCount();
     }
 
     /**
@@ -33,7 +33,7 @@ public enum ComputerService {
         LOGGER.trace("Create computer : " + computer);
         count++;
         try {
-            return new ComputerDAOImpl().create(computer);
+            return computerDao.create(computer);
         } catch (Exception e) {
             count--;
             throw e;
@@ -47,7 +47,7 @@ public enum ComputerService {
      */
     public void delete(long id) {
         LOGGER.trace("Delete computer by id : " + id);
-        new ComputerDAOImpl().delete(id);
+        computerDao.delete(id);
         count--;
     }
 
@@ -58,7 +58,7 @@ public enum ComputerService {
      */
     public void deleteList(List<Long> idsList) {
         LOGGER.trace("Delete computers by ids : " + idsList);
-        new ComputerDAOImpl().delete(idsList);
+        computerDao.delete(idsList);
         count -= idsList.size();
     }
 
@@ -70,7 +70,7 @@ public enum ComputerService {
      */
     public Computer update(Computer computer) {
         LOGGER.trace("Update computer : " + computer);
-        return new ComputerDAOImpl().update(computer);
+        return computerDao.update(computer);
     }
 
     /**
@@ -81,7 +81,7 @@ public enum ComputerService {
      */
     public Computer getDetails(long id) {
         LOGGER.trace("Get computer details with id : " + id);
-        return new ComputerDAOImpl().findById(id);
+        return computerDao.findById(id);
     }
 
     /**
@@ -102,9 +102,9 @@ public enum ComputerService {
      * @return page page of computers
      */
     public Page<Computer> getPage(int number, int maxPerPage) {
-        LOGGER.trace("Get page of computer : number " + number + "with " + maxPerPage + "computers");
-        return new Page<>(number,
-                new ComputerDAOImpl().findAll(maxPerPage, maxPerPage * (number - 1)));
+        LOGGER.trace(
+                "Get page of computer : number " + number + "with " + maxPerPage + "computers");
+        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
 
     /**
@@ -116,8 +116,9 @@ public enum ComputerService {
      * @return page of filtered computers
      */
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name) {
-        LOGGER.trace("Get page of filtered computer : (" + name + ") number " + number + "with " + maxPerPage + "computers");
-        return new Page<>(number, new ComputerDAOImpl().getFilteredByName(maxPerPage,
-                maxPerPage * (number - 1), name));
+        LOGGER.trace("Get page of filtered computer : (" + name + ") number " + number + "with "
+                + maxPerPage + "computers");
+        return new Page<>(number,
+                computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
     }
 }

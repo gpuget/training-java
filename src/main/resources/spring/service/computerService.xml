@@ -8,9 +8,10 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">       
    
-   <import resource="connector.xml"/>
+   <import resource="../persistence/computerDao.xml"/>
    
-   <bean id="companyDao" class="com.excilys.cdb.persistence.impl.CompanyDAOImpl" scope="singleton">
-   		<property name="connector" ref="connector"/>
+   <bean id="computerService" class="com.excilys.cdb.service.ComputerService" scope="singleton"
+   			init-method="init">
+   		<property name="computerDao" ref="computerDao"/>
    </bean>
 </beans>
