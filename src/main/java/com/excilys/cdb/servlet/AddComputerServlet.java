@@ -26,7 +26,8 @@ public class AddComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 4989886087572935146L;
     private static final Logger LOGGER = LoggerFactory.getLogger(AddComputerServlet.class);
 
-    ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/service/computerService.xml", "spring/service/companyService.xml"});
+    ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
+            "spring/service/computerService.xml", "spring/service/companyService.xml" });
     private ComputerService computerService = (ComputerService) context.getBean("computerService");
     private CompanyService companyService = (CompanyService) context.getBean("companyService");
 
@@ -93,11 +94,23 @@ public class AddComputerServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Sets the computer service.
+     *
+     * @param computerService computer service to use
+     */
     public void setComputerService(ComputerService computerService) {
+        LOGGER.trace("Set computer service");
         this.computerService = computerService;
     }
 
+    /**
+     * Sets the company service.
+     *
+     * @param companyService company service to use
+     */
     public void setCompanyService(CompanyService companyService) {
+        LOGGER.trace("Set company service");
         this.companyService = companyService;
     }
 }

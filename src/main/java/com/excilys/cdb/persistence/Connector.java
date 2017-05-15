@@ -7,8 +7,6 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.excilys.cdb.exception.DAOException;
 
@@ -17,15 +15,15 @@ public class Connector {
 
     private DataSource dataSource;
 
-    public void setDataSource(DataSource dataSource) {
-        LOGGER.trace("Set datasource : " + dataSource);
-        this.dataSource = dataSource;
-    }
-
+    /**
+     * Gets the connection from data source.
+     *
+     * @return data base connection
+     */
     public Connection getConnection() {
         LOGGER.trace("Get connection");
         String message;
-        
+
         try {
             if (dataSource != null) {
                 return dataSource.getConnection();
@@ -39,5 +37,15 @@ public class Connector {
             LOGGER.error(message);
             throw new DAOException(message, e);
         }
+    }
+
+    /**
+     * Sets the data source.
+     *
+     * @param dataSource data source to use
+     */
+    public void setDataSource(DataSource dataSource) {
+        LOGGER.trace("Set datasource : " + dataSource);
+        this.dataSource = dataSource;
     }
 }

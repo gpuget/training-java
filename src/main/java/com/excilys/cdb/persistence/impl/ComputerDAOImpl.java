@@ -39,10 +39,6 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     private Connector connector;
 
-    public void setConnector(Connector connector) {
-        this.connector = connector;
-    }
-
     @Override
     public Computer create(Computer computer) {
         LOGGER.trace("Create computer : " + computer);
@@ -317,5 +313,15 @@ public class ComputerDAOImpl implements ComputerDAO {
         } else {
             ps.setDate(3, null);
         }
+    }
+
+    /**
+     * Sets the connector.
+     *
+     * @param connector connector to use
+     */
+    public void setConnector(Connector connector) {
+        LOGGER.trace("Set connector");
+        this.connector = connector;
     }
 }

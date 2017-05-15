@@ -25,8 +25,9 @@ public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = -4333507256112472526L;
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
 
-    ApplicationContext context = new ClassPathXmlApplicationContext("spring/service/computerService.xml");        
-    private ComputerService computerService = (ComputerService) context.getBean("computerService");    
+    ApplicationContext context = new ClassPathXmlApplicationContext(
+            "spring/service/computerService.xml");
+    private ComputerService computerService = (ComputerService) context.getBean("computerService");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -113,9 +114,10 @@ public class DashboardServlet extends HttpServlet {
      * @return page of filtered computers
      */
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
-        LOGGER.trace("Get filtered by name page : (" + name + ") number" + number + "with max " + maxPerPage);
-        return ComputerMapper.toComputerDTO(
-                computerService.getFilteredByNamePage(number, maxPerPage, name));
+        LOGGER.trace("Get filtered by name page : (" + name + ") number" + number + "with max "
+                + maxPerPage);
+        return ComputerMapper
+                .toComputerDTO(computerService.getFilteredByNamePage(number, maxPerPage, name));
     }
 
     /**
@@ -150,6 +152,11 @@ public class DashboardServlet extends HttpServlet {
         computerService.deleteList(idsList);
     }
 
+    /**
+     * Sets the computer service.
+     *
+     * @param computerService computer service to use
+     */
     public void setComputerService(ComputerService computerService) {
         LOGGER.trace("Set computer service");
         this.computerService = computerService;

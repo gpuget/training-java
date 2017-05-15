@@ -13,17 +13,9 @@ import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public class CompanyService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
-    
+
     private CompanyDAOImpl companyDao;
     private ComputerDAOImpl computerDao;
-
-    public void setCompanyDao(CompanyDAOImpl companyDao) {
-        this.companyDao = companyDao;
-    }
-
-    public void setComputerDao(ComputerDAOImpl computerDao) {
-        this.computerDao = computerDao;
-    }
 
     /**
      * Returns all companies.
@@ -90,5 +82,25 @@ public class CompanyService {
             LOGGER.debug("Garbage collector called");
             System.gc();
         }
+    }
+
+    /**
+     * Sets the company DAO.
+     *
+     * @param companyDao company DAO to use
+     */
+    public void setCompanyDao(CompanyDAOImpl companyDao) {
+        LOGGER.trace("Set companyDao");
+        this.companyDao = companyDao;
+    }
+
+    /**
+     * Sets the computer DAO.
+     *
+     * @param computerDao computer DAO to use
+     */
+    public void setComputerDao(ComputerDAOImpl computerDao) {
+        LOGGER.trace("Set computer DAO");
+        this.computerDao = computerDao;
     }
 }

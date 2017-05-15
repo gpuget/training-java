@@ -11,14 +11,13 @@ import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
 public class ComputerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
-    
+
     private ComputerDAOImpl computerDao;
     private int count;
 
-    public void setComputerDao(ComputerDAOImpl computerDao) {
-        this.computerDao = computerDao;
-    }
-    
+    /**
+     * Bean initialization.
+     */
     private void init() {
         this.count = computerDao.getCount();
     }
@@ -120,5 +119,15 @@ public class ComputerService {
                 + maxPerPage + "computers");
         return new Page<>(number,
                 computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
+    }
+
+    /**
+     * Sets the computer DAO.
+     *
+     * @param computerDao computer DAO to use
+     */
+    public void setComputerDao(ComputerDAOImpl computerDao) {
+        LOGGER.trace("Set computer DAO");
+        this.computerDao = computerDao;
     }
 }

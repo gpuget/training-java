@@ -27,10 +27,6 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     private Connector connector;
 
-    public void setConnector(Connector connector) {
-        this.connector = connector;
-    }
-
     @Override
     public List<Company> findAll() {
         LOGGER.trace("Find all companies.");
@@ -150,5 +146,15 @@ public class CompanyDAOImpl implements CompanyDAO {
     private Company mapResultSet(ResultSet rs) throws SQLException {
         LOGGER.trace("Get a Company from result set");
         return new Company.Builder().id(rs.getLong("id")).name(rs.getString("name")).build();
+    }
+
+    /**
+     * Sets the connector.
+     *
+     * @param connector connector to use
+     */
+    public void setConnector(Connector connector) {
+        LOGGER.trace("Set connector");
+        this.connector = connector;
     }
 }
