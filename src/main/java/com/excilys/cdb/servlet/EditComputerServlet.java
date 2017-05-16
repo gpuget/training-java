@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.mapper.dto.CompanyMapper;
@@ -34,7 +32,7 @@ public class EditComputerServlet extends HttpServlet {
     private CompanyService companyService;
 
     /**
-     * 
+     * Constructor.
      */
     public EditComputerServlet() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
@@ -51,8 +49,7 @@ public class EditComputerServlet extends HttpServlet {
         LOGGER.info("editComputer GET");
         LOGGER.debug("Servlet parameter id");
         String id = req.getParameter("id");
-        List<CompanyDTO> companiesDto = CompanyMapper
-                .toCompanyDTO(companyService.getCompanies());
+        List<CompanyDTO> companiesDto = CompanyMapper.toCompanyDTO(companyService.getCompanies());
         ComputerDTO computerDto = ComputerMapper
                 .toComputerDTO(computerService.getDetails(Long.parseLong(id)));
 

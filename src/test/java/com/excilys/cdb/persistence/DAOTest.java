@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
@@ -34,13 +35,21 @@ public class DAOTest {
                                     .name("CPU")
                                     .manufacturer(new Company.Builder().id(1L).name("CPY").build()).build();
         Computer c2;
+        boolean deleteSuccess;
         
         assertEquals(0l, c.getId());
         c2 = computerDao.create(c);
         assertNotEquals(0L, c2.getId());
         assertNotNull(computerDao.findById(c2.getId()));
         computerDao.delete(c2.getId());
-        assertNull(computerDao.findById(c2.getId()));
+        try {
+            // Cannot find a deleted computer throws DAOException expected
+            computerDao.findById(c2.getId());
+            deleteSuccess = false;
+        } catch (DAOException e) {
+            deleteSuccess = true;
+        }
+        assertTrue(deleteSuccess);
     }
     
     @Test
@@ -67,12 +76,20 @@ public class DAOTest {
     public void companyCreateAndDelete() {
     	Company com = new Company.Builder().name("Bob Inc.").build();
     	Company com2;
+    	boolean deleteSuccess;
     	
     	assertEquals(0L, com.getId());
     	com2 = companyDao.create(com);
     	assertNotEquals(0L, com2.getId());
     	assertNotNull(companyDao.findById(com2.getId()));
     	companyDao.delete(com2.getId());
-    	assertNull(companyDao.findById(com2.getId()));
+    	try {
+    	    // Cannot find a deleted company throws DAOException expected
+            companyDao.findById(com2.getId());
+            deleteSuccess = false;
+        } catch (DAOException e) {
+            deleteSuccess = true;
+        }
+    	assertTrue(deleteSuccess);
     }
 }

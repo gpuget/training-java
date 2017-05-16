@@ -2,10 +2,8 @@ package com.excilys.cdb.persistence.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
@@ -43,6 +41,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
+    private static final String DELETE_FROM_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
     private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
@@ -125,9 +124,22 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    public void deleteFromCompany(long companyId) {
+        LOGGER.info("Delete computer from company : " + companyId);
+
+        try {
+            LOGGER.debug("Query : " + DELETE_FROM_COMPANY);
+            jdbcTemplate.update(DELETE_FROM_COMPANY, companyId);
+        } catch (DataAccessException e) {
+            String message = "Error : DAO has not been able to correctly delete the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+    @Override
     public List<Computer> findAll() {
         LOGGER.info("Find all computers.");
-
         try {
             LOGGER.debug("Query : " + FIND_ALL);
             return jdbcTemplate.query(FIND_ALL, new ComputerRowMapper());
@@ -145,7 +157,7 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             String sqlQuery = FIND_ALL + BOUNDED_RESULT;
             LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Integer[] { limit, offset },
+            return jdbcTemplate.query(sqlQuery, new Integer[] {limit, offset},
                     new ComputerRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to correctly find all entities.";
@@ -160,7 +172,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         try {
             LOGGER.debug("Query : " + FIND_QUERY);
-            return jdbcTemplate.queryForObject(FIND_QUERY, new Object[] { id },
+            return jdbcTemplate.queryForObject(FIND_QUERY, new Object[] {id},
                     new ComputerRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to find the entity.";
@@ -208,11 +220,13 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> getFilteredByName(int limit, int offset, String name) {
         LOGGER.info("Find all computer with name : " + name);
-        
+
         try {
             String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
             LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Object[]{"name"+'%', limit, offset}, new int[]{Types.VARCHAR, Types.INTEGER, Types.INTEGER}, new ComputerRowMapper());
+            return jdbcTemplate.query(sqlQuery, new Object[] {"name" + '%', limit, offset},
+                    new int[] {Types.VARCHAR, Types.INTEGER, Types.INTEGER},
+                    new ComputerRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to correctly find all entities.";
             LOGGER.error(message);

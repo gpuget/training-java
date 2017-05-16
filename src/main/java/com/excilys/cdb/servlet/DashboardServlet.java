@@ -28,12 +28,14 @@ public class DashboardServlet extends HttpServlet {
     private ComputerService computerService;
 
     /**
-     * 
+     * Constructor.
      */
     public DashboardServlet() {
+        LOGGER.info("Initialization...");
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 SpringConfig.class);
         computerService = (ComputerService) context.getBean("computerService");
+        LOGGER.debug("Computer service : " + computerService);
         context.close();
     }
 
@@ -136,7 +138,7 @@ public class DashboardServlet extends HttpServlet {
      * @return page page of computers
      */
     private Page<ComputerDTO> getPage(int number, int maxPerPage) {
-        LOGGER.info("Get filtered by name page : number" + number + "with max " + maxPerPage);
+        LOGGER.info("Get page : number " + number + " with max " + maxPerPage);
         return ComputerMapper.toComputerDTO(computerService.getPage(number, maxPerPage));
     }
 

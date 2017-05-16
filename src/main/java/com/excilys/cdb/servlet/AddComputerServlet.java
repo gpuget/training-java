@@ -30,15 +30,17 @@ public class AddComputerServlet extends HttpServlet {
     private CompanyService companyService;
 
     /**
-     * 
+     * Constructor.
      */
     public AddComputerServlet() {
+        LOGGER.info("Initialization...");
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 SpringConfig.class);
         companyService = (CompanyService) context.getBean("companyService");
         computerService = (ComputerService) context.getBean("computerService");
+        LOGGER.debug("Company service : " + companyService);
+        LOGGER.debug("Computer service : " + computerService);
         context.close();
-
     }
 
     @Override

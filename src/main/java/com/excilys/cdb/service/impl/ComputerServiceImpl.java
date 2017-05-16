@@ -40,10 +40,12 @@ public class ComputerServiceImpl implements ComputerService {
     public Computer create(Computer computer) {
         LOGGER.info("Create computer : " + computer);
         ++count;
+        LOGGER.debug("Count : " + count);
         try {
             return computerDao.create(computer);
         } catch (DAOException e) {
             --count;
+            LOGGER.debug("Count : " + count);
             throw e;
         }
     }
@@ -56,7 +58,7 @@ public class ComputerServiceImpl implements ComputerService {
     public void delete(long id) {
         LOGGER.info("Delete computer by id : " + id);
         computerDao.delete(id);
-        count--;
+        --count;
     }
 
     /**
@@ -110,8 +112,7 @@ public class ComputerServiceImpl implements ComputerService {
      * @return page page of computers
      */
     public Page<Computer> getPage(int number, int maxPerPage) {
-        LOGGER.info(
-                "Get page of computer : number " + number + "with " + maxPerPage + "computers");
+        LOGGER.info("Get page of computer : number " + number + " with " + maxPerPage + " computers");
         return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
 

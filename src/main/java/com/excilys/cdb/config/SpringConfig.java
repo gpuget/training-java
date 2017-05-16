@@ -19,24 +19,34 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:default.properties")
 public class SpringConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringConfig.class);
-    
+
     @Autowired
     private Environment environment;
-    
+
+    /**
+     * Gets the data source bean.
+     *
+     * @return data source
+     */
     @Bean
     public DriverManagerDataSource dataSource() {
         LOGGER.info("new data source");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        
+
         dataSource.setDriverClassName(environment.getProperty("db.driver"));
         dataSource.setUrl(environment.getProperty("db.url"));
         dataSource.setUsername(environment.getProperty("db.username"));
         dataSource.setPassword(environment.getProperty("db.password"));
         LOGGER.debug("Data source : " + dataSource);
-        
+
         return dataSource;
     }
-    
+
+    /**
+     * Gets the transaction manager.
+     *
+     * @return transaction manager
+     */
     @Bean
     public PlatformTransactionManager transactionManager() {
         LOGGER.info("new transaction manager");
