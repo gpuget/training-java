@@ -5,15 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.mapper.dto.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -22,31 +20,22 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 
-public class AddComputerServlet extends HttpServlet {
+public class AddComputerServlet extends MyServlet {
     private static final long serialVersionUID = 4989886087572935146L;
     private static final Logger LOGGER = LoggerFactory.getLogger(AddComputerServlet.class);
 
+    @Autowired
     private ComputerService computerService;
-    private CompanyService companyService;
 
-    /**
-     * Constructor.
-     */
-    public AddComputerServlet() {
-        LOGGER.info("Initialization...");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-                SpringConfig.class);
-        companyService = (CompanyService) context.getBean("companyService");
-        computerService = (ComputerService) context.getBean("computerService");
-        LOGGER.debug("Company service : " + companyService);
-        LOGGER.debug("Computer service : " + computerService);
-        context.close();
-    }
+    @Autowired
+    private CompanyService companyService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         LOGGER.info("addComputer GET");
+        LOGGER.debug("Company service : " + companyService);
+        LOGGER.debug("Computer service : " + computerService);
 
         List<CompanyDTO> companies = CompanyMapper.toCompanyDTO(companyService.getCompanies());
         LOGGER.debug("Set attribute compagnies : " + companies);

@@ -5,15 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.mapper.dto.CompanyMapper;
 import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Company;
@@ -24,29 +22,22 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 
-public class EditComputerServlet extends HttpServlet {
+public class EditComputerServlet extends MyServlet {
     private static final long serialVersionUID = 4989886087572935146L;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditComputerServlet.class);
 
+    @Autowired
     private ComputerService computerService;
+
+    @Autowired
     private CompanyService companyService;
-
-    /**
-     * Constructor.
-     */
-    public EditComputerServlet() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-                SpringConfig.class);
-        companyService = (CompanyService) context.getBean("companyService");
-        computerService = (ComputerService) context.getBean("computerService");
-        context.close();
-
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         LOGGER.info("editComputer GET");
+        LOGGER.debug("Company service : " + companyService);
+        LOGGER.debug("Computer service : " + computerService);
         LOGGER.debug("Servlet parameter id");
         String id = req.getParameter("id");
         List<CompanyDTO> companiesDto = CompanyMapper.toCompanyDTO(companyService.getCompanies());

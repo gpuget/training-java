@@ -5,15 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.model.dto.ComputerDTO;
@@ -21,28 +19,19 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.StringValidator;
 
-public class DashboardServlet extends HttpServlet {
+public class DashboardServlet extends MyServlet {
     private static final long serialVersionUID = -4333507256112472526L;
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
 
+    @Autowired
     private ComputerService computerService;
-
-    /**
-     * Constructor.
-     */
-    public DashboardServlet() {
-        LOGGER.info("Initialization...");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-                SpringConfig.class);
-        computerService = (ComputerService) context.getBean("computerService");
-        LOGGER.debug("Computer service : " + computerService);
-        context.close();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         LOGGER.info("dashboard GET");
+        LOGGER.debug("Computer service : " + computerService);
+
         Map<String, String[]> parameters = req.getParameterMap();
         int numberPage = 1;
         int maxPerPage = 10;
