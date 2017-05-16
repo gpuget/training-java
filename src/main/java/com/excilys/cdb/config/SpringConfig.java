@@ -8,9 +8,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableTransactionManagement
 @ComponentScan(basePackages = "com.excilys.cdb")
 @PropertySource("classpath:default.properties")
 public class SpringConfig {
@@ -31,5 +35,11 @@ public class SpringConfig {
         LOGGER.debug("Data source : " + dataSource);
         
         return dataSource;
+    }
+    
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        LOGGER.info("new transaction manager");
+        return new DataSourceTransactionManager(dataSource());
     }
 }

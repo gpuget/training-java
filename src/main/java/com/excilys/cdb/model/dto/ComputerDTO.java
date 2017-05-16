@@ -58,11 +58,11 @@ public class ComputerDTO implements Serializable {
             res = res + " [" + manufacturer.getName() + "]";
         }
 
-        if (introduced != null || !introduced.equals('-')) {
+        if (introduced != null && !introduced.equals("-")) {
             res = res + " from " + introduced;
         }
 
-        if (discontinued != null || !discontinued.equals('-')) {
+        if (discontinued != null && !discontinued.equals("-")) {
             res = res + " to " + discontinued;
         }
 

@@ -94,7 +94,7 @@ public class DashboardServlet extends HttpServlet {
         LOGGER.debug("Set attribute search : " + search);
         req.setAttribute("search", search);
 
-        LOGGER.debug("Set request dispatcher /addComputer.jsp");
+        LOGGER.debug("Set request dispatcher /dashboard.jsp");
         this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
     }
 
@@ -122,7 +122,7 @@ public class DashboardServlet extends HttpServlet {
      * @return page of filtered computers
      */
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
-        LOGGER.info("Get filtered by name page : (" + name + ") number" + number + "with max "
+        LOGGER.info("Get filtered by name page : (" + name + ") number " + number + " with max "
                 + maxPerPage);
         return ComputerMapper
                 .toComputerDTO(computerService.getFilteredByNamePage(number, maxPerPage, name));
