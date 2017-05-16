@@ -61,14 +61,6 @@ public interface ComputerDAO {
     void delete(List<Long> idsList);
 
     /**
-     * Deletes the computers from company corresponding to the identifier.
-     *
-     * @param companyId company identifier
-     * @param connection provided connection
-     */
-    void deleteFromCompany(long companyId, Connection connection);
-
-    /**
      * Gets the total number of computers.
      *
      * @return total number of computers
