@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.mapper.row.ComputerRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
@@ -26,11 +26,11 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
     private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
-            + "com.name AS company_name " + "FROM computer AS  cpu "
-            + "LEFT JOIN company AS com ON cpu.company_id = com.id WHERE cpu.id = ?";
+                                            + "com.name AS company_name " + "FROM computer AS  cpu "
+                                            + "LEFT JOIN company AS com ON cpu.company_id = com.id WHERE cpu.id = ?";
     private static final String FIND_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
-            + "com.name AS company_name " + "FROM computer AS  cpu "
-            + "LEFT JOIN company as com ON cpu.company_id = com.id";
+                                            + "com.name AS company_name " + "FROM computer AS  cpu "
+                                            + "LEFT JOIN company as com ON cpu.company_id = com.id";
     private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
@@ -135,7 +135,7 @@ public class ComputerDAOImpl implements ComputerDAO {
                 ResultSet resultSet = statement.executeQuery()) {
             LOGGER.debug("Query : " + statement);
             while (resultSet.next()) {
-                computers.add(loadComputer(resultSet));
+                computers.add(ComputerRowMapper.mapComputer(resultSet));
             }
             LOGGER.debug("Found computers : " + computers);
         } catch (SQLException e) {
@@ -160,7 +160,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOGGER.debug("Query : " + statement);
             try (ResultSet resultSet = statement.executeQuery();) {
                 while (resultSet.next()) {
-                    computers.add(loadComputer(resultSet));
+                    computers.add(ComputerRowMapper.mapComputer(resultSet));
                 }
             }
             LOGGER.debug("Found computers : " + computers);
@@ -182,9 +182,9 @@ public class ComputerDAOImpl implements ComputerDAO {
                 PreparedStatement statement = connection.prepareStatement(FIND_QUERY)) {
             statement.setLong(1, id);
             LOGGER.debug("Query : " + statement);
-            try (ResultSet rs = statement.executeQuery();) {
-                if (rs.first()) {
-                    computer = loadComputer(rs);
+            try (ResultSet resultSet = statement.executeQuery();) {
+                if (resultSet.first()) {
+                    computer = ComputerRowMapper.mapComputer(resultSet);
                     LOGGER.debug("Found computer : " + computer);
                 }
             }
@@ -252,7 +252,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOGGER.debug("Query : " + statement);
             try (ResultSet resultSet = statement.executeQuery();) {
                 while (resultSet.next()) {
-                    computers.add(loadComputer(resultSet));
+                    computers.add(ComputerRowMapper.mapComputer(resultSet));
                 }
                 LOGGER.debug("Found computers : " + computers);
             }
@@ -263,33 +263,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         }
 
         return computers;
-    }
-
-    /**
-     * Loads the computer resulting from the query in an object Computer.
-     *
-     * @param rs result of the query
-     * @return object Computer
-     * @throws SQLException SQL exception
-     */
-    private Computer loadComputer(ResultSet rs) throws SQLException {
-        LOGGER.info("Get a Computer from result set");
-        Company com = new Company.Builder().id(rs.getLong("company_id"))
-                .name(rs.getString("company_name")).build();
-        Timestamp i = rs.getTimestamp("introduced");
-        Timestamp d = rs.getTimestamp("discontinued");
-
-        Computer computer = new Computer.Builder().id(rs.getLong("id")).name(rs.getString("name"))
-                .manufacturer(com).build();
-        if (i != null) {
-            computer.setIntroduced(i.toLocalDateTime().toLocalDate());
-        }
-
-        if (d != null) {
-            computer.setDiscontinued(d.toLocalDateTime().toLocalDate());
-        }
-
-        return computer;
     }
 
     /**

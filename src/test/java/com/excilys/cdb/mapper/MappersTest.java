@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.mapper.dto.CompanyMapper;
+import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.CompanyDTO;

@@ -16,8 +16,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.cdb.config.SpringConfig;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.mapper.dto.CompanyMapper;
+import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.CompanyDTO;

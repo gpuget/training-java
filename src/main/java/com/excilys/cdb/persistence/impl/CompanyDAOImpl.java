@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.mapper.row.CompanyRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.Connector;
@@ -65,7 +66,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOGGER.debug("Query : " + statement);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.first()) {
-                    company = mapResultSet(resultSet);
+                    company = CompanyRowMapper.mapCompany(resultSet);
                     LOGGER.debug("Found company : " + company);
                 }
             }
@@ -133,18 +134,6 @@ public class CompanyDAOImpl implements CompanyDAO {
         }
 
         return company;
-    }
-
-    /**
-     * Create a Company with a result set.
-     *
-     * @param rs provided result set
-     * @return mapped company
-     * @throws SQLException if result set is not validate
-     */
-    private Company mapResultSet(ResultSet rs) throws SQLException {
-        LOGGER.info("Get a Company from result set");
-        return new Company.Builder().id(rs.getLong("id")).name(rs.getString("name")).build();
     }
 
     /**

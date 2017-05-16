@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.cdb.config.SpringConfig;
-import com.excilys.cdb.mapper.CompanyMapper;
+import com.excilys.cdb.mapper.dto.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.CompanyDTO;
