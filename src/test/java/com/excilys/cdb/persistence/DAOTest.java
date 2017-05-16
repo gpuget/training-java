@@ -3,17 +3,24 @@ package com.excilys.cdb.persistence;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.impl.CompanyDAOImpl;
-import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes={com.excilys.cdb.config.SpringConfig.class})
 public class DAOTest {
-	private ComputerDAOImpl computerDao = new ComputerDAOImpl();
-	private CompanyDAOImpl companyDao = new CompanyDAOImpl();
-	
-	@Test
+    @Autowired
+	private ComputerDAO computerDao;
+    
+    @Autowired
+	private CompanyDAO companyDao;
+
+    @Test
 	public void correctComputerListSize(){
 	    int max = 10;
 	    

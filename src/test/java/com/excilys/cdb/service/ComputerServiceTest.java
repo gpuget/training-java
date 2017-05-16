@@ -3,29 +3,34 @@ package com.excilys.cdb.service;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes={com.excilys.cdb.config.SpringConfig.class})
 public class ComputerServiceTest {
-	private ComputerServiceImpl computerService;
-	
+    @Autowired
+    private ComputerService computerService;
+    
     @Test
     public void correctPage(){        
         assertEquals(10, computerService.getPage(1, 10).getObjects().size());
-        assertEquals(new ComputerDAOImpl().findById(12L), computerService.getPage(2, 10).getObjects().get(1));
+        assertEquals(computerService.getDetails(12L), computerService.getPage(2, 10).getObjects().get(1));
     }
     
     @Test
     public void createAndDelete() {
-    	Computer cpu = new Computer.Builder()
-    								.name("Bob") 
-    								.manufacturer(new Company.Builder().id(1L).build())
-    								.build();
-    	
-    	cpu = computerService.create(cpu);
-    	computerService.delete(cpu.getId());
+        Computer cpu = new Computer.Builder()
+                                    .name("Bob") 
+                                    .manufacturer(new Company.Builder().id(1L).build())
+                                    .build();
+        
+        cpu = computerService.create(cpu);
+        computerService.delete(cpu.getId());
     }
 }

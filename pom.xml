@@ -59,6 +59,13 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 		<!-- Logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
