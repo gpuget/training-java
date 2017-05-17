@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.model.Computer;
 
 public final class ComputerValidator {
@@ -62,7 +63,7 @@ public final class ComputerValidator {
      * @throws ServletException if the computer is not validate
      */
     public static Computer getValidComputer(Map<String, String[]> parameters)
-            throws ServletException {
+            throws ControllerException {
         LOGGER.info("Get valid computer with parameters : " + parameters.entrySet());
         String paramValue;
         Computer computer = new Computer.Builder().build();
@@ -77,12 +78,12 @@ public final class ComputerValidator {
             } else {
                 message = "Sorry, the computer name is not valid : " + paramValue;
                 LOGGER.error(message);
-                throw new ServletException(message);
+                throw new ControllerException(message);
             }
         } else {
             message = "Sorry, the computer is not valid.";
             LOGGER.error(message);
-            throw new ServletException(message);
+            throw new ControllerException(message);
         }
 
         if (parameters.containsKey("introduced")) {
@@ -93,11 +94,11 @@ public final class ComputerValidator {
                 } else {
                     message = "Sorry, the date of introduction is not valid : " + paramValue;
                     LOGGER.error(message);
-                    throw new ServletException(message);
+                    throw new ControllerException(message);
                 }
             }
         } else {
-            throw new ServletException("Sorry, the computer is not valid.");
+            throw new ControllerException("Sorry, the computer is not valid.");
         }
 
         if (parameters.containsKey("discontinued")) {
@@ -108,13 +109,13 @@ public final class ComputerValidator {
                 } else {
                     message = "Sorry, the date of discontinue is not valid : " + paramValue;
                     LOGGER.error(message);
-                    throw new ServletException(message);
+                    throw new ControllerException(message);
                 }
             }
         } else {
             message = "Sorry, the computer is not valid.";
             LOGGER.error(message);
-            throw new ServletException(message);
+            throw new ControllerException(message);
         }
 
         if (i != null && d != null) {
@@ -124,7 +125,7 @@ public final class ComputerValidator {
             } else {
                 message = "Sorry, there is a problem with dates : " + i + " " + d;
                 LOGGER.error(message);
-                throw new ServletException(message);
+                throw new ControllerException(message);
             }
         }
 
@@ -138,7 +139,7 @@ public final class ComputerValidator {
      * @return list of identifiers
      * @throws ServletException if the selection is not validate
      */
-    public static List<Long> getValidIdList(String ids) throws ServletException {
+    public static List<Long> getValidIdList(String ids) throws ControllerException {
         LOGGER.info("Get valid list of id : " + ids);
         List<Long> idsList = new ArrayList<>();
         String[] idsTab = ids.split(",");
@@ -151,7 +152,7 @@ public final class ComputerValidator {
         if (idsList.isEmpty()) {
             String message = "Sorry, the selection is not valid.";
             LOGGER.error(message);
-            throw new ServletException(message);
+            throw new ControllerException(message);
         }
 
         return idsList;
