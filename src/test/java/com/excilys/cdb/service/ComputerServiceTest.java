@@ -12,7 +12,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={com.excilys.cdb.config.SpringConfig.class})
+@ContextConfiguration(classes={com.excilys.cdb.config.AppConfig.class})
 public class ComputerServiceTest {
     @Autowired
     private ComputerService computerService;
