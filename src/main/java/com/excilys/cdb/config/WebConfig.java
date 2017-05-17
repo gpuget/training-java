@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = "com.excilys.cdb.controller")
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter{
     private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
 
     @Override
@@ -29,7 +29,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         LOGGER.info("new ViewResolver");
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setViewClass(JstlView.class);
-        resolver.setSuffix("/");
         resolver.setSuffix(".jsp");
         LOGGER.debug("class : JstlView.class");
         LOGGER.debug("suffix : .jsp");

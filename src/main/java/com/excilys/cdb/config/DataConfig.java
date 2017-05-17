@@ -30,7 +30,7 @@ public class DataConfig {
      */
     @Bean
     public DriverManagerDataSource dataSource() {
-        LOGGER.info("new data source");
+        LOGGER.info("new DataSource");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName(environment.getProperty("db.driver"));
@@ -49,7 +49,7 @@ public class DataConfig {
      */
     @Bean
     public PlatformTransactionManager transactionManager() {
-        LOGGER.info("new transaction manager");
+        LOGGER.info("new TransactionManager");
         return new DataSourceTransactionManager(dataSource());
     }
 }

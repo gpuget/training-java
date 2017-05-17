@@ -56,83 +56,6 @@ public final class ComputerValidator {
     }
 
     /**
-     * Returns a valid computer to insert.
-     *
-     * @param parameters request parameters
-     * @return valid company
-     * @throws ServletException if the computer is not validate
-     */
-    public static Computer getValidComputer(Map<String, String[]> parameters)
-            throws ControllerException {
-        LOGGER.info("Get valid computer with parameters : " + parameters.entrySet());
-        String paramValue;
-        Computer computer = new Computer.Builder().build();
-        LocalDate i = null;
-        LocalDate d = null;
-        String message;
-
-        if (parameters.containsKey("computerName")) {
-            paramValue = parameters.get("computerName")[0];
-            if (checkName(paramValue)) {
-                computer.setName(paramValue);
-            } else {
-                message = "Sorry, the computer name is not valid : " + paramValue;
-                LOGGER.error(message);
-                throw new ControllerException(message);
-            }
-        } else {
-            message = "Sorry, the computer is not valid.";
-            LOGGER.error(message);
-            throw new ControllerException(message);
-        }
-
-        if (parameters.containsKey("introduced")) {
-            paramValue = parameters.get("introduced")[0];
-            if (paramValue != null && !paramValue.isEmpty()) {
-                if (checkDate(paramValue)) {
-                    i = LocalDate.parse(paramValue);
-                } else {
-                    message = "Sorry, the date of introduction is not valid : " + paramValue;
-                    LOGGER.error(message);
-                    throw new ControllerException(message);
-                }
-            }
-        } else {
-            throw new ControllerException("Sorry, the computer is not valid.");
-        }
-
-        if (parameters.containsKey("discontinued")) {
-            paramValue = parameters.get("discontinued")[0];
-            if (paramValue != null && !paramValue.isEmpty()) {
-                if (checkDate(paramValue)) {
-                    d = LocalDate.parse(paramValue);
-                } else {
-                    message = "Sorry, the date of discontinue is not valid : " + paramValue;
-                    LOGGER.error(message);
-                    throw new ControllerException(message);
-                }
-            }
-        } else {
-            message = "Sorry, the computer is not valid.";
-            LOGGER.error(message);
-            throw new ControllerException(message);
-        }
-
-        if (i != null && d != null) {
-            if (i.isBefore(d)) {
-                computer.setIntroduced(i);
-                computer.setDiscontinued(d);
-            } else {
-                message = "Sorry, there is a problem with dates : " + i + " " + d;
-                LOGGER.error(message);
-                throw new ControllerException(message);
-            }
-        }
-
-        return computer;
-    }
-
-    /**
      * Returns a valid list of identifiers.
      *
      * @param ids list of identifiers to check
@@ -156,5 +79,55 @@ public final class ComputerValidator {
         }
 
         return idsList;
+    }
+
+    public static Computer getValidComputer(String name, String introduced, String discontinued)
+            throws ControllerException {
+        LOGGER.info("Get a valid computer");
+        String message;
+        LocalDate i = null;
+        LocalDate d = null;
+        Computer computer = new Computer.Builder().build();
+
+        if (checkName(name)) {
+            computer.setName(name);
+        } else {
+            message = "Sorry, the computer name is not valid : " + name;
+            LOGGER.error(message);
+            throw new ControllerException(message);
+        }
+
+        if (introduced != null && !introduced.isEmpty()) {
+            if (checkDate(introduced)) {
+                i = LocalDate.parse(introduced);
+            } else {
+                message = "Sorry, the date of introduction is not valid : " + introduced;
+                LOGGER.error(message);
+                throw new ControllerException(message);
+            }
+        }
+        
+        if (discontinued != null && !discontinued.isEmpty()) {
+            if (checkDate(discontinued)) {
+                d = LocalDate.parse(introduced);
+            } else {
+                message = "Sorry, the date of introduction is not valid : " + discontinued;
+                LOGGER.error(message);
+                throw new ControllerException(message);
+            }
+        }
+        
+        if (i != null && d != null) {
+            if (i.isBefore(d)) {
+                computer.setIntroduced(i);
+                computer.setDiscontinued(d);
+            } else {
+                message = "Sorry, there is a problem with dates : " + i + " " + d;
+                LOGGER.error(message);
+                throw new ControllerException(message);
+            }
+        }
+
+        return computer;
     }
 }
