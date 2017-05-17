@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class DashboardController {
         LOGGER.debug("Default number page and max : " + numberPage + ' ' + maxPerPage);
 
         Page<ComputerDTO> page;
-        if (search != null) {
+        if (search != null && !search.isEmpty()) {
             if (StringValidator.checkNoSpecialsChars(search)) {
                 LOGGER.debug("Filtered page returned");
                 page = getFilteredByNamePage(numberPage, maxPerPage, search);
@@ -59,18 +60,18 @@ public class DashboardController {
         model.addAttribute("count", count);
         LOGGER.debug("Set attribute search : " + search);
         model.addAttribute("search", search);
-        
+
         LOGGER.debug("Dispatcher : dashboard");
         return "dashboard";
     }
-    
+
     @PostMapping
     public String post(@RequestParam(name = "selection", required = false) String selection) {
         LOGGER.info("dashboard GET");
         LOGGER.debug("Computer service : " + computerService);
-        
+
         deleteList(ComputerValidator.getValidIdList(selection));
-        
+
         LOGGER.debug("Dispatcher : redirect:/dashboard");
         return "redirect:/dashboard";
     }

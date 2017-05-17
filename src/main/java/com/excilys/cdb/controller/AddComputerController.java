@@ -2,17 +2,18 @@ package com.excilys.cdb.controller;
 
 import java.util.List;
 
-import javax.servlet.ServletException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.exception.DAOException;
@@ -25,7 +26,6 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 
 @Controller
-@RequestMapping("/addComputer")
 public class AddComputerController {
     public static final Logger LOGGER = LoggerFactory.getLogger(AddComputerController.class);
 
@@ -51,9 +51,9 @@ public class AddComputerController {
 
     @PostMapping
     public String post(@RequestParam(name = "companyId", required = true) String companyId,
-                        @RequestParam(name = "computerName", required = true) String computerName,
-                        @RequestParam(name = "introduced", required = false) String introduced,
-                        @RequestParam(name = "discontinued", required = false) String discontinued) {
+            @RequestParam(name = "computerName", required = true) String computerName,
+            @RequestParam(name = "introduced", required = false) String introduced,
+            @RequestParam(name = "discontinued", required = false) String discontinued) {
         LOGGER.info("addComputer POST");
 
         Company company;
@@ -75,7 +75,7 @@ public class AddComputerController {
 
         try {
             computerService.create(computer);
-            LOGGER.debug("Dispatcher : redirect:/dashboard");            
+            LOGGER.debug("Dispatcher : redirect:/dashboard");
             return "redirect:/dashboard";
         } catch (DAOException e) {
             String message = "Sorry, an error has occured during the computer creation.";

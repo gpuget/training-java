@@ -224,7 +224,7 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
             LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Object[] {"name" + '%', limit, offset},
+            return jdbcTemplate.query(sqlQuery, new Object[] {name + '%', limit, offset},
                     new int[] {Types.VARCHAR, Types.INTEGER, Types.INTEGER},
                     new ComputerRowMapper());
         } catch (DataAccessException e) {

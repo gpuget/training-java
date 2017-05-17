@@ -112,7 +112,8 @@ public class ComputerServiceImpl implements ComputerService {
      * @return page page of computers
      */
     public Page<Computer> getPage(int number, int maxPerPage) {
-        LOGGER.info("Get page of computer : number " + number + " with " + maxPerPage + " computers");
+        LOGGER.info(
+                "Get page of computer : number " + number + " with " + maxPerPage + " computers");
         return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
 
@@ -125,8 +126,8 @@ public class ComputerServiceImpl implements ComputerService {
      * @return page of filtered computers
      */
     public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name) {
-        LOGGER.info("Get page of filtered computer : (" + name + ") number " + number + "with "
-                + maxPerPage + "computers");
+        LOGGER.info("Get page of filtered computer : (" + name + ") number " + number + " with "
+                + maxPerPage + " computers");
         return new Page<>(number,
                 computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
     }

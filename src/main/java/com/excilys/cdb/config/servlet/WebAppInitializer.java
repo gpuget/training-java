@@ -18,13 +18,17 @@ public class WebAppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext context) throws ServletException {
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(AppConfig.class);
-        
+
         AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
-        dispatcherContext.register(WebConfig.class);        
+        dispatcherContext.register(WebConfig.class);
+
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(dispatcherContext);
+        //dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+        ServletRegistration.Dynamic dispatcherRegistration = context.addServlet("Dispatcher",
+                dispatcherServlet);
+        dispatcherRegistration.setLoadOnStartup(1);
+        dispatcherRegistration.addMapping("/");
 
         context.addListener(new ContextLoaderListener(rootContext));
-        ServletRegistration.Dynamic dispatcher = context.addServlet("Dispatcher", new DispatcherServlet(dispatcherContext));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/");
     }
 }
