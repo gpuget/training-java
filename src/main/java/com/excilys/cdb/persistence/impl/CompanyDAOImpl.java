@@ -18,6 +18,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.exception.UnauthorizedValueDAOException;
 import com.excilys.cdb.mapper.row.CompanyRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
@@ -57,28 +58,38 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     public Company findById(long id) {
         LOGGER.info("Find company by id : " + id);
+        String message = "Error : DAO has not been able to find the entity.";
 
-        try {
-            LOGGER.debug("Query : " + FIND_QUERY);
-            return jdbcTemplate.queryForObject(FIND_QUERY, new Long[] { id },
-                    new CompanyRowMapper());
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to find the entity.";
+        if (id > 0) {
+            try {
+                LOGGER.debug("Query : " + FIND_QUERY);
+                return jdbcTemplate.query(FIND_QUERY, new CompanyRowMapper(), id).get(0);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 
     @Override
     public void delete(long id) {
         LOGGER.info("Delete company by id : " + id);
-        try {
-            LOGGER.debug("Query : " + DELETE_QUERY);
-            jdbcTemplate.update(DELETE_QUERY, id);
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly delete the entity.";
+        String message = "Error : DAO has not been able to correctly delete the entity.";
+
+        if (id > 0) {
+            try {
+                LOGGER.debug("Query : " + DELETE_QUERY);
+                jdbcTemplate.update(DELETE_QUERY, id);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 

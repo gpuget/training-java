@@ -17,11 +17,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.exception.UnauthorizedValueDAOException;
 import com.excilys.cdb.mapper.row.ComputerRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -43,7 +46,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
     private static final String DELETE_FROM_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
-    private static final String BOUNDED_RESULT = " LIMIT ? OFFSET ?";
+    private static final String BOUNDED_RESULT = " LIMIT :limit OFFSET :offset";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
 
     @Autowired
@@ -88,14 +91,19 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public void delete(long id) {
         LOGGER.info("Delete computer by id : " + id);
+        String message = "Error : DAO has not been able to correctly delete the entity.";
 
-        try {
-            LOGGER.debug("Query : " + DELETE_QUERY);
-            jdbcTemplate.update(DELETE_QUERY, id);
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly delete the entity.";
+        if (id > 0) {
+            try {
+                LOGGER.debug("Query : " + DELETE_QUERY);
+                jdbcTemplate.update(DELETE_QUERY, id);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 
@@ -124,14 +132,20 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public void deleteFromCompany(long companyId) {
         LOGGER.info("Delete computer from company : " + companyId);
+        String message = "Error : DAO has not been able to correctly delete the entity.";
 
-        try {
-            LOGGER.debug("Query : " + DELETE_FROM_COMPANY);
-            jdbcTemplate.update(DELETE_FROM_COMPANY, companyId);
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly delete the entity.";
+        if (companyId > 0) {
+            try {
+                LOGGER.debug("Query : " + DELETE_FROM_COMPANY);
+                jdbcTemplate.update(DELETE_FROM_COMPANY, companyId);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
+
         }
     }
 
@@ -151,31 +165,44 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> findAll(int limit, int offset) {
         LOGGER.info("Find all computers : " + limit + " " + offset);
+        String message = "Error : DAO has not been able to correctly find all entities.";
 
-        try {
-            String sqlQuery = FIND_ALL + BOUNDED_RESULT;
-            LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Integer[] { limit, offset },
-                    new ComputerRowMapper());
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly find all entities.";
+        if (limit > 0 && offset >= 0) {
+            MapSqlParameterSource parameters = new MapSqlParameterSource();
+            parameters.addValue("limit", limit);
+            parameters.addValue("offset", offset);
+
+            try {
+                String sqlQuery = FIND_ALL + BOUNDED_RESULT;
+                LOGGER.debug("Query : " + sqlQuery);
+                return new NamedParameterJdbcTemplate(jdbcTemplate).query(sqlQuery, parameters,
+                        new ComputerRowMapper());
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 
     @Override
     public Computer findById(long id) {
         LOGGER.info("Find computer by id : " + id);
+        String message = "Error : DAO has not been able to find the entity.";
 
-        try {
-            LOGGER.debug("Query : " + FIND_QUERY);
-            return jdbcTemplate.queryForObject(FIND_QUERY, new Object[] { id },
-                    new ComputerRowMapper());
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to find the entity.";
+        if (id > 0) {
+            try {
+                LOGGER.debug("Query : " + FIND_QUERY);
+                return jdbcTemplate.query(FIND_QUERY, new ComputerRowMapper(), id).get(0);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 
@@ -218,17 +245,22 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> getFilteredByName(int limit, int offset, String name) {
         LOGGER.info("Find all computer with name : " + name);
+        String message = "Error : DAO has not been able to correctly find all entities.";
 
-        try {
-            String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
-            LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Object[] { name + '%', limit, offset },
-                    new int[] { Types.VARCHAR, Types.INTEGER, Types.INTEGER },
-                    new ComputerRowMapper());
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly find all entities.";
+        if (limit > 0 && offset >= 0) {
+            try {
+                String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
+                LOGGER.debug("Query : " + sqlQuery);
+                return jdbcTemplate.query(sqlQuery, new Object[] { name + '%', limit, offset },
+                        new int[] { Types.VARCHAR, Types.INTEGER, Types.INTEGER },
+                        new ComputerRowMapper());
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
             LOGGER.error(message);
-            throw new DAOException(message, e);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 
