@@ -81,5 +81,5 @@ public interface ComputerDAO {
      * @param name seek name
      * @return list of computers
      */
-    List<Computer> getFilteredByName(int limit, int offset, String name);
+    List<Computer> findByName(int limit, int offset, String name);
 }

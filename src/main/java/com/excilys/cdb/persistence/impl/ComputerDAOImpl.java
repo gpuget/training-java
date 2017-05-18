@@ -46,8 +46,9 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
     private static final String DELETE_FROM_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
+    
     private static final String BOUNDED_RESULT = " LIMIT :limit OFFSET :offset";
-    private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
+    private static final String LIKE_NAME = " WHERE cpu.name LIKE :name";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -243,16 +244,19 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> getFilteredByName(int limit, int offset, String name) {
+    public List<Computer> findByName(int limit, int offset, String name) {
         LOGGER.info("Find all computer with name : " + name);
         String message = "Error : DAO has not been able to correctly find all entities.";
 
         if (limit > 0 && offset >= 0) {
+            MapSqlParameterSource parameters = new MapSqlParameterSource();
+            parameters.addValue("name", name);
+            parameters.addValue("limit", limit);
+            parameters.addValue("offset", offset);
             try {
                 String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
                 LOGGER.debug("Query : " + sqlQuery);
-                return jdbcTemplate.query(sqlQuery, new Object[] { name + '%', limit, offset },
-                        new int[] { Types.VARCHAR, Types.INTEGER, Types.INTEGER },
+                return new NamedParameterJdbcTemplate(jdbcTemplate).query(sqlQuery, parameters,
                         new ComputerRowMapper());
             } catch (DataAccessException e) {
                 LOGGER.error(message);
