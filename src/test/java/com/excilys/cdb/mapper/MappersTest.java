@@ -39,7 +39,7 @@ public class MappersTest {
         cpuDto.setId("1");
         cpuDto.setIntroduced(LocalDate.MIN.toString());
         cpuDto.setDiscontinued(LocalDate.MAX.toString());
-        cpuDto.setManufacturer(comDto);
+        //cpuDto.setManufacturer(comDto);
     }
 
     @Test

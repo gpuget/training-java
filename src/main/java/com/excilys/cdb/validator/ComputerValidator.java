@@ -3,7 +3,6 @@ package com.excilys.cdb.validator;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 
@@ -109,7 +108,7 @@ public final class ComputerValidator {
         
         if (discontinued != null && !discontinued.isEmpty()) {
             if (checkDate(discontinued)) {
-                d = LocalDate.parse(introduced);
+                d = LocalDate.parse(discontinued);
             } else {
                 message = "Sorry, the date of introduction is not valid : " + discontinued;
                 LOGGER.error(message);

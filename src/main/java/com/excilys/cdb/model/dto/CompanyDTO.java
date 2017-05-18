@@ -5,21 +5,20 @@ import java.io.Serializable;
 public class CompanyDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private long id;
     private String name;
 
     /**
      * Constructor.
      */
     public CompanyDTO() {
-        id = "";
         name = "";
     }
 
     /**
      * Constructor.
      */
-    public CompanyDTO(String id, String name) {
+    public CompanyDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -28,7 +27,7 @@ public class CompanyDTO implements Serializable {
     public int hashCode() {
         int hash = 2;
 
-        hash = hash * 10 + id.hashCode();
+        hash = hash * 10 + Long.hashCode(id);
         hash = hash * 10 + name.hashCode();
 
         return hash;
@@ -39,7 +38,7 @@ public class CompanyDTO implements Serializable {
         if (obj != null && obj instanceof CompanyDTO) {
             CompanyDTO companyDto = (CompanyDTO) obj;
 
-            return this.id.equals(companyDto.id) && this.name.equals(companyDto.name);
+            return this.id == companyDto.id && this.name.equals(companyDto.name);
         }
 
         return false;
@@ -50,11 +49,11 @@ public class CompanyDTO implements Serializable {
         return "Company (" + id + ") " + name;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

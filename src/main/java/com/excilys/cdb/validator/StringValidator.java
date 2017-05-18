@@ -13,7 +13,7 @@ public final class StringValidator {
      * @return true if correct string
      */
     public static boolean checkNoSpecialsChars(String string) {
-        String regex = "[\\w\\+\\-\\ ]*";
+        String regex = "[\\w\\+\\-\\ \\.]*";
         LOGGER.info("Check specials characters : " + string);
         LOGGER.debug("Regex : " + regex);
         return string != null && string.matches(regex);

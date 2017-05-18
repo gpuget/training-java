@@ -2,23 +2,36 @@ package com.excilys.cdb.model.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
+
+import com.excilys.cdb.validator.Date;
+
 public class ComputerDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    @Min(0)
+    private long id;
+
+    @NotNull
+    @Size(min = 1, max = 255)
     private String name;
-    private String companyId;
+
+    @Min(0)
+    private long companyId;
+
     private String companyName;
+
+    @Date
     private String introduced;
+
+    @Date
     private String discontinued;
 
-    /**
-     * Constructor.
-     */
     public ComputerDTO() {
-        id = "";
         name = "";
-        companyId = "";
         companyName = "";
         introduced = "";
         discontinued = "";
@@ -28,9 +41,9 @@ public class ComputerDTO implements Serializable {
     public int hashCode() {
         int hash = 6;
 
-        hash = hash * 11 + id.hashCode();
+        hash = hash * 11 + Long.hashCode(id);
         hash = hash * 11 + name.hashCode();
-        hash = hash * 11 + companyId.hashCode();
+        hash = hash * 11 + Long.hashCode(companyId);
         hash = hash * 11 + companyName.hashCode();
         hash = hash * 11 + introduced.hashCode();
         hash = hash * 11 + discontinued.hashCode();
@@ -43,8 +56,9 @@ public class ComputerDTO implements Serializable {
         if (obj != null && obj instanceof ComputerDTO) {
             ComputerDTO computerDto = (ComputerDTO) obj;
 
-            return this.id.equals(computerDto.id) && this.name.equals(computerDto.name)
-                    && this.companyId.equals(computerDto.companyId)
+            return this.id == computerDto.id
+                    && this.name.equals(computerDto.name)
+                    && this.companyId == computerDto.companyId
                     && this.companyName.equals(computerDto.companyName)
                     && this.introduced.equals(computerDto.introduced)
                     && this.discontinued.equals(computerDto.discontinued);
@@ -73,11 +87,11 @@ public class ComputerDTO implements Serializable {
         return res;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -89,11 +103,11 @@ public class ComputerDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCompanyId() {
+    public long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(long companyId) {
         this.companyId = companyId;
     }
 

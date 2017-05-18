@@ -27,11 +27,11 @@
 	                    <h1>Edit Computer</h1>
 	
 	                    <form action="editComputer" method="POST">
-	                        <input type="hidden" value="${computer.id}" id="id" name="computerId"/>
+	                        <input type="hidden" value="${computer.id}" id="id" name="id"/>
 	                        <fieldset>
 	                            <div class="form-group">
 	                                <label for="computerName">Computer name</label>
-	                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name" value="${computer.name}">
+	                                <input type="text" class="form-control" id="name" name="name" placeholder="Computer name" value="${computer.name}">
 	                            </div>
 	                            <div class="form-group">
 	                                <label for="introduced">Introduced date</label>
@@ -39,7 +39,7 @@
 	                            </div>
 	                            <div class="form-group">
 	                                <label for="discontinued">Discontinued date</label>
-	                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" value="${computer.name}">
+	                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" value="${computer.discontinued}">
 	                            </div>
 	                            <div class="form-group">
 	                                <label for="companyId">Company</label>

@@ -250,7 +250,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         if (limit > 0 && offset >= 0) {
             MapSqlParameterSource parameters = new MapSqlParameterSource();
-            parameters.addValue("name", name);
+            parameters.addValue("name", name + '%');
             parameters.addValue("limit", limit);
             parameters.addValue("offset", offset);
             try {

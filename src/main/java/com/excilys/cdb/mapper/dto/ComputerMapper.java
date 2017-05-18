@@ -1,15 +1,16 @@
 package com.excilys.cdb.mapper.dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
-import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.model.dto.ComputerDTO;
 
 public final class ComputerMapper {
@@ -23,13 +24,19 @@ public final class ComputerMapper {
      */
     public static Computer toComputer(ComputerDTO computerDto) {
         LOGGER.info("Computer DTO to model : " + computerDto);
-        return new Computer.Builder().id(Long.valueOf(computerDto.getId()))
-                .name(computerDto.getName())
-                .introduced(LocalDate.parse(computerDto.getIntroduced()))
-                .discontinued(LocalDate.parse(computerDto.getDiscontinued()))
-                .manufacturer(CompanyMapper
-                        .toCompany(new CompanyDTO(computerDto.getId(), computerDto.getCompanyId())))
+        Computer computer = new Computer.Builder().id(Long.valueOf(computerDto.getId()))
+                .name(computerDto.getName()).manufacturer(new Company.Builder()
+                        .id(computerDto.getCompanyId()).name(computerDto.getCompanyName()).build())
                 .build();
+
+        String i = computerDto.getIntroduced();
+        String d = computerDto.getDiscontinued();
+        computer.setIntroduced((i != null && !i.isEmpty()
+                ? LocalDate.parse(i, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
+        computer.setIntroduced((d != null && !d.isEmpty()
+                ? LocalDate.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
+
+        return computer;
     }
 
     /**
@@ -42,12 +49,13 @@ public final class ComputerMapper {
         LOGGER.info("Computer model to DTO : " + computer);
         ComputerDTO computerDto = new ComputerDTO();
 
-        computerDto.setId(String.valueOf(computer.getId()));
+        computerDto.setId(computer.getId());
         computerDto.setName(computer.getName());
         computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
         computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
         computerDto.setCompanyId(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getId());
-        computerDto.setCompanyName(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getName());
+        computerDto
+                .setCompanyName(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getName());
 
         return computerDto;
     }

@@ -1,6 +1,10 @@
 package com.excilys.cdb.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,38 +70,35 @@ public class EditComputerController {
     }
 
     @PostMapping
-    public String post(@RequestParam(name = "companyId", required = true) String companyId,
-            @RequestParam(name = "computerName", required = true) String computerName,
-            @RequestParam(name = "introduced", required = false) String introduced,
-            @RequestParam(name = "discontinued", required = false) String discontinued) {
+    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results, HttpServletResponse resp) throws IOException {
         LOGGER.info("editComputer POST");
+        LOGGER.debug("Posted ComputerDTO : " + computerDto);
+        LOGGER.debug("Validation results : " + results);
+        String message = "Sorry, an error has occured during the computer creation.";
 
-        Company company;
-        if (ComputerValidator.checkId(companyId)) {
-            LOGGER.debug("Long parse id : " + companyId);
-            company = companyService.getCompanyById(Long.parseLong(companyId));
+        if (!results.hasErrors()) {
+            Company company;
+            long companyId = computerDto.getCompanyId();
+            company = companyService.getCompanyById(companyId);
+            LOGGER.debug("Valid company : " + company);
+            
+            Computer computer;
+            computer = ComputerMapper.toComputer(computerDto);
+            computer.setManufacturer(company);
+            LOGGER.debug("Valid computer : " + computer);
+            try {
+                computerService.update(computer);
+                LOGGER.debug("Dispatcher : redirect:/dashboard");
+                return "redirect:/dashboard";
+            } catch (DAOException e) {
+                LOGGER.error(message);
+                resp.sendError(500);
+                throw new ControllerException(message, e);
+            } 
         } else {
-            String message = "Sorry, the company id is not valid.";
             LOGGER.error(message);
+            resp.sendError(500);
             throw new ControllerException(message);
-        }
-        LOGGER.debug("Valid company : " + company);
-
-        Computer computer;
-        LOGGER.debug("Servlet parameter computerName, introduced and discontinued");
-        computer = ComputerValidator.getValidComputer(computerName, introduced, discontinued);
-        computer.setManufacturer(company);
-        LOGGER.debug("Valid computer : " + computer);
-
-        try {
-            computerService.update(computer);
-            LOGGER.debug("Dispatcher : redirect:/dashboard");
-            return "redirect:/dashboard";
-        } catch (DAOException e) {
-            String message = "Sorry, an error has occured during the computer creation.";
-            LOGGER.error(message);
-            // resp.sendRoor(500);
-            throw new ControllerException(message, e);
         }
     }
 

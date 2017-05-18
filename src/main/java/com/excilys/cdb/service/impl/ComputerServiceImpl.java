@@ -129,7 +129,7 @@ public class ComputerServiceImpl implements ComputerService {
         LOGGER.info("Get page of filtered computer : (" + name + ") number " + number + " with "
                 + maxPerPage + " computers");
         return new Page<>(number,
-                computerDao.getFilteredByName(maxPerPage, maxPerPage * (number - 1), name));
+                computerDao.findByName(maxPerPage, maxPerPage * (number - 1), name));
     }
 
     /**
