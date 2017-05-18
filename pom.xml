@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.excilys</groupId>
 	<artifactId>training-java</artifactId>
-	<version>4.6.1-SNAPSHOT</version>
+	<version>4.7.0-RELEASE</version>
 	<packaging>war</packaging>
 	<name>computer-database</name>
 
