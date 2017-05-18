@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.List;
 
@@ -246,13 +247,13 @@ public class ComputerDAOImpl implements ComputerDAO {
         ps.setLong(4, company.getId());
 
         if (computer.getIntroduced() != null) {
-            ps.setDate(2, Date.valueOf(computer.getIntroduced()));
+            ps.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
         } else {
             ps.setDate(2, null);
         }
 
         if (computer.getDiscontinued() != null) {
-            ps.setDate(3, Date.valueOf(computer.getDiscontinued()));
+            ps.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
         } else {
             ps.setDate(3, null);
         }
