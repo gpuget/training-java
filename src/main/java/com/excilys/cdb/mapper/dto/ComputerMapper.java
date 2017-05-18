@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.model.dto.ComputerDTO;
 
 public final class ComputerMapper {
@@ -26,7 +27,9 @@ public final class ComputerMapper {
                 .name(computerDto.getName())
                 .introduced(LocalDate.parse(computerDto.getIntroduced()))
                 .discontinued(LocalDate.parse(computerDto.getDiscontinued()))
-                .manufacturer(CompanyMapper.toCompany(computerDto.getManufacturer())).build();
+                .manufacturer(CompanyMapper
+                        .toCompany(new CompanyDTO(computerDto.getId(), computerDto.getCompanyId())))
+                .build();
     }
 
     /**
@@ -43,7 +46,8 @@ public final class ComputerMapper {
         computerDto.setName(computer.getName());
         computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
         computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
-        computerDto.setManufacturer(CompanyMapper.toCompanyDTO(computer.getManufacturer()));
+        computerDto.setCompanyId(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getId());
+        computerDto.setCompanyName(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getName());
 
         return computerDto;
     }

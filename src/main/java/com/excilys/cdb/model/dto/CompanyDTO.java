@@ -16,6 +16,14 @@ public class CompanyDTO implements Serializable {
         name = "";
     }
 
+    /**
+     * Constructor.
+     */
+    public CompanyDTO(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public int hashCode() {
         int hash = 2;

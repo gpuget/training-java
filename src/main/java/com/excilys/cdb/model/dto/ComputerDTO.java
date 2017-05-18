@@ -7,7 +7,8 @@ public class ComputerDTO implements Serializable {
 
     private String id;
     private String name;
-    private CompanyDTO manufacturer;
+    private String companyId;
+    private String companyName;
     private String introduced;
     private String discontinued;
 
@@ -17,18 +18,20 @@ public class ComputerDTO implements Serializable {
     public ComputerDTO() {
         id = "";
         name = "";
-        manufacturer = new CompanyDTO();
+        companyId = "";
+        companyName = "";
         introduced = "";
         discontinued = "";
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 6;
 
         hash = hash * 11 + id.hashCode();
         hash = hash * 11 + name.hashCode();
-        hash = hash * 11 + manufacturer.hashCode();
+        hash = hash * 11 + companyId.hashCode();
+        hash = hash * 11 + companyName.hashCode();
         hash = hash * 11 + introduced.hashCode();
         hash = hash * 11 + discontinued.hashCode();
 
@@ -41,7 +44,8 @@ public class ComputerDTO implements Serializable {
             ComputerDTO computerDto = (ComputerDTO) obj;
 
             return this.id.equals(computerDto.id) && this.name.equals(computerDto.name)
-                    && this.manufacturer.equals(computerDto.manufacturer)
+                    && this.companyId.equals(computerDto.companyId)
+                    && this.companyName.equals(computerDto.companyName)
                     && this.introduced.equals(computerDto.introduced)
                     && this.discontinued.equals(computerDto.discontinued);
         }
@@ -54,8 +58,8 @@ public class ComputerDTO implements Serializable {
         String res;
 
         res = "Computer (" + id + ") " + name;
-        if (manufacturer != null) {
-            res = res + " [" + manufacturer.getName() + "]";
+        if (companyName != null) {
+            res = res + " [" + companyName + "]";
         }
 
         if (introduced != null && !introduced.equals("-")) {
@@ -85,12 +89,20 @@ public class ComputerDTO implements Serializable {
         this.name = name;
     }
 
-    public CompanyDTO getManufacturer() {
-        return manufacturer;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setManufacturer(CompanyDTO manufacturerId) {
-        this.manufacturer = manufacturerId;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getIntroduced() {

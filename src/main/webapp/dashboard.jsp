@@ -76,7 +76,7 @@
 		                        </td>
 		                        <td><c:out value="${obj.introduced}"/></td>
 		                        <td><c:out value="${obj.discontinued}"/></td>
-		                        <td><c:out value="${obj.manufacturer.name}"/></td>
+		                        <td><c:out value="${obj.companyName}"/></td>
 		                    </tr>                            
 	                    </c:forEach>              
 	                </tbody>

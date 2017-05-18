@@ -1,20 +1,19 @@
 package com.excilys.cdb.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.exception.DAOException;
@@ -22,6 +21,7 @@ import com.excilys.cdb.mapper.dto.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.CompanyDTO;
+import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
@@ -52,13 +52,12 @@ public class AddComputerController {
     }
 
     @PostMapping
-    public String post(@RequestParam(name = "companyId", required = true) String companyId,
-            @RequestParam(name = "computerName", required = true) String computerName,
-            @RequestParam(name = "introduced", required = false) String introduced,
-            @RequestParam(name = "discontinued", required = false) String discontinued) {
+    public String post(@ModelAttribute ComputerDTO computerDto, HttpServletResponse resp) throws IOException {
         LOGGER.info("addComputer POST");
+        LOGGER.debug(computerDto.toString());
 
         Company company;
+        String companyId = computerDto.getCompanyId();
         if (ComputerValidator.checkId(companyId)) {
             LOGGER.debug("Long parse id : " + companyId);
             company = companyService.getCompanyById(Long.parseLong(companyId));
@@ -71,7 +70,7 @@ public class AddComputerController {
 
         Computer computer;
         LOGGER.debug("Servlet parameter computerName, introduced and discontinued");
-        computer = ComputerValidator.getValidComputer(computerName, introduced, discontinued);
+        computer = ComputerValidator.getValidComputer(computerDto.getName(), computerDto.getIntroduced(), computerDto.getDiscontinued());
         computer.setManufacturer(company);
         LOGGER.debug("Valid computer : " + computer);
 
@@ -82,7 +81,7 @@ public class AddComputerController {
         } catch (DAOException e) {
             String message = "Sorry, an error has occured during the computer creation.";
             LOGGER.error(message);
-            // resp.sendRoor(500);
+            resp.sendError(500);
             throw new ControllerException(message, e);
         }
     }
