@@ -21,7 +21,6 @@ import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.mapper.row.CompanyRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
-import com.excilys.cdb.persistence.Connector;
 
 @Repository("companyDao")
 public class CompanyDAOImpl implements CompanyDAO {
@@ -34,14 +33,12 @@ public class CompanyDAOImpl implements CompanyDAO {
     private static final String DELETE_QUERY = "DELETE FROM company WHERE company.id = ?";
 
     @Autowired
-    private Connector connector;
     private JdbcTemplate jdbcTemplate;
 
     @PostConstruct
     public void init() {
         LOGGER.info("Initialization CompanyDAO...");
         LOGGER.debug("Initialization JdbcTemplate");
-        jdbcTemplate = new JdbcTemplate(connector.getDataSource());
     }
 
     @Override
@@ -63,7 +60,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
         try {
             LOGGER.debug("Query : " + FIND_QUERY);
-            return jdbcTemplate.queryForObject(FIND_QUERY, new Long[] {id},
+            return jdbcTemplate.queryForObject(FIND_QUERY, new Long[] { id },
                     new CompanyRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to find the entity.";
@@ -116,12 +113,9 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     /**
-     * Sets the connector.
-     *
-     * @param connector connector to use
+     * @param jdbcTemplate the jdbcTemplate to set
      */
-    public void setConnector(Connector connector) {
-        LOGGER.info("Set connector : " + connector);
-        this.connector = connector;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 }

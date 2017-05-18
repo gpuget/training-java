@@ -1,10 +1,10 @@
 package com.excilys.cdb.persistence.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.sql.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -25,7 +25,6 @@ import com.excilys.cdb.mapper.row.ComputerRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
-import com.excilys.cdb.persistence.Connector;
 
 @Repository("computerDao")
 public class ComputerDAOImpl implements ComputerDAO {
@@ -47,14 +46,12 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String LIKE_NAME = " WHERE cpu.name LIKE ?";
 
     @Autowired
-    private Connector connector;
     private JdbcTemplate jdbcTemplate;
 
     @PostConstruct
     public void init() {
         LOGGER.info("Initialization ComputerDAO...");
         LOGGER.debug("Initialization JdbcTemplate");
-        jdbcTemplate = new JdbcTemplate(connector.getDataSource());
     }
 
     @Override
@@ -157,7 +154,7 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             String sqlQuery = FIND_ALL + BOUNDED_RESULT;
             LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Integer[] {limit, offset},
+            return jdbcTemplate.query(sqlQuery, new Integer[] { limit, offset },
                     new ComputerRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to correctly find all entities.";
@@ -172,7 +169,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         try {
             LOGGER.debug("Query : " + FIND_QUERY);
-            return jdbcTemplate.queryForObject(FIND_QUERY, new Object[] {id},
+            return jdbcTemplate.queryForObject(FIND_QUERY, new Object[] { id },
                     new ComputerRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to find the entity.";
@@ -224,8 +221,8 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
             LOGGER.debug("Query : " + sqlQuery);
-            return jdbcTemplate.query(sqlQuery, new Object[] {name + '%', limit, offset},
-                    new int[] {Types.VARCHAR, Types.INTEGER, Types.INTEGER},
+            return jdbcTemplate.query(sqlQuery, new Object[] { name + '%', limit, offset },
+                    new int[] { Types.VARCHAR, Types.INTEGER, Types.INTEGER },
                     new ComputerRowMapper());
         } catch (DataAccessException e) {
             String message = "Error : DAO has not been able to correctly find all entities.";
@@ -262,12 +259,9 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     /**
-     * Sets the connector.
-     *
-     * @param connector connector to use
+     * @param jdbcTemplate the jdbcTemplate to set
      */
-    public void setConnector(Connector connector) {
-        LOGGER.info("Set connector : " + connector);
-        this.connector = connector;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 }
