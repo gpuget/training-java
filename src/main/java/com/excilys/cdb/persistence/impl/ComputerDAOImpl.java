@@ -283,13 +283,13 @@ public class ComputerDAOImpl implements ComputerDAO {
         ps.setLong(4, company.getId());
 
         if (computer.getIntroduced() != null) {
-            ps.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+            ps.setDate(2, Date.valueOf(computer.getIntroduced()));
         } else {
             ps.setDate(2, null);
         }
 
         if (computer.getDiscontinued() != null) {
-            ps.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+            ps.setDate(3, Date.valueOf(computer.getDiscontinued()));
         } else {
             ps.setDate(3, null);
         }
