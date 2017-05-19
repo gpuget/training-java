@@ -14,6 +14,11 @@ public class RequestParameters {
 
     private String search;
 
+    @Override
+    public String toString() {
+        return "RequestParameters [page=" + page + ", max=" + max + ", search=" + search + "]";
+    }
+
     /**
      * @return the page
      */

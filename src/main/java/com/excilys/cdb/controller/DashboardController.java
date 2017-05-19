@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.controller.dto.RequestParameters;
 import com.excilys.cdb.exception.ControllerException;
-import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.ComputerService;
@@ -47,7 +46,6 @@ public class DashboardController {
         LOGGER.info("dashboard GET");
         LOGGER.debug("Computer service : " + computerService);
         LOGGER.debug("Request params : " + params);
-        LOGGER.debug("Validation : " + result);
 
         if (result.hasErrors()) {
             if (result.getFieldError("page") != null) {
@@ -118,8 +116,7 @@ public class DashboardController {
     private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
         LOGGER.info("Get filtered by name page : (" + name + ") number " + number + " with max "
                 + maxPerPage);
-        return ComputerMapper
-                .toComputerDTO(computerService.getFilteredByNamePage(number, maxPerPage, name));
+        return computerService.getFilteredByNamePage(number, maxPerPage, name);
     }
 
     /**
@@ -131,7 +128,7 @@ public class DashboardController {
      */
     private Page<ComputerDTO> getPage(int number, int maxPerPage) {
         LOGGER.info("Get page : number " + number + " with max " + maxPerPage);
-        return ComputerMapper.toComputerDTO(computerService.getPage(number, maxPerPage));
+        return computerService.getPage(number, maxPerPage);
     }
 
     /**

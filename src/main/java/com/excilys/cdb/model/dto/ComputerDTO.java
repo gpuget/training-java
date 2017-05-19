@@ -31,6 +31,13 @@ public class ComputerDTO implements Serializable {
 
     @Date
     private String discontinued;
+    
+    public ComputerDTO() {
+        name = "";
+        companyName = "";
+        introduced = "";
+        discontinued = "";
+    }
 
     @Override
     public int hashCode() {
@@ -54,7 +61,7 @@ public class ComputerDTO implements Serializable {
             return this.id == computerDto.id 
                     && this.name.equals(computerDto.name)
                     && this.companyId == computerDto.companyId
-                    && this.companyName == computerDto.companyName
+                    && this.companyName.equals(computerDto.companyName)
                     && this.introduced.equals(computerDto.introduced)
                     && this.discontinued.equals(computerDto.discontinued);
         }

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.model.Page;
 import com.excilys.cdb.model.dto.ComputerDTO;
 
 public final class ComputerMapper {
@@ -24,21 +23,24 @@ public final class ComputerMapper {
      */
     public static Computer toComputer(ComputerDTO computerDto) {
         LOGGER.info("Computer DTO to model : " + computerDto);
-        Computer computer = new Computer.Builder()
-                .id(Long.valueOf(computerDto.getId()))
-                .name(computerDto.getName())
-                .manufacturer(new Company.Builder()
-                                            .id(computerDto.getCompanyId())
-                                            .name(computerDto.getCompanyName())
-                                            .build())
-                .build();
+        Computer computer = new Computer.Builder().build();
+        
+        if (computerDto != null) {
+            computer.setId(computerDto.getId());
+            computer.setName(computerDto.getName());
+            computer.setManufacturer(new Company.Builder()
+                                                .id(computerDto.getCompanyId())
+                                                .name(computerDto.getCompanyName())
+                                                .build());
 
-        String i = computerDto.getIntroduced();
-        String d = computerDto.getDiscontinued();
-        computer.setIntroduced((i != null && !i.isEmpty()
-                ? LocalDate.parse(i, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
-        computer.setDiscontinued((d != null && !d.isEmpty()
-                ? LocalDate.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
+            String i = computerDto.getIntroduced();
+            String d = computerDto.getDiscontinued();
+            computer.setIntroduced((i != null && !i.isEmpty()
+                    ? LocalDate.parse(i, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
+            computer.setDiscontinued((d != null && !d.isEmpty()
+                    ? LocalDate.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
+            
+        }
 
         return computer;
     }
@@ -52,14 +54,22 @@ public final class ComputerMapper {
     public static ComputerDTO toComputerDTO(Computer computer) {
         LOGGER.info("Computer model to DTO : " + computer);
         ComputerDTO computerDto = new ComputerDTO();
-        Company company = computer.getManufacturer();
 
-        computerDto.setId(computer.getId());
-        computerDto.setName(computer.getName());
-        computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
-        computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
-        computerDto.setCompanyId(company.getId());
-        computerDto.setCompanyName(company.getName());
+        if (computer != null) {
+            Company company = computer.getManufacturer();
+
+            computerDto.setId(computer.getId());
+            computerDto.setName(computer.getName());
+            computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
+            computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
+
+            if (company != null) {
+                computerDto.setCompanyId(company.getId());
+                computerDto.setCompanyName(company.getName());
+            } else {
+                computerDto.setCompanyName("");
+            }
+        }
 
         return computerDto;
     }
@@ -79,16 +89,5 @@ public final class ComputerMapper {
         }
 
         return listDto;
-    }
-
-    /**
-     * Converts a page of Computer to a page of ComputerDTO.
-     *
-     * @param page page to convert
-     * @return conversion result
-     */
-    public static Page<ComputerDTO> toComputerDTO(Page<Computer> page) {
-        LOGGER.info("Computer page model to DTO");
-        return new Page<>(page.getNumber(), toComputerDTO(page.getObjects()));
     }
 }

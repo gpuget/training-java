@@ -2,7 +2,7 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
-import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.dto.CompanyDTO;
 
 public interface CompanyService {
 
@@ -12,7 +12,7 @@ public interface CompanyService {
      * @param company to insert
      * @return company with identifier
      */
-    Company create(Company company);
+    CompanyDTO create(CompanyDTO company);
 
     /**
      * Deletes the company corresponding to the identifier and its computers.
@@ -26,7 +26,7 @@ public interface CompanyService {
      *
      * @return found companies
      */
-    List<Company> getCompanies();
+    List<CompanyDTO> getCompanies();
 
     /**
      * Returns the Company corresponding to the identifier.
@@ -34,5 +34,5 @@ public interface CompanyService {
      * @param id identifier
      * @return found company
      */
-    Company getCompanyById(long id);
+    CompanyDTO getCompanyById(long id);
 }

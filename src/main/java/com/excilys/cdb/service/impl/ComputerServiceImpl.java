@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.service.ComputerService;
 
@@ -38,12 +40,13 @@ public class ComputerServiceImpl implements ComputerService {
      * @param computer computer to insert
      * @return inserted computer
      */
-    public Computer create(Computer computer) {
-        LOGGER.info("Create computer : " + computer);
+    public ComputerDTO create(ComputerDTO computerDto) {
+        LOGGER.info("Create computer : " + computerDto);
         ++count;
         LOGGER.debug("Count : " + count);
         try {
-            return computerDao.create(computer);
+            Computer computer = computerDao.create(ComputerMapper.toComputer(computerDto));
+            return ComputerMapper.toComputerDTO(computer);
         } catch (DAOException e) {
             --count;
             LOGGER.debug("Count : " + count);
@@ -89,9 +92,9 @@ public class ComputerServiceImpl implements ComputerService {
      * @param id identifier
      * @return computer
      */
-    public Computer getDetails(long id) {
+    public ComputerDTO getDetails(long id) {
         LOGGER.info("Get computer details with id : " + id);
-        return computerDao.findById(id);
+        return ComputerMapper.toComputerDTO(computerDao.findById(id));
     }
 
     /**
@@ -102,11 +105,11 @@ public class ComputerServiceImpl implements ComputerService {
      * @param name seek name
      * @return page of filtered computers
      */
-    public Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name) {
+    public Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
         LOGGER.info("Get page of filtered computer : (" + name + ") number " + number + " with "
                 + maxPerPage + " computers");
-        return new Page<>(number,
-                computerDao.findByName(maxPerPage, maxPerPage * (number - 1), name));
+        List<Computer> computers = computerDao.findByName(maxPerPage, maxPerPage * (number - 1), name);
+        return new Page<>(number, ComputerMapper.toComputerDTO(computers));
     }
 
     /**
@@ -116,10 +119,11 @@ public class ComputerServiceImpl implements ComputerService {
      * @param maxPerPage maximum number of items
      * @return page page of computers
      */
-    public Page<Computer> getPage(int number, int maxPerPage) {
+    public Page<ComputerDTO> getPage(int number, int maxPerPage) {
         LOGGER.info(
                 "Get page of computer : number " + number + " with " + maxPerPage + " computers");
-        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
+        List<Computer> computers = computerDao.findAll(maxPerPage, maxPerPage * (number - 1));
+        return new Page<>(number, ComputerMapper.toComputerDTO(computers));
     }
 
     /**
@@ -138,8 +142,9 @@ public class ComputerServiceImpl implements ComputerService {
      * @param computer modified computer
      * @return modified computer
      */
-    public Computer update(Computer computer) {
-        LOGGER.info("Update computer : " + computer);
-        return computerDao.update(computer);
+    public ComputerDTO update(ComputerDTO computerDto) {
+        LOGGER.info("Update computer : " + computerDto);
+        Computer computer = computerDao.update(ComputerMapper.toComputer(computerDto));
+        return ComputerMapper.toComputerDTO(computer);
     }
 }

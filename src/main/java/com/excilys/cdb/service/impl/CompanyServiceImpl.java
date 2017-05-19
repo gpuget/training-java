@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.cdb.mapper.dto.CompanyMapper;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.service.CompanyService;
@@ -24,9 +26,10 @@ public class CompanyServiceImpl implements CompanyService {
     private ComputerDAO computerDao;
 
     @Override
-    public Company create(Company company) {
-        LOGGER.info("Create company : " + company);
-        return companyDao.create(company);
+    public CompanyDTO create(CompanyDTO companyDto) {
+        LOGGER.info("Create company : " + companyDto);
+        Company company = companyDao.create(CompanyMapper.toCompany(companyDto));
+        return CompanyMapper.toCompanyDTO(company);
     }
 
     @Transactional(readOnly = false)
@@ -38,15 +41,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getCompanies() {
+    public List<CompanyDTO> getCompanies() {
         LOGGER.info("Get companies");
-        return companyDao.findAll();
+        return CompanyMapper.toCompanyDTO(companyDao.findAll());
     }
 
     @Override
-    public Company getCompanyById(long id) {
+    public CompanyDTO getCompanyById(long id) {
         LOGGER.info("Get company by id : " + id);
-        return companyDao.findById(id);
+        return CompanyMapper.toCompanyDTO(companyDao.findById(id));
     }
 
     /**

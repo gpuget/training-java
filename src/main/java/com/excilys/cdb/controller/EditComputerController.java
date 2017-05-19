@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.exception.DAOException;
-import com.excilys.cdb.mapper.dto.CompanyMapper;
-import com.excilys.cdb.mapper.dto.ComputerMapper;
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.CompanyService;
@@ -52,9 +48,8 @@ public class EditComputerController {
         LOGGER.debug("Company service : " + companyService);
         LOGGER.debug("Computer service : " + computerService);
 
-        List<CompanyDTO> companiesDto = CompanyMapper.toCompanyDTO(companyService.getCompanies());
-        ComputerDTO computerDto = ComputerMapper
-                .toComputerDTO(computerService.getDetails(Long.parseLong(id)));
+        List<CompanyDTO> companiesDto = companyService.getCompanies();
+        ComputerDTO computerDto = computerService.getDetails(Long.parseLong(id));
 
         if (ComputerValidator.checkId(id)) {
             LOGGER.debug("Set attribute companies : " + companiesDto);
@@ -86,17 +81,8 @@ public class EditComputerController {
         String message = "Sorry, an error has occured during the computer creation.";
 
         if (!results.hasErrors()) {
-            Company company;
-            long companyId = computerDto.getCompanyId();
-            company = companyService.getCompanyById(companyId);
-            LOGGER.debug("Valid company : " + company);
-
-            Computer computer;
-            computer = ComputerMapper.toComputer(computerDto);
-            computer.setManufacturer(company);
-            LOGGER.debug("Valid computer : " + computer);
             try {
-                computerService.update(computer);
+                computerService.update(computerDto);
                 LOGGER.debug("Dispatcher : redirect:/dashboard");
                 return "redirect:/dashboard";
             } catch (DAOException e) {

@@ -17,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.exception.DAOException;
-import com.excilys.cdb.mapper.dto.CompanyMapper;
-import com.excilys.cdb.mapper.dto.ComputerMapper;
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.CompanyService;
@@ -49,7 +45,7 @@ public class AddComputerController {
         LOGGER.debug("Company service : " + companyService);
         LOGGER.debug("Computer service : " + computerService);
 
-        List<CompanyDTO> companies = CompanyMapper.toCompanyDTO(companyService.getCompanies());
+        List<CompanyDTO> companies = companyService.getCompanies();
         LOGGER.debug("Set attribute compagnies : " + companies);
         model.addAttribute("companies", companies);
 
@@ -68,20 +64,16 @@ public class AddComputerController {
     public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
         LOGGER.info("addComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
-        LOGGER.debug("Validation results : " + results);
         String message = "Sorry, an error has occured during the computer creation.";
 
         if (!results.hasErrors()) {
-            Company company;
+            CompanyDTO companyDto;
             long companyId = computerDto.getCompanyId();
-            company = companyService.getCompanyById(companyId);
-            LOGGER.debug("Valid company : " + company);
+            companyDto = companyService.getCompanyById(companyId);
+            LOGGER.debug("Valid company : " + companyDto);
 
-            Computer computer;
-            computer = ComputerMapper.toComputer(computerDto);
-            LOGGER.debug("Valid computer : " + computer);
             try {
-                computerService.create(computer);
+                computerService.create(computerDto);
                 LOGGER.debug("Dispatcher : redirect:/dashboard");
                 return "redirect:/dashboard";
             } catch (DAOException e) {

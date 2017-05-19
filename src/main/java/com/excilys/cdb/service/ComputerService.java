@@ -2,8 +2,8 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.model.dto.ComputerDTO;
 
 public interface ComputerService {
 
@@ -13,7 +13,7 @@ public interface ComputerService {
      * @param computer computer to insert
      * @return inserted computer
      */
-    Computer create(Computer computer);
+    ComputerDTO create(ComputerDTO computer);
 
     /**
      * Deletes the computer corresponding to the identifier.
@@ -42,7 +42,7 @@ public interface ComputerService {
      * @param id identifier
      * @return computer
      */
-    Computer getDetails(long id);
+    ComputerDTO getDetails(long id);
 
     /**
      * Gets the pages of computers corresponding to specified name.
@@ -52,7 +52,7 @@ public interface ComputerService {
      * @param name seek name
      * @return page of filtered computers
      */
-    Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name);
+    Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name);
 
     /**
      * Gets the page of computers.
@@ -61,7 +61,7 @@ public interface ComputerService {
      * @param maxPerPage maximum number of items
      * @return page page of computers
      */
-    Page<Computer> getPage(int number, int maxPerPage);
+    Page<ComputerDTO> getPage(int number, int maxPerPage);
 
     /**
      * Updates the computer corresponding to the identifier after conversion.
@@ -69,5 +69,5 @@ public interface ComputerService {
      * @param computer modified computer
      * @return modified computer
      */
-    Computer update(Computer computer);
+    ComputerDTO update(ComputerDTO computer);
 }
