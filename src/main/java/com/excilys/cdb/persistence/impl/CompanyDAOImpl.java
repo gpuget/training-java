@@ -114,7 +114,8 @@ public class CompanyDAOImpl implements CompanyDAO {
         if (id > 0) {
             try {
                 LOGGER.debug("Query : " + FIND_QUERY);
-                return jdbcTemplate.query(FIND_QUERY, new CompanyRowMapper(), id).get(0);
+                List<Company> result = jdbcTemplate.query(FIND_QUERY, new CompanyRowMapper(), id);
+                return (!result.isEmpty() ? result.get(0) : null);
             } catch (DataAccessException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
@@ -127,7 +128,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     /**
      * Sets the jdbc template.
-     * 
+     *
      * @param jdbcTemplate jdbcTemplate to set
      */
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {

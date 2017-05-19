@@ -13,12 +13,32 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface Date {
+    /**
+     * Date min year.
+     *
+     * @return min year
+     */
     int min() default 1970;
+
+    /**
+     * Date max year.
+     *
+     * @return max year
+     */
     int max() default 2038;
-    
+
+    /**
+     * @return message
+     */
     String message() default "Date is not valid !";
 
+    /**
+     * @return group
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * @return payload
+     */
     Class<? extends Payload>[] payload() default {};
 }

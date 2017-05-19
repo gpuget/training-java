@@ -37,7 +37,7 @@ public final class ComputerMapper {
         String d = computerDto.getDiscontinued();
         computer.setIntroduced((i != null && !i.isEmpty()
                 ? LocalDate.parse(i, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
-        computer.setIntroduced((d != null && !d.isEmpty()
+        computer.setDiscontinued((d != null && !d.isEmpty()
                 ? LocalDate.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
 
         return computer;
@@ -53,7 +53,7 @@ public final class ComputerMapper {
         LOGGER.info("Computer model to DTO : " + computer);
         ComputerDTO computerDto = new ComputerDTO();
         Company company = computer.getManufacturer();
-        
+
         computerDto.setId(computer.getId());
         computerDto.setName(computer.getName());
         computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));

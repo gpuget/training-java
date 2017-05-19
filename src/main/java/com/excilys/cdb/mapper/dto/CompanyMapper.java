@@ -34,7 +34,7 @@ public final class CompanyMapper {
      */
     public static CompanyDTO toCompanyDTO(Company company) {
         LOGGER.info("Convert Company to DTO : " + company);
-        
+
         return new CompanyDTO(company.getId(), company.getName());
     }
 

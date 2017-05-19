@@ -28,6 +28,15 @@ public class DashboardController {
     @Autowired
     private ComputerService computerService;
 
+    /**
+     * Get method for dashboard.
+     *
+     * @param model model
+     * @param numberPage number of the page
+     * @param maxPerPage max per page
+     * @param search search
+     * @return sevlet mapping
+     */
     @GetMapping
     public String get(ModelMap model,
             @RequestParam(name = "page", required = false, defaultValue = "1") int numberPage,
@@ -64,6 +73,12 @@ public class DashboardController {
         return "dashboard";
     }
 
+    /**
+     * Post method for dashboard.
+     *
+     * @param selection slection to delete
+     * @return sevlet mapping
+     */
     @PostMapping
     public String post(@RequestParam(name = "selection", required = false) String selection) {
         LOGGER.info("dashboard GET");

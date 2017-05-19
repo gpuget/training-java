@@ -10,6 +10,9 @@ public class CompanyDTO implements Serializable {
 
     /**
      * Constructor.
+     *
+     * @param id identifier
+     * @param name name of the company
      */
     public CompanyDTO(long id, String name) {
         this.id = id;

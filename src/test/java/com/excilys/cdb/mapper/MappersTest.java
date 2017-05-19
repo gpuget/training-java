@@ -22,22 +22,27 @@ public class MappersTest {
 
     @Before
     public void init() {
-        com = new Company.Builder().id(1L).name("Bob Inc.").build();
+        com = new Company.Builder()
+                            .id(1L)
+                            .name("Bob Inc.")
+                            .build();
         cpu = new Computer.Builder()
                             .id(1L)
                             .name("Bob")
-                            .introduced(LocalDate.MIN)
-                            .discontinued(LocalDate.MAX)
-                            .manufacturer(com).build();
+                            .introduced(LocalDate.of(1970, 01, 01))
+                            .discontinued(LocalDate.of(2017, 01, 01))
+                            .manufacturer(com)
+                            .build();
         
         comDto = new CompanyDTO(1L, "Bob Inc.");
         
         cpuDto = new ComputerDTO();
         cpuDto.setName("Bob");
         cpuDto.setId(1L);
-        cpuDto.setIntroduced(LocalDate.MIN.toString());
-        cpuDto.setDiscontinued(LocalDate.MAX.toString());
-        //cpuDto.setManufacturer(comDto);
+        cpuDto.setIntroduced(LocalDate.of(1970, 01, 01).toString());
+        cpuDto.setDiscontinued(LocalDate.of(2017, 01, 01).toString());
+        cpuDto.setCompanyId(1L);
+        cpuDto.setCompanyName("Bob Inc.");
     }
 
     @Test

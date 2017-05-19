@@ -32,8 +32,8 @@ import com.excilys.cdb.persistence.ComputerDAO;
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
-    private static final String FIND_QUERY = "SELECT id, name, introduced, discontinued, company_id FROM computer LEFT JOIN company AS com ON company_id = com.id WHERE id = ?";
-    private static final String FIND_ALL = "SELECT id, name, introduced, discontinued, company_id FROM computer LEFT JOIN company as com ON company_id = com.id";
+    private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, introduced, discontinued, company_id, com.name AS company_name FROM computer AS cpu LEFT JOIN company AS com ON company_id = com.id WHERE cpu.id = ?";
+    private static final String FIND_ALL = "SELECT cpu.id, cpu.name, introduced, discontinued, company_id, com.name AS company_name FROM computer AS cpu LEFT JOIN company AS com ON company_id = com.id";
     private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
@@ -190,7 +190,8 @@ public class ComputerDAOImpl implements ComputerDAO {
         if (id > 0) {
             try {
                 LOGGER.debug("Query : " + FIND_QUERY);
-                return jdbcTemplate.query(FIND_QUERY, new ComputerRowMapper(), id).get(0);
+                List<Computer> result = jdbcTemplate.query(FIND_QUERY, new ComputerRowMapper(), id);
+                return (!result.isEmpty() ? result.get(0) : null);
             } catch (DataAccessException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);

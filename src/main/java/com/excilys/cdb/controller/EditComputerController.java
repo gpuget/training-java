@@ -1,9 +1,7 @@
 package com.excilys.cdb.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -41,6 +39,13 @@ public class EditComputerController {
     @Autowired
     private CompanyService companyService;
 
+    /**
+     * Get method for computer edition.
+     *
+     * @param model model
+     * @param id selected computer
+     * @return servlet mapping
+     */
     @GetMapping
     public String get(ModelMap model, @RequestParam(name = "id", required = true) String id) {
         LOGGER.info("editComputer GET");
@@ -66,9 +71,15 @@ public class EditComputerController {
         }
     }
 
+    /**
+     * Post method for computer edition.
+     *
+     * @param computerDto posted computer
+     * @param results validation result
+     * @return servlet mapping
+     */
     @PostMapping
-    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results,
-            HttpServletResponse resp) throws IOException {
+    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
         LOGGER.info("editComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
         LOGGER.debug("Validation results : " + results);
@@ -90,12 +101,10 @@ public class EditComputerController {
                 return "redirect:/dashboard";
             } catch (DAOException e) {
                 LOGGER.error(message);
-                resp.sendError(500);
                 throw new ControllerException(message, e);
             }
         } else {
             LOGGER.error(message);
-            resp.sendError(500);
             throw new ControllerException(message);
         }
     }

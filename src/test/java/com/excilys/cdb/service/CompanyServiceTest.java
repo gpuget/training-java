@@ -1,6 +1,9 @@
 package com.excilys.cdb.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
@@ -34,28 +36,13 @@ public class CompanyServiceTest {
     @Test
     public void deleteWithComputer() {
         Company com = new Company.Builder().name("Bob Inc.").build();
-        boolean deleteSuccess;
 
         com = companyService.create(com);
         Computer cpu = new Computer.Builder().name("Bob").manufacturer(com).build();
         cpu = computerService.create(cpu);
         assertNotNull(computerService.getDetails(cpu.getId()));
         companyService.delete(com.getId());
-        try {
-            computerService.getDetails(cpu.getId());
-            companyService.getCompanyById(com.getId());
-            deleteSuccess = false;
-        } catch (DAOException e) {
-            deleteSuccess = true;
-        }
-        assertTrue(deleteSuccess);
-
-        try {
-            companyService.getCompanyById(com.getId());
-            deleteSuccess = false;
-        } catch (DAOException e) {
-            deleteSuccess = true;
-        }
-        assertTrue(deleteSuccess);
+        assertNull(computerService.getDetails(cpu.getId()));
+        assertNull(companyService.getCompanyById(com.getId()));
     }
 }

@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +57,7 @@ public final class ComputerValidator {
      *
      * @param ids list of identifiers to check
      * @return list of identifiers
-     * @throws ServletException if the selection is not validate
+     * @throws ControllerException if the selection is not validate
      */
     public static List<Long> getValidIdList(String ids) throws ControllerException {
         LOGGER.info("Get valid list of id : " + ids);
@@ -80,6 +78,15 @@ public final class ComputerValidator {
         return idsList;
     }
 
+    /**
+     * Gets a valid computer.
+     *
+     * @param name name
+     * @param introduced introduced
+     * @param discontinued discontinued
+     * @return valid computer
+     * @throws ControllerException if the selection is not validate
+     */
     public static Computer getValidComputer(String name, String introduced, String discontinued)
             throws ControllerException {
         LOGGER.info("Get a valid computer");
@@ -105,7 +112,7 @@ public final class ComputerValidator {
                 throw new ControllerException(message);
             }
         }
-        
+
         if (discontinued != null && !discontinued.isEmpty()) {
             if (checkDate(discontinued)) {
                 d = LocalDate.parse(discontinued);
@@ -115,7 +122,7 @@ public final class ComputerValidator {
                 throw new ControllerException(message);
             }
         }
-        
+
         if (i != null && d != null) {
             if (i.isBefore(d)) {
                 computer.setIntroduced(i);

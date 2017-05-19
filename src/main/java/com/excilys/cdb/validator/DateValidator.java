@@ -36,7 +36,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
                 return false;
             }
         }
-        
+
         LOGGER.debug("Valid date.");
         return true;
     }

@@ -39,7 +39,7 @@ public class ComputerRowMapper implements RowMapper<Computer> {
                 .name(rs.getString("name"))
                 .manufacturer(com)
                 .build();
-        
+
         Timestamp i = rs.getTimestamp("introduced");
         Timestamp d = rs.getTimestamp("discontinued");
         if (i != null) {
