@@ -30,13 +30,11 @@ public class MappersTest {
                             .discontinued(LocalDate.MAX)
                             .manufacturer(com).build();
         
-        comDto = new CompanyDTO();
-        comDto.setName("Bob Inc.");
-        comDto.setId("1");
+        comDto = new CompanyDTO(1L, "Bob Inc.");
         
         cpuDto = new ComputerDTO();
         cpuDto.setName("Bob");
-        cpuDto.setId("1");
+        cpuDto.setId(1L);
         cpuDto.setIntroduced(LocalDate.MIN.toString());
         cpuDto.setDiscontinued(LocalDate.MAX.toString());
         //cpuDto.setManufacturer(comDto);

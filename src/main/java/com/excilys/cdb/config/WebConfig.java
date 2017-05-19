@@ -1,14 +1,18 @@
 package com.excilys.cdb.config;
 
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -24,6 +28,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/resources/**");
     }
 
+    /**
+     * Gets the view resolver.
+     *
+     * @return view resolver
+     */
     @Bean
     public ViewResolver internalRessourceViewResolver() {
         LOGGER.info("new ViewResolver");
@@ -32,6 +41,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setSuffix(".jsp");
         LOGGER.debug("class : JstlView.class");
         LOGGER.debug("suffix : .jsp");
+
+        return resolver;
+    }
+
+    /**
+     * Gets the exception handler resolver.
+     *
+     * @return exception handler resolver
+     */
+    @Bean
+    public HandlerExceptionResolver handlerExceptionResolver() {
+        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
+        Properties exceptions = new Properties();
+
+        exceptions.setProperty("Exception", "errors/500");
+        exceptions.setProperty("NoHandlerFoundException", "errors/404");
+        resolver.setExceptionMappings(exceptions);
 
         return resolver;
     }

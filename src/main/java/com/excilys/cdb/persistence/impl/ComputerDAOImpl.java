@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,19 +32,15 @@ import com.excilys.cdb.persistence.ComputerDAO;
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
-    private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
-            + "com.name AS company_name " + "FROM computer AS  cpu "
-            + "LEFT JOIN company AS com ON cpu.company_id = com.id WHERE cpu.id = ?";
-    private static final String FIND_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id, "
-            + "com.name AS company_name " + "FROM computer AS  cpu "
-            + "LEFT JOIN company as com ON cpu.company_id = com.id";
+    private static final String FIND_QUERY = "SELECT id, name, introduced, discontinued, company_id FROM computer LEFT JOIN company AS com ON company_id = com.id WHERE id = ?";
+    private static final String FIND_ALL = "SELECT id, name, introduced, discontinued, company_id FROM computer LEFT JOIN company as com ON company_id = com.id";
     private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-    private static final String DELETE_QUERY = "DELETE FROM computer WHERE computer.id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM computer WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
     private static final String DELETE_FROM_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-    private static final String COUNT_QUERY = "SELECT COUNT(cpu.id) FROM computer AS cpu";
-    
+    private static final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
+
     private static final String BOUNDED_RESULT = " LIMIT :limit OFFSET :offset";
     private static final String LIKE_NAME = " WHERE cpu.name LIKE :name";
 
@@ -90,25 +84,6 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public void delete(long id) {
-        LOGGER.info("Delete computer by id : " + id);
-        String message = "Error : DAO has not been able to correctly delete the entity.";
-
-        if (id > 0) {
-            try {
-                LOGGER.debug("Query : " + DELETE_QUERY);
-                jdbcTemplate.update(DELETE_QUERY, id);
-            } catch (DataAccessException e) {
-                LOGGER.error(message);
-                throw new DAOException(message, e);
-            }
-        } else {
-            LOGGER.error(message);
-            throw new UnauthorizedValueDAOException(message);
-        }
-    }
-
-    @Override
     public void delete(List<Long> idsList) {
         LOGGER.info("Delete all computer in : " + idsList);
         StringBuilder sqlQueryBuilder = new StringBuilder(DELETE_IN);
@@ -127,6 +102,25 @@ public class ComputerDAOImpl implements ComputerDAO {
             String message = "Error : DAO has not been able to correctly delete entities.";
             LOGGER.error(message);
             throw new DAOException(message, e);
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        LOGGER.info("Delete computer by id : " + id);
+        String message = "Error : DAO has not been able to correctly delete the entity.";
+
+        if (id > 0) {
+            try {
+                LOGGER.debug("Query : " + DELETE_QUERY);
+                jdbcTemplate.update(DELETE_QUERY, id);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
+            LOGGER.error(message);
+            throw new UnauthorizedValueDAOException(message);
         }
     }
 
@@ -208,42 +202,6 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public Computer update(Computer computer) {
-        LOGGER.info("Update computer :" + computer);
-
-        try {
-            jdbcTemplate.update(UPDATE_QUERY, new PreparedStatementSetter() {
-                @Override
-                public void setValues(PreparedStatement ps) throws SQLException {
-                    setStatementValues(ps, computer);
-                    ps.setLong(5, computer.getId());
-                    LOGGER.debug("Query : " + ps);
-                }
-            });
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly update the entity.";
-            LOGGER.error(message);
-            throw new DAOException(message, e);
-        }
-
-        return computer;
-    }
-
-    @Override
-    public int getCount() {
-        LOGGER.info("Count computers");
-        String message = "Error : DAO has not been able to correctly count the entities.";
-
-        try {
-            LOGGER.debug("Query : " + COUNT_QUERY);
-            return jdbcTemplate.queryForObject(COUNT_QUERY, Integer.class);
-        } catch (DataAccessException e) {
-            LOGGER.error(message);
-            throw new DAOException(message, e);
-        }
-    }
-
-    @Override
     public List<Computer> findByName(int limit, int offset, String name) {
         LOGGER.info("Find all computer with name : " + name);
         String message = "Error : DAO has not been able to correctly find all entities.";
@@ -266,6 +224,27 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOGGER.error(message);
             throw new UnauthorizedValueDAOException(message);
         }
+    }
+
+    @Override
+    public int getCount() {
+        LOGGER.info("Count computers");
+        String message = "Error : DAO has not been able to correctly count the entities.";
+
+        try {
+            LOGGER.debug("Query : " + COUNT_QUERY);
+            return jdbcTemplate.queryForObject(COUNT_QUERY, Integer.class);
+        } catch (DataAccessException e) {
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+    /**
+     * @param jdbcTemplate the jdbcTemplate to set
+     */
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
@@ -295,10 +274,25 @@ public class ComputerDAOImpl implements ComputerDAO {
         }
     }
 
-    /**
-     * @param jdbcTemplate the jdbcTemplate to set
-     */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    @Override
+    public Computer update(Computer computer) {
+        LOGGER.info("Update computer :" + computer);
+
+        try {
+            jdbcTemplate.update(UPDATE_QUERY, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps) throws SQLException {
+                    setStatementValues(ps, computer);
+                    ps.setLong(5, computer.getId());
+                    LOGGER.debug("Query : " + ps);
+                }
+            });
+        } catch (DataAccessException e) {
+            String message = "Error : DAO has not been able to correctly update the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+
+        return computer;
     }
 }

@@ -24,9 +24,13 @@ public final class ComputerMapper {
      */
     public static Computer toComputer(ComputerDTO computerDto) {
         LOGGER.info("Computer DTO to model : " + computerDto);
-        Computer computer = new Computer.Builder().id(Long.valueOf(computerDto.getId()))
-                .name(computerDto.getName()).manufacturer(new Company.Builder()
-                        .id(computerDto.getCompanyId()).name(computerDto.getCompanyName()).build())
+        Computer computer = new Computer.Builder()
+                .id(Long.valueOf(computerDto.getId()))
+                .name(computerDto.getName())
+                .manufacturer(new Company.Builder()
+                                            .id(computerDto.getCompanyId())
+                                            .name(computerDto.getCompanyName())
+                                            .build())
                 .build();
 
         String i = computerDto.getIntroduced();
@@ -48,14 +52,14 @@ public final class ComputerMapper {
     public static ComputerDTO toComputerDTO(Computer computer) {
         LOGGER.info("Computer model to DTO : " + computer);
         ComputerDTO computerDto = new ComputerDTO();
-
+        Company company = computer.getManufacturer();
+        
         computerDto.setId(computer.getId());
         computerDto.setName(computer.getName());
         computerDto.setIntroduced(String.valueOf(computer.getIntroduced()));
         computerDto.setDiscontinued(String.valueOf(computer.getDiscontinued()));
-        computerDto.setCompanyId(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getId());
-        computerDto
-                .setCompanyName(CompanyMapper.toCompanyDTO(computer.getManufacturer()).getName());
+        computerDto.setCompanyId(company.getId());
+        computerDto.setCompanyName(company.getName());
 
         return computerDto;
     }

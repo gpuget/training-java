@@ -27,6 +27,9 @@ public class CompanyRowMapper implements RowMapper<Company> {
      */
     public static Company mapCompany(ResultSet rs) throws SQLException {
         LOGGER.info("Get a Company from result set");
-        return new Company.Builder().id(rs.getLong("id")).name(rs.getString("name")).build();
+        return new Company.Builder()
+                            .id(rs.getLong("id"))
+                            .name(rs.getString("name"))
+                            .build();
     }
 }

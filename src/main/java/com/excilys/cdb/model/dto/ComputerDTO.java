@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import com.excilys.cdb.validator.Date;
@@ -29,13 +28,6 @@ public class ComputerDTO implements Serializable {
 
     @Date
     private String discontinued;
-
-    public ComputerDTO() {
-        name = "";
-        companyName = "";
-        introduced = "";
-        discontinued = "";
-    }
 
     @Override
     public int hashCode() {
@@ -76,11 +68,11 @@ public class ComputerDTO implements Serializable {
             res = res + " [" + companyName + "]";
         }
 
-        if (introduced != null && !introduced.equals("-")) {
+        if (introduced != null && !introduced.trim().isEmpty() && !introduced.equals("-")) {
             res = res + " from " + introduced;
         }
 
-        if (discontinued != null && !discontinued.equals("-")) {
+        if (discontinued != null && !discontinued.trim().isEmpty() && !discontinued.equals("-")) {
             res = res + " to " + discontinued;
         }
 

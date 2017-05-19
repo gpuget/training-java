@@ -20,7 +20,10 @@ public final class CompanyMapper {
      */
     public static Company toCompany(CompanyDTO companyDto) {
         LOGGER.info("Convert CompanyDTO to model : " + companyDto);
-        return new Company.Builder().id(companyDto.getId()).name(companyDto.getName()).build();
+        return new Company.Builder()
+                            .id(companyDto.getId())
+                            .name(companyDto.getName())
+                            .build();
     }
 
     /**
@@ -31,12 +34,8 @@ public final class CompanyMapper {
      */
     public static CompanyDTO toCompanyDTO(Company company) {
         LOGGER.info("Convert Company to DTO : " + company);
-        CompanyDTO companyDto = new CompanyDTO();
-
-        companyDto.setId(company.getId());
-        companyDto.setName(company.getName());
-
-        return companyDto;
+        
+        return new CompanyDTO(company.getId(), company.getName());
     }
 
     /**

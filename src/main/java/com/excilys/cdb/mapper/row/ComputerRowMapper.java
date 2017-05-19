@@ -30,12 +30,18 @@ public class ComputerRowMapper implements RowMapper<Computer> {
     public static Computer mapComputer(ResultSet rs) throws SQLException {
         LOGGER.info("Get a Computer from result set");
         Computer computer;
-        Company com = new Company.Builder().id(rs.getLong("company_id"))
-                .name(rs.getString("company_name")).build();
+        Company com = new Company.Builder()
+                                    .id(rs.getLong("company_id"))
+                                    .name(rs.getString("company_name"))
+                                    .build();
+        computer = new Computer.Builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .manufacturer(com)
+                .build();
+        
         Timestamp i = rs.getTimestamp("introduced");
         Timestamp d = rs.getTimestamp("discontinued");
-        computer = new Computer.Builder().id(rs.getLong("id")).name(rs.getString("name"))
-                .manufacturer(com).build();
         if (i != null) {
             computer.setIntroduced(i.toLocalDateTime().toLocalDate());
         }

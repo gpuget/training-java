@@ -28,18 +28,69 @@ public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOImpl.class);
 
     private static final String FIND_ALL = "SELECT id, name FROM company";
-    private static final String FIND_QUERY = "SELECT com.id, com.name " + "FROM company AS  com "
-            + "WHERE com.id = ?";
+    private static final String FIND_QUERY = "SELECT id, name FROM company WHERE id = ?";
     private static final String CREATE_QUERY = "INSERT INTO company (name) VALUES (?)";
-    private static final String DELETE_QUERY = "DELETE FROM company WHERE company.id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM company WHERE id = ?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * Initialization.
+     */
     @PostConstruct
     public void init() {
         LOGGER.info("Initialization CompanyDAO...");
         LOGGER.debug("Initialization JdbcTemplate");
+    }
+
+    @Override
+    public Company create(Company company) {
+        LOGGER.info("Create Company : " + company);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        try {
+            jdbcTemplate.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con)
+                        throws SQLException {
+                    PreparedStatement statement = con.prepareStatement(CREATE_QUERY);
+                    statement.setString(1, company.getName());
+                    LOGGER.debug("Query : " + statement);
+
+                    return statement;
+                }
+            }, keyHolder);
+
+            long id = (long) keyHolder.getKey();
+            LOGGER.debug("Generated id : " + id);
+            company.setId(id);
+        } catch (DataAccessException e) {
+            String message = "Error : DAO has not been able to correctly create the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+
+        return company;
+    }
+
+    @Override
+    public void delete(long id) {
+        LOGGER.info("Delete company by id : " + id);
+        String message = "Error : DAO has not been able to correctly delete the entity.";
+
+        if (id > 0) {
+            try {
+                LOGGER.debug("Query : " + DELETE_QUERY);
+                jdbcTemplate.update(DELETE_QUERY, id);
+            } catch (DataAccessException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
+            LOGGER.error(message);
+            throw new UnauthorizedValueDAOException(message);
+        }
     }
 
     @Override
@@ -74,57 +125,10 @@ public class CompanyDAOImpl implements CompanyDAO {
         }
     }
 
-    @Override
-    public void delete(long id) {
-        LOGGER.info("Delete company by id : " + id);
-        String message = "Error : DAO has not been able to correctly delete the entity.";
-
-        if (id > 0) {
-            try {
-                LOGGER.debug("Query : " + DELETE_QUERY);
-                jdbcTemplate.update(DELETE_QUERY, id);
-            } catch (DataAccessException e) {
-                LOGGER.error(message);
-                throw new DAOException(message, e);
-            }
-        } else {
-            LOGGER.error(message);
-            throw new UnauthorizedValueDAOException(message);
-        }
-    }
-
-    @Override
-    public Company create(Company company) {
-        LOGGER.info("Create Company : " + company);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        try {
-            jdbcTemplate.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con)
-                        throws SQLException {
-                    PreparedStatement statement = con.prepareStatement(CREATE_QUERY);
-                    statement.setString(1, company.getName());
-                    LOGGER.debug("Query : " + statement);
-
-                    return statement;
-                }
-            }, keyHolder);
-
-            long id = (long) keyHolder.getKey();
-            LOGGER.debug("Generated id : " + id);
-            company.setId(id);
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly create the entity.";
-            LOGGER.error(message);
-            throw new DAOException(message, e);
-        }
-
-        return company;
-    }
-
     /**
-     * @param jdbcTemplate the jdbcTemplate to set
+     * Sets the jdbc template.
+     * 
+     * @param jdbcTemplate jdbcTemplate to set
      */
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

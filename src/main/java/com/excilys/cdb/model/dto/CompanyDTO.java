@@ -11,13 +11,6 @@ public class CompanyDTO implements Serializable {
     /**
      * Constructor.
      */
-    public CompanyDTO() {
-        name = "";
-    }
-
-    /**
-     * Constructor.
-     */
     public CompanyDTO(long id, String name) {
         this.id = id;
         this.name = name;

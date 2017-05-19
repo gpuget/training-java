@@ -1,9 +1,7 @@
 package com.excilys.cdb.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -27,7 +25,6 @@ import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validator.ComputerValidator;
 
 @Controller
 @RequestMapping("/addComputer")
@@ -40,6 +37,12 @@ public class AddComputerController {
     @Autowired
     private CompanyService companyService;
 
+    /**
+     * Get method for computer creation servlet.
+     *
+     * @param model model of the result page
+     * @return servlet mapping
+     */
     @GetMapping
     public String get(ModelMap model) {
         LOGGER.info("addComputer GET");
@@ -54,8 +57,15 @@ public class AddComputerController {
         return "addComputer";
     }
 
+    /**
+     * Post method for computer creation servlet.
+     *
+     * @param computerDto posted computer
+     * @param results validation results
+     * @return servlet mapping
+     */
     @PostMapping
-    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results, HttpServletResponse resp) throws IOException {
+    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
         LOGGER.info("addComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
         LOGGER.debug("Validation results : " + results);
@@ -66,7 +76,7 @@ public class AddComputerController {
             long companyId = computerDto.getCompanyId();
             company = companyService.getCompanyById(companyId);
             LOGGER.debug("Valid company : " + company);
-            
+
             Computer computer;
             computer = ComputerMapper.toComputer(computerDto);
             LOGGER.debug("Valid computer : " + computer);
@@ -76,12 +86,10 @@ public class AddComputerController {
                 return "redirect:/dashboard";
             } catch (DAOException e) {
                 LOGGER.error(message);
-                resp.sendError(500);
                 throw new ControllerException(message, e);
-            } 
+            }
         } else {
-            LOGGER.error(message);
-            resp.sendError(500);
+            LOGGER.error(results.toString());
             throw new ControllerException(message);
         }
     }

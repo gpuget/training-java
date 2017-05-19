@@ -30,12 +30,11 @@ public interface ComputerService {
     void deleteList(List<Long> idsList);
 
     /**
-     * Updates the computer corresponding to the identifier after conversion.
+     * Gets the total number of computers.
      *
-     * @param computer modified computer
-     * @return modified computer
+     * @return total number of computers
      */
-    Computer update(Computer computer);
+    int getCount();
 
     /**
      * Gets the details of the computer corresponding to the identifier.
@@ -46,11 +45,14 @@ public interface ComputerService {
     Computer getDetails(long id);
 
     /**
-     * Gets the total number of computers.
+     * Gets the pages of computers corresponding to specified name.
      *
-     * @return total number of computers
+     * @param number number of the page
+     * @param maxPerPage maximum number of items
+     * @param name seek name
+     * @return page of filtered computers
      */
-    int getCount();
+    Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name);
 
     /**
      * Gets the page of computers.
@@ -62,12 +64,10 @@ public interface ComputerService {
     Page<Computer> getPage(int number, int maxPerPage);
 
     /**
-     * Gets the pages of computers corresponding to specified name.
+     * Updates the computer corresponding to the identifier after conversion.
      *
-     * @param number number of the page
-     * @param maxPerPage maximum number of items
-     * @param name seek name
-     * @return page of filtered computers
+     * @param computer modified computer
+     * @return modified computer
      */
-    Page<Computer> getFilteredByNamePage(int number, int maxPerPage, String name);
+    Computer update(Computer computer);
 }

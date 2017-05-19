@@ -68,6 +68,7 @@ public class DashboardController {
     public String post(@RequestParam(name = "selection", required = false) String selection) {
         LOGGER.info("dashboard GET");
         LOGGER.debug("Computer service : " + computerService);
+        LOGGER.debug("Selection : " + selection);
 
         deleteList(ComputerValidator.getValidIdList(selection));
 

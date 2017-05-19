@@ -9,17 +9,14 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.exception.DAOException;
@@ -70,7 +67,8 @@ public class EditComputerController {
     }
 
     @PostMapping
-    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results, HttpServletResponse resp) throws IOException {
+    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results,
+            HttpServletResponse resp) throws IOException {
         LOGGER.info("editComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
         LOGGER.debug("Validation results : " + results);
@@ -81,7 +79,7 @@ public class EditComputerController {
             long companyId = computerDto.getCompanyId();
             company = companyService.getCompanyById(companyId);
             LOGGER.debug("Valid company : " + company);
-            
+
             Computer computer;
             computer = ComputerMapper.toComputer(computerDto);
             computer.setManufacturer(company);
@@ -94,7 +92,7 @@ public class EditComputerController {
                 LOGGER.error(message);
                 resp.sendError(500);
                 throw new ControllerException(message, e);
-            } 
+            }
         } else {
             LOGGER.error(message);
             resp.sendError(500);

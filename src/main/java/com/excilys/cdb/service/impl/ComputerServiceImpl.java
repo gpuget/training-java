@@ -28,6 +28,7 @@ public class ComputerServiceImpl implements ComputerService {
      */
     @PostConstruct
     private void init() {
+        LOGGER.info("Initialization computer service...");
         this.count = computerDao.getCount();
     }
 
@@ -73,14 +74,13 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     /**
-     * Updates the computer corresponding to the identifier after conversion.
+     * Gets the total number of computers.
      *
-     * @param computer modified computer
-     * @return modified computer
+     * @return total number of computers
      */
-    public Computer update(Computer computer) {
-        LOGGER.info("Update computer : " + computer);
-        return computerDao.update(computer);
+    public int getCount() {
+        LOGGER.info("Count of computers : " + count);
+        return count;
     }
 
     /**
@@ -92,29 +92,6 @@ public class ComputerServiceImpl implements ComputerService {
     public Computer getDetails(long id) {
         LOGGER.info("Get computer details with id : " + id);
         return computerDao.findById(id);
-    }
-
-    /**
-     * Gets the total number of computers.
-     *
-     * @return total number of computers
-     */
-    public int getCount() {
-        LOGGER.info("Count of computers : " + count);
-        return count;
-    }
-
-    /**
-     * Gets the page of computers.
-     *
-     * @param number number of the page
-     * @param maxPerPage maximum number of items
-     * @return page page of computers
-     */
-    public Page<Computer> getPage(int number, int maxPerPage) {
-        LOGGER.info(
-                "Get page of computer : number " + number + " with " + maxPerPage + " computers");
-        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
     }
 
     /**
@@ -133,6 +110,19 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     /**
+     * Gets the page of computers.
+     *
+     * @param number number of the page
+     * @param maxPerPage maximum number of items
+     * @return page page of computers
+     */
+    public Page<Computer> getPage(int number, int maxPerPage) {
+        LOGGER.info(
+                "Get page of computer : number " + number + " with " + maxPerPage + " computers");
+        return new Page<>(number, computerDao.findAll(maxPerPage, maxPerPage * (number - 1)));
+    }
+
+    /**
      * Sets the computer DAO.
      *
      * @param computerDao computer DAO to use
@@ -140,5 +130,16 @@ public class ComputerServiceImpl implements ComputerService {
     public void setComputerDao(ComputerDAO computerDao) {
         LOGGER.info("Set computer DAO");
         this.computerDao = computerDao;
+    }
+
+    /**
+     * Updates the computer corresponding to the identifier after conversion.
+     *
+     * @param computer modified computer
+     * @return modified computer
+     */
+    public Computer update(Computer computer) {
+        LOGGER.info("Update computer : " + computer);
+        return computerDao.update(computer);
     }
 }

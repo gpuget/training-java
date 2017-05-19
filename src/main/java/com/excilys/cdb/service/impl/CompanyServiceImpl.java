@@ -24,6 +24,20 @@ public class CompanyServiceImpl implements CompanyService {
     private ComputerDAO computerDao;
 
     @Override
+    public Company create(Company company) {
+        LOGGER.info("Create company : " + company);
+        return companyDao.create(company);
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void delete(long id) {
+        LOGGER.info("Delete company by id : " + id);
+        computerDao.deleteFromCompany(id);
+        companyDao.delete(id);
+    }
+
+    @Override
     public List<Company> getCompanies() {
         LOGGER.info("Get companies");
         return companyDao.findAll();
@@ -33,20 +47,6 @@ public class CompanyServiceImpl implements CompanyService {
     public Company getCompanyById(long id) {
         LOGGER.info("Get company by id : " + id);
         return companyDao.findById(id);
-    }
-
-    @Override
-    public Company create(Company company) {
-        LOGGER.info("Create company : " + company);
-        return companyDao.create(company);
-    }
-
-    @Transactional
-    @Override
-    public void delete(long id) {
-        LOGGER.info("Delete company by id : " + id);
-        computerDao.deleteFromCompany(id);
-        companyDao.delete(id);
     }
 
     /**

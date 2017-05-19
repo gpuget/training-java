@@ -5,6 +5,22 @@ import java.util.List;
 import com.excilys.cdb.model.Company;
 
 public interface CompanyDAO {
+
+    /**
+     * Inserts a company in DB.
+     *
+     * @param company company to insert
+     * @return inserted company with its identifier
+     */
+    Company create(Company company);
+
+    /**
+     * Deletes the company corresponding to the identifier in DB.
+     *
+     * @param id identifier
+     */
+    void delete(long id);
+
     /**
      * Finds all companies in DB.
      *
@@ -16,23 +32,7 @@ public interface CompanyDAO {
      * Finds the company corresponding to the identifier in DB.
      *
      * @param id identifier
-     *
      * @return found company
      */
     Company findById(long id);
-
-    /**
-     * Deletes the company corresponding to the identifier in DB.
-     *
-     * @param id identifier
-     */
-    void delete(long id);
-
-    /**
-     * Inserts a company in DB.
-     *
-     * @param company company to insert
-     * @return inserted company with its identifier
-     */
-    Company create(Company company);
 }

@@ -7,21 +7,6 @@ import com.excilys.cdb.model.Company;
 public interface CompanyService {
 
     /**
-     * Returns all companies.
-     *
-     * @return found companies
-     */
-    List<Company> getCompanies();
-
-    /**
-     * Returns the Company corresponding to the identifier.
-     *
-     * @param id identifier
-     * @return found company
-     */
-    Company getCompanyById(long id);
-
-    /**
      * Inserts a company in DB.
      *
      * @param company to insert
@@ -35,4 +20,19 @@ public interface CompanyService {
      * @param id identifier
      */
     void delete(long id);
+
+    /**
+     * Returns all companies.
+     *
+     * @return found companies
+     */
+    List<Company> getCompanies();
+
+    /**
+     * Returns the Company corresponding to the identifier.
+     *
+     * @param id identifier
+     * @return found company
+     */
+    Company getCompanyById(long id);
 }

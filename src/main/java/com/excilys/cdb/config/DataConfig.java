@@ -1,7 +1,5 @@
 package com.excilys.cdb.config;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +50,7 @@ public class DataConfig {
 
         return dataSource;
     }
-    
+
     /**
      * Gets the JDBC Template.
      *
