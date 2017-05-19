@@ -10,10 +10,10 @@ public interface ComputerService {
     /**
      * Inserts the computer.
      *
-     * @param computer computer to insert
+     * @param computerDto computer to insert
      * @return inserted computer
      */
-    ComputerDTO create(ComputerDTO computer);
+    ComputerDTO create(ComputerDTO computerDto);
 
     /**
      * Deletes the computer corresponding to the identifier.
@@ -66,8 +66,8 @@ public interface ComputerService {
     /**
      * Updates the computer corresponding to the identifier after conversion.
      *
-     * @param computer modified computer
+     * @param computerDto modified computer
      * @return modified computer
      */
-    ComputerDTO update(ComputerDTO computer);
+    ComputerDTO update(ComputerDTO computerDto);
 }

@@ -1,5 +1,6 @@
 package com.excilys.cdb.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,8 +22,6 @@ import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validator.ComputerValidator;
-import com.excilys.cdb.validator.StringValidator;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -60,18 +59,12 @@ public class DashboardController {
         }
 
         Page<ComputerDTO> page;
-        if (params.getSearch() != null && !params.getSearch().isEmpty()) {
-            if (StringValidator.checkNoSpecialsChars(params.getSearch())) {
-                LOGGER.debug("Filtered page returned");
-                page = getFilteredByNamePage(params.getPage(), params.getMax(), params.getSearch());
+        if (params.getSearch() != null) {
+            LOGGER.debug("Filtered page returned");
+            page = getFilteredByNamePage(params.getPage(), params.getMax(), params.getSearch());
 
-                LOGGER.debug("Set attribute search : " + params.getSearch());
-                model.addAttribute("search", params.getSearch());
-            } else {
-                String message = "Sorry, the search value is not allowed.";
-                LOGGER.error(message);
-                throw new ControllerException(message);
-            }
+            LOGGER.debug("Set attribute search : " + params.getSearch());
+            model.addAttribute("search", params.getSearch());
         } else {
             LOGGER.debug("Default page returned");
             page = getPage(params.getPage(), params.getMax());
@@ -99,7 +92,7 @@ public class DashboardController {
         LOGGER.debug("Computer service : " + computerService);
         LOGGER.debug("Selection : " + selection);
 
-        deleteList(ComputerValidator.getValidIdList(selection));
+        deleteList(getValidIdList(selection));
 
         LOGGER.debug("Dispatcher : redirect:/dashboard");
         return "redirect:/dashboard";
@@ -139,6 +132,32 @@ public class DashboardController {
     private int getCount() {
         LOGGER.info("Count of computers");
         return computerService.getCount();
+    }
+
+    /**
+     * Returns a valid list of identifiers.
+     *
+     * @param ids list of identifiers to check
+     * @return list of identifiers
+     * @throws ControllerException if the selection is not validate
+     */
+    private List<Long> getValidIdList(String ids) throws ControllerException {
+        LOGGER.info("Get valid list of id : " + ids);
+        List<Long> idsList = new ArrayList<>();
+        String[] idsTab = ids.split(",");
+        for (String id : idsTab) {
+            if (id != null && id.matches(RequestParameters.SEARCH_REGEX)) {
+                idsList.add(Long.parseLong(id));
+            }
+        }
+
+        if (idsList.isEmpty()) {
+            String message = "Sorry, the selection is not valid.";
+            LOGGER.error(message);
+            throw new ControllerException(message);
+        }
+
+        return idsList;
     }
 
     /**

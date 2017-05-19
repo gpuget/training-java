@@ -9,10 +9,10 @@ public interface CompanyService {
     /**
      * Inserts a company in DB.
      *
-     * @param company to insert
+     * @param companyDto to insert
      * @return company with identifier
      */
-    CompanyDTO create(CompanyDTO company);
+    CompanyDTO create(CompanyDTO companyDto);
 
     /**
      * Deletes the company corresponding to the identifier and its computers.

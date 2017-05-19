@@ -34,12 +34,7 @@ public class ComputerServiceImpl implements ComputerService {
         this.count = computerDao.getCount();
     }
 
-    /**
-     * Inserts the computer.
-     *
-     * @param computer computer to insert
-     * @return inserted computer
-     */
+    @Override
     public ComputerDTO create(ComputerDTO computerDto) {
         LOGGER.info("Create computer : " + computerDto);
         ++count;
@@ -54,76 +49,54 @@ public class ComputerServiceImpl implements ComputerService {
         }
     }
 
-    /**
-     * Deletes the computer corresponding to the identifier.
-     *
-     * @param id identifier
-     */
+    @Override
     public void delete(long id) {
         LOGGER.info("Delete computer by id : " + id);
         computerDao.delete(id);
         --count;
     }
 
-    /**
-     * Deletes the computers corresponding to the identifiers.
-     *
-     * @param idsList identifiers
-     */
+    @Override
     public void deleteList(List<Long> idsList) {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);
         count -= idsList.size();
     }
 
-    /**
-     * Gets the total number of computers.
-     *
-     * @return total number of computers
-     */
+    @Override
     public int getCount() {
         LOGGER.info("Count of computers : " + count);
         return count;
     }
 
-    /**
-     * Gets the details of the computer corresponding to the identifier.
-     *
-     * @param id identifier
-     * @return computer
-     */
+    @Override
     public ComputerDTO getDetails(long id) {
         LOGGER.info("Get computer details with id : " + id);
         return ComputerMapper.toComputerDTO(computerDao.findById(id));
     }
 
-    /**
-     * Gets the pages of computers corresponding to specified name.
-     *
-     * @param number number of the page
-     * @param maxPerPage maximum number of items
-     * @param name seek name
-     * @return page of filtered computers
-     */
+    @Override
     public Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
         LOGGER.info("Get page of filtered computer : (" + name + ") number " + number + " with "
                 + maxPerPage + " computers");
-        List<Computer> computers = computerDao.findByName(maxPerPage, maxPerPage * (number - 1), name);
+        List<Computer> computers = computerDao.findByName(maxPerPage, maxPerPage * (number - 1),
+                name);
         return new Page<>(number, ComputerMapper.toComputerDTO(computers));
     }
 
-    /**
-     * Gets the page of computers.
-     *
-     * @param number number of the page
-     * @param maxPerPage maximum number of items
-     * @return page page of computers
-     */
+    @Override
     public Page<ComputerDTO> getPage(int number, int maxPerPage) {
         LOGGER.info(
                 "Get page of computer : number " + number + " with " + maxPerPage + " computers");
         List<Computer> computers = computerDao.findAll(maxPerPage, maxPerPage * (number - 1));
         return new Page<>(number, ComputerMapper.toComputerDTO(computers));
+    }
+
+    @Override
+    public ComputerDTO update(ComputerDTO computerDto) {
+        LOGGER.info("Update computer : " + computerDto);
+        Computer computer = computerDao.update(ComputerMapper.toComputer(computerDto));
+        return ComputerMapper.toComputerDTO(computer);
     }
 
     /**
@@ -134,17 +107,5 @@ public class ComputerServiceImpl implements ComputerService {
     public void setComputerDao(ComputerDAO computerDao) {
         LOGGER.info("Set computer DAO");
         this.computerDao = computerDao;
-    }
-
-    /**
-     * Updates the computer corresponding to the identifier after conversion.
-     *
-     * @param computer modified computer
-     * @return modified computer
-     */
-    public ComputerDTO update(ComputerDTO computerDto) {
-        LOGGER.info("Update computer : " + computerDto);
-        Computer computer = computerDao.update(ComputerMapper.toComputer(computerDto));
-        return ComputerMapper.toComputerDTO(computer);
     }
 }

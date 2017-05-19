@@ -24,14 +24,12 @@ public final class ComputerMapper {
     public static Computer toComputer(ComputerDTO computerDto) {
         LOGGER.info("Computer DTO to model : " + computerDto);
         Computer computer = new Computer.Builder().build();
-        
+
         if (computerDto != null) {
             computer.setId(computerDto.getId());
             computer.setName(computerDto.getName());
-            computer.setManufacturer(new Company.Builder()
-                                                .id(computerDto.getCompanyId())
-                                                .name(computerDto.getCompanyName())
-                                                .build());
+            computer.setManufacturer(new Company.Builder().id(computerDto.getCompanyId())
+                    .name(computerDto.getCompanyName()).build());
 
             String i = computerDto.getIntroduced();
             String d = computerDto.getDiscontinued();
@@ -39,7 +37,7 @@ public final class ComputerMapper {
                     ? LocalDate.parse(i, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
             computer.setDiscontinued((d != null && !d.isEmpty()
                     ? LocalDate.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null));
-            
+
         }
 
         return computer;

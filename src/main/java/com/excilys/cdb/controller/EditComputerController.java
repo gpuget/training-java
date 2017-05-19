@@ -3,6 +3,7 @@ package com.excilys.cdb.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,6 @@ import com.excilys.cdb.model.dto.CompanyDTO;
 import com.excilys.cdb.model.dto.ComputerDTO;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validator.ComputerValidator;
 
 @Controller
 @RequestMapping("/editComputer")
@@ -43,27 +43,20 @@ public class EditComputerController {
      * @return servlet mapping
      */
     @GetMapping
-    public String get(ModelMap model, @RequestParam(name = "id", required = true) String id) {
+    public String get(ModelMap model, @Min(1) @RequestParam(name = "id", required = true) String id) {
         LOGGER.info("editComputer GET");
         LOGGER.debug("Company service : " + companyService);
         LOGGER.debug("Computer service : " + computerService);
 
         List<CompanyDTO> companiesDto = companyService.getCompanies();
         ComputerDTO computerDto = computerService.getDetails(Long.parseLong(id));
+        LOGGER.debug("Set attribute companies : " + companiesDto);
+        model.addAttribute("companies", companiesDto);
+        LOGGER.debug("Set attribute computer : " + computerDto);
+        model.addAttribute("computer", computerDto);
 
-        if (ComputerValidator.checkId(id)) {
-            LOGGER.debug("Set attribute companies : " + companiesDto);
-            model.addAttribute("companies", companiesDto);
-            LOGGER.debug("Set attribute companies : " + computerDto);
-            model.addAttribute("computer", computerDto);
-
-            LOGGER.debug("Dispatcher : editComputer");
-            return "editComputer";
-        } else {
-            String message = "Sorry, the computer is not valid.";
-            LOGGER.error(message);
-            throw new ControllerException(message);
-        }
+        LOGGER.debug("Dispatcher : editComputer");
+        return "editComputer";
     }
 
     /**

@@ -31,7 +31,10 @@ public class ComputerDTO implements Serializable {
 
     @Date
     private String discontinued;
-    
+
+    /**
+     * Constructor.
+     */
     public ComputerDTO() {
         name = "";
         companyName = "";
@@ -58,8 +61,7 @@ public class ComputerDTO implements Serializable {
         if (obj != null && obj instanceof ComputerDTO) {
             ComputerDTO computerDto = (ComputerDTO) obj;
 
-            return this.id == computerDto.id 
-                    && this.name.equals(computerDto.name)
+            return this.id == computerDto.id && this.name.equals(computerDto.name)
                     && this.companyId == computerDto.companyId
                     && this.companyName.equals(computerDto.companyName)
                     && this.introduced.equals(computerDto.introduced)

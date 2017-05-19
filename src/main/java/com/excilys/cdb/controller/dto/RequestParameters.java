@@ -1,17 +1,21 @@
 package com.excilys.cdb.controller.dto;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class RequestParameters {
+    public static final String SEARCH_REGEX = "[\\w\\+\\-\\ \\.]*";
+
     @Min(1)
     private int page;
 
     @Min(10)
     private int max;
 
+    @Pattern(regexp = SEARCH_REGEX)
     private String search;
 
     @Override
