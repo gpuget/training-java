@@ -2,16 +2,21 @@ package com.excilys.cdb.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.cdb.controller.dto.RequestParameters;
 import com.excilys.cdb.exception.ControllerException;
 import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Page;
@@ -32,25 +37,38 @@ public class DashboardController {
      * Get method for dashboard.
      *
      * @param model model
-     * @param numberPage number of the page
-     * @param maxPerPage max per page
-     * @param search search
-     * @return sevlet mapping
+     * @param params request parameters
+     * @param result validation result
+     * @return servlet mapping
      */
     @GetMapping
-    public String get(ModelMap model,
-            @RequestParam(name = "page", required = false, defaultValue = "1") int numberPage,
-            @RequestParam(name = "max", defaultValue = "10") int maxPerPage,
-            @RequestParam(name = "search", required = false) String search) {
+    public String get(ModelMap model, @Valid @ModelAttribute RequestParameters params,
+            BindingResult result) {
         LOGGER.info("dashboard GET");
         LOGGER.debug("Computer service : " + computerService);
-        LOGGER.debug("Default number page and max : " + numberPage + ' ' + maxPerPage);
+        LOGGER.debug("Request params : " + params);
+        LOGGER.debug("Validation : " + result);
+
+        if (result.hasErrors()) {
+            if (result.getFieldError("page") != null) {
+                LOGGER.warn("The number page was not valid : reset to 1");
+                params.setPage(1);
+            }
+
+            if (result.getFieldError("max") != null) {
+                LOGGER.warn("The max per page was not valid : reset to 10");
+                params.setMax(10);
+            }
+        }
 
         Page<ComputerDTO> page;
-        if (search != null && !search.isEmpty()) {
-            if (StringValidator.checkNoSpecialsChars(search)) {
+        if (params.getSearch() != null && !params.getSearch().isEmpty()) {
+            if (StringValidator.checkNoSpecialsChars(params.getSearch())) {
                 LOGGER.debug("Filtered page returned");
-                page = getFilteredByNamePage(numberPage, maxPerPage, search);
+                page = getFilteredByNamePage(params.getPage(), params.getMax(), params.getSearch());
+
+                LOGGER.debug("Set attribute search : " + params.getSearch());
+                model.addAttribute("search", params.getSearch());
             } else {
                 String message = "Sorry, the search value is not allowed.";
                 LOGGER.error(message);
@@ -58,7 +76,7 @@ public class DashboardController {
             }
         } else {
             LOGGER.debug("Default page returned");
-            page = getPage(numberPage, maxPerPage);
+            page = getPage(params.getPage(), params.getMax());
         }
 
         int count = getCount();
@@ -66,8 +84,6 @@ public class DashboardController {
         model.addAttribute("pageComputer", page);
         LOGGER.debug("Set attribute count : " + count);
         model.addAttribute("count", count);
-        LOGGER.debug("Set attribute search : " + search);
-        model.addAttribute("search", search);
 
         LOGGER.debug("Dispatcher : dashboard");
         return "dashboard";
