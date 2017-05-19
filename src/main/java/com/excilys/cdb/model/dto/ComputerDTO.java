@@ -6,6 +6,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.excilys.cdb.validator.Date;
 
 public class ComputerDTO implements Serializable {
@@ -21,6 +23,7 @@ public class ComputerDTO implements Serializable {
     @Min(0)
     private long companyId;
 
+    @Value("")
     private String companyName;
 
     @Date
@@ -48,10 +51,10 @@ public class ComputerDTO implements Serializable {
         if (obj != null && obj instanceof ComputerDTO) {
             ComputerDTO computerDto = (ComputerDTO) obj;
 
-            return this.id == computerDto.id
+            return this.id == computerDto.id 
                     && this.name.equals(computerDto.name)
                     && this.companyId == computerDto.companyId
-                    && this.companyName.equals(computerDto.companyName)
+                    && this.companyName == computerDto.companyName
                     && this.introduced.equals(computerDto.introduced)
                     && this.discontinued.equals(computerDto.discontinued);
         }
