@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>webapp</artifactId>
+	<packaging>war</packaging>
+	<name>webapp</name>
+
+	<parent>
+		<groupId>com.excilys.cdb</groupId>
+		<artifactId>computer-database</artifactId>
+		<version>6.0.0-RELEASE</version>
+	</parent>
+
+	<properties>
+		<maven-war-plugin.version>2.6</maven-war-plugin.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Spring -->
+		<!-- Context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Web MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Javax & JSP -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- CDB -->
+		<dependency>
+			<groupId>com.excilys.cdb</groupId>
+			<artifactId>service</artifactId>
+			<version>${cdb.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>computer-database</finalName>
+
+		<plugins>
+			<!-- WAR file -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
