@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +51,9 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @PostConstruct
     public void init() {
@@ -163,19 +171,12 @@ public class ComputerDAOImpl implements ComputerDAO {
         String message = "Error : DAO has not been able to correctly find all entities.";
 
         if (limit > 0 && offset >= 0) {
-            MapSqlParameterSource parameters = new MapSqlParameterSource();
-            parameters.addValue("limit", limit);
-            parameters.addValue("offset", offset);
-
-            try {
-                String sqlQuery = FIND_ALL + BOUNDED_RESULT;
-                LOGGER.debug("Query : " + sqlQuery);
-                return new NamedParameterJdbcTemplate(jdbcTemplate).query(sqlQuery, parameters,
-                        new ComputerRowMapper());
-            } catch (DataAccessException e) {
-                LOGGER.error(message);
-                throw new DAOException(message, e);
-            }
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Computer> criteria = cb.createQuery(Computer.class);
+            criteria.select(criteria.from(Computer.class));
+            TypedQuery<Computer> query = em.createQuery(criteria).setMaxResults(limit).setFirstResult(offset);
+            
+            return query.getResultList();
         } else {
             LOGGER.error(message);
             throw new UnauthorizedValueDAOException(message);

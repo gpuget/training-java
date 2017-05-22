@@ -17,11 +17,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<scope>compile</scope>
 		</dependency>
+		
 		<!-- Spring -->
 		<!-- Context -->
 		<dependency>

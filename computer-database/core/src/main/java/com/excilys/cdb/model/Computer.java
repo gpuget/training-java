@@ -2,12 +2,7 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 public class Computer {
-    @Id
-    @GeneratedValue
     private long id;
     private String name;
     private Company manufacturer;
