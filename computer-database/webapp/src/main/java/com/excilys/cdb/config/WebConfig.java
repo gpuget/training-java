@@ -55,9 +55,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         Properties exceptions = new Properties();
 
-        exceptions.setProperty("Exception", "errors/500");
         exceptions.setProperty("NoHandlerFoundException", "errors/404");
         resolver.setExceptionMappings(exceptions);
+        resolver.setDefaultErrorView("errors/500");
 
         return resolver;
     }

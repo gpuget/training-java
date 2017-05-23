@@ -5,12 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +39,6 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, introduced, discontinued, company_id, com.name AS company_name FROM computer AS cpu LEFT JOIN company AS com ON company_id = com.id WHERE cpu.id = ?";
     private static final String FIND_ALL = "SELECT cpu.id, cpu.name, introduced, discontinued, company_id, com.name AS company_name FROM computer AS cpu LEFT JOIN company AS com ON company_id = com.id";
-    private static final String CREATE_QUERY = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String DELETE_QUERY = "DELETE FROM computer WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
@@ -51,12 +53,14 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    /**
-     * @param entityManager the entity manager to set
-     */
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    
+    private CriteriaBuilder criteriaBuilder;
+    
+    @PostConstruct
+    public void init() {
+        LOGGER.info("Initialization Computer DAO...");
+        this.criteriaBuilder = entityManager.getCriteriaBuilder();
+        LOGGER.debug("Criteria builder initialized");
     }
 
     @Override
@@ -66,7 +70,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         try {
             entityManager.persist(computer);
-            LOGGER.debug("Computer : " +computer);
+            LOGGER.debug("Generated Id : " + computer.getId());
         } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to correctly create the entity.";
             LOGGER.error(message);
@@ -77,21 +81,17 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    @Transactional
     public void delete(List<Long> idsList) {
         LOGGER.info("Delete all computer in : " + idsList);
-        StringBuilder sqlQueryBuilder = new StringBuilder(DELETE_IN);
-
-        sqlQueryBuilder.append('(');
-        sqlQueryBuilder.append(idsList.get(0));
-        for (int i = 1; i < idsList.size(); i++) {
-            sqlQueryBuilder.append(", ").append(idsList.get(i));
-        }
-        sqlQueryBuilder.append(')');
-
-        LOGGER.debug("Query : " + sqlQueryBuilder.toString());
         try {
-            jdbcTemplate.update(sqlQueryBuilder.toString());
-        } catch (DataAccessException e) {
+            CriteriaDelete<Computer> delete = criteriaBuilder.createCriteriaDelete(Computer.class);
+            Root<Computer> computer = delete.from(Computer.class);
+            delete.where(computer.get("id").in(idsList));
+            LOGGER.debug("Criteria delete : " + delete);
+            
+            entityManager.createQuery(delete).executeUpdate();
+        } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to correctly delete entities.";
             LOGGER.error(message);
             throw new DAOException(message, e);
@@ -99,15 +99,20 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         LOGGER.info("Delete computer by id : " + id);
         String message = "Error : DAO has not been able to correctly delete the entity.";
 
         if (id > 0) {
             try {
-                LOGGER.debug("Query : " + DELETE_QUERY);
-                jdbcTemplate.update(DELETE_QUERY, id);
-            } catch (DataAccessException e) {
+                CriteriaDelete<Computer> delete = criteriaBuilder.createCriteriaDelete(Computer.class);
+                Root<Computer> computer = delete.from(Computer.class);
+                delete.where(criteriaBuilder.equal(computer.get("id"), id));
+                LOGGER.debug("Criteria delete : " + delete);
+                
+                entityManager.createQuery(delete).executeUpdate();
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }
@@ -118,15 +123,20 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    @Transactional
     public void deleteFromCompany(long companyId) {
         LOGGER.info("Delete computer from company : " + companyId);
         String message = "Error : DAO has not been able to correctly delete the entity.";
 
         if (companyId > 0) {
             try {
-                LOGGER.debug("Query : " + DELETE_FROM_COMPANY);
-                jdbcTemplate.update(DELETE_FROM_COMPANY, companyId);
-            } catch (DataAccessException e) {
+                CriteriaDelete<Computer> delete = criteriaBuilder.createCriteriaDelete(Computer.class);
+                Root<Computer> computer = delete.from(Computer.class);
+                delete.where(criteriaBuilder.equal(computer.get("company_id"), companyId));
+                LOGGER.debug("Criteria delete : " + delete);
+                
+                entityManager.createQuery(delete).executeUpdate();
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }
@@ -158,13 +168,11 @@ public class ComputerDAOImpl implements ComputerDAO {
         if (limit > 0 && offset >= 0) {
             try {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-                LOGGER.debug("CriteriaBuilder : " + cb);
-                CriteriaQuery<Computer> criteria = cb.createQuery(Computer.class);
-                criteria.select(criteria.from(Computer.class));
-                LOGGER.debug("CriteriaQuery : " + criteria);
-                TypedQuery<Computer> query = entityManager.createQuery(criteria).setMaxResults(limit)
+                CriteriaQuery<Computer> find = cb.createQuery(Computer.class);
+                find.select(find.from(Computer.class));
+                LOGGER.debug("Criteria query : " + find);
+                TypedQuery<Computer> query = entityManager.createQuery(find).setMaxResults(limit)
                         .setFirstResult(offset);
-                LOGGER.debug("Query : " + query);
 
                 return query.getResultList();
             } catch (PersistenceException e) {
@@ -283,6 +291,13 @@ public class ComputerDAOImpl implements ComputerDAO {
         }
 
         return computer;
+    }
+
+    /**
+     * @param entityManager the entity manager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
