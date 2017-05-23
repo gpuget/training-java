@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -53,9 +54,9 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     private CriteriaBuilder criteriaBuilder;
-    
+
     @PostConstruct
     public void init() {
         LOGGER.info("Initialization Computer DAO...");
@@ -89,7 +90,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             Root<Computer> computer = delete.from(Computer.class);
             delete.where(computer.get("id").in(idsList));
             LOGGER.debug("Criteria delete : " + delete);
-            
+
             entityManager.createQuery(delete).executeUpdate();
         } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to correctly delete entities.";
@@ -106,11 +107,12 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         if (id > 0) {
             try {
-                CriteriaDelete<Computer> delete = criteriaBuilder.createCriteriaDelete(Computer.class);
+                CriteriaDelete<Computer> delete = criteriaBuilder
+                        .createCriteriaDelete(Computer.class);
                 Root<Computer> computer = delete.from(Computer.class);
                 delete.where(criteriaBuilder.equal(computer.get("id"), id));
                 LOGGER.debug("Criteria delete : " + delete);
-                
+
                 entityManager.createQuery(delete).executeUpdate();
             } catch (PersistenceException e) {
                 LOGGER.error(message);
@@ -130,11 +132,12 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         if (companyId > 0) {
             try {
-                CriteriaDelete<Computer> delete = criteriaBuilder.createCriteriaDelete(Computer.class);
+                CriteriaDelete<Computer> delete = criteriaBuilder
+                        .createCriteriaDelete(Computer.class);
                 Root<Computer> computer = delete.from(Computer.class);
                 delete.where(criteriaBuilder.equal(computer.get("company_id"), companyId));
                 LOGGER.debug("Criteria delete : " + delete);
-                
+
                 entityManager.createQuery(delete).executeUpdate();
             } catch (PersistenceException e) {
                 LOGGER.error(message);
@@ -148,33 +151,18 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> findAll() {
-        LOGGER.info("Find all computers.");
-        try {
-            LOGGER.debug("Query : " + FIND_ALL);
-            return jdbcTemplate.query(FIND_ALL, new ComputerRowMapper());
-        } catch (DataAccessException e) {
-            String message = "Error : DAO has not been able to correctly find all entities.";
-            LOGGER.error(message);
-            throw new DAOException(message, e);
-        }
-    }
-
-    @Override
     public List<Computer> findAll(int limit, int offset) {
         LOGGER.info("Find all computers : " + limit + " " + offset);
         String message = "Error : DAO has not been able to correctly find all entities.";
 
         if (limit > 0 && offset >= 0) {
             try {
-                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-                CriteriaQuery<Computer> find = cb.createQuery(Computer.class);
+                CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
                 find.select(find.from(Computer.class));
                 LOGGER.debug("Criteria query : " + find);
-                TypedQuery<Computer> query = entityManager.createQuery(find).setMaxResults(limit)
-                        .setFirstResult(offset);
 
-                return query.getResultList();
+                return entityManager.createQuery(find).setMaxResults(limit).setFirstResult(offset)
+                        .getResultList();
             } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
@@ -192,10 +180,17 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         if (id > 0) {
             try {
-                LOGGER.debug("Query : " + FIND_QUERY);
-                List<Computer> result = jdbcTemplate.query(FIND_QUERY, new ComputerRowMapper(), id);
-                return (!result.isEmpty() ? result.get(0) : null);
-            } catch (DataAccessException e) {
+                CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
+                Root<Computer> computer = find.from(Computer.class);
+                find.select(computer);
+                find.where(criteriaBuilder.equal(computer.get("id"), id));
+                LOGGER.debug("Criteria query : " + find);
+
+                return entityManager.createQuery(find).getSingleResult();
+            } catch (NoResultException e) {
+                LOGGER.warn(e.getMessage());
+                return null;
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }
@@ -211,16 +206,16 @@ public class ComputerDAOImpl implements ComputerDAO {
         String message = "Error : DAO has not been able to correctly find all entities.";
 
         if (limit > 0 && offset >= 0) {
-            MapSqlParameterSource parameters = new MapSqlParameterSource();
-            parameters.addValue("name", name + '%');
-            parameters.addValue("limit", limit);
-            parameters.addValue("offset", offset);
             try {
-                String sqlQuery = FIND_ALL + LIKE_NAME + BOUNDED_RESULT;
-                LOGGER.debug("Query : " + sqlQuery);
-                return new NamedParameterJdbcTemplate(jdbcTemplate).query(sqlQuery, parameters,
-                        new ComputerRowMapper());
-            } catch (DataAccessException e) {
+                CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
+                Root<Computer> computer = find.from(Computer.class);
+                find.select(computer);
+                find.where(criteriaBuilder.like(computer.get("name"), name + '%'));
+                LOGGER.debug("Criteria query : " + find);
+
+                return entityManager.createQuery(find).setMaxResults(limit).setFirstResult(offset)
+                        .getResultList();
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }

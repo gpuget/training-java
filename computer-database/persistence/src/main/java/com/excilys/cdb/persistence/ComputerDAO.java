@@ -35,13 +35,6 @@ public interface ComputerDAO {
     void deleteFromCompany(long companyId);
 
     /**
-     * Finds all computers in DB.
-     *
-     * @return list of all computers
-     */
-    List<Computer> findAll();
-
-    /**
      * Finds all computers in an interval fixed by limit and offset parameters.
      *
      * @param limit limit size of the list returned
