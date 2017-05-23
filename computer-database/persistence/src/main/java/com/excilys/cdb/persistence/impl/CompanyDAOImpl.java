@@ -1,25 +1,24 @@
 package com.excilys.cdb.persistence.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.exception.UnauthorizedValueDAOException;
-import com.excilys.cdb.mapper.row.CompanyRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
 
@@ -27,13 +26,10 @@ import com.excilys.cdb.persistence.CompanyDAO;
 public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOImpl.class);
 
-    private static final String FIND_ALL = "SELECT id, name FROM company";
-    private static final String FIND_QUERY = "SELECT id, name FROM company WHERE id = ?";
-    private static final String CREATE_QUERY = "INSERT INTO company (name) VALUES (?)";
-    private static final String DELETE_QUERY = "DELETE FROM company WHERE id = ?";
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private CriteriaBuilder criteriaBuilder;
 
     /**
      * Initialization.
@@ -41,31 +37,19 @@ public class CompanyDAOImpl implements CompanyDAO {
     @PostConstruct
     public void init() {
         LOGGER.info("Initialization CompanyDAO...");
-        LOGGER.debug("Initialization JdbcTemplate");
+        this.criteriaBuilder = entityManager.getCriteriaBuilder();
+        LOGGER.debug("Criteria builder initialized");
     }
 
     @Override
+    @Transactional
     public Company create(Company company) {
         LOGGER.info("Create Company : " + company);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try {
-            jdbcTemplate.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con)
-                        throws SQLException {
-                    PreparedStatement statement = con.prepareStatement(CREATE_QUERY);
-                    statement.setString(1, company.getName());
-                    LOGGER.debug("Query : " + statement);
-
-                    return statement;
-                }
-            }, keyHolder);
-
-            long id = (long) keyHolder.getKey();
-            LOGGER.debug("Generated id : " + id);
-            company.setId(id);
-        } catch (DataAccessException e) {
+            entityManager.persist(company);
+            LOGGER.debug("Generated Id : " + company.getId());
+        } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to correctly create the entity.";
             LOGGER.error(message);
             throw new DAOException(message, e);
@@ -75,15 +59,20 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         LOGGER.info("Delete company by id : " + id);
         String message = "Error : DAO has not been able to correctly delete the entity.";
 
         if (id > 0) {
             try {
-                LOGGER.debug("Query : " + DELETE_QUERY);
-                jdbcTemplate.update(DELETE_QUERY, id);
-            } catch (DataAccessException e) {
+                CriteriaDelete<Company> delete = criteriaBuilder
+                        .createCriteriaDelete(Company.class);
+                Root<Company> cpy = delete.from(Company.class);
+                delete.where(criteriaBuilder.equal(cpy.get("id"), id));
+
+                entityManager.createQuery(delete).executeUpdate();
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }
@@ -97,9 +86,11 @@ public class CompanyDAOImpl implements CompanyDAO {
     public List<Company> findAll() {
         LOGGER.info("Find all companies.");
         try {
-            LOGGER.debug("Query : " + FIND_ALL);
-            return jdbcTemplate.query(FIND_ALL, new CompanyRowMapper());
-        } catch (DataAccessException e) {
+            CriteriaQuery<Company> find = criteriaBuilder.createQuery(Company.class);
+            find.select(find.from(Company.class));
+
+            return entityManager.createQuery(find).getResultList();
+        } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to find the entity.";
             LOGGER.error(message);
             throw new DAOException(message, e);
@@ -113,10 +104,15 @@ public class CompanyDAOImpl implements CompanyDAO {
 
         if (id > 0) {
             try {
-                LOGGER.debug("Query : " + FIND_QUERY);
-                List<Company> result = jdbcTemplate.query(FIND_QUERY, new CompanyRowMapper(), id);
-                return (!result.isEmpty() ? result.get(0) : null);
-            } catch (DataAccessException e) {
+                CriteriaQuery<Company> find = criteriaBuilder.createQuery(Company.class);
+                Root<Company> cpy = find.from(Company.class);
+                find.select(cpy).where(criteriaBuilder.equal(cpy.get("id"), id));
+
+                return entityManager.createQuery(find).getSingleResult();
+            } catch (NoResultException e) {
+                LOGGER.warn(e.getMessage());
+                return null;
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }
@@ -127,11 +123,11 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     /**
-     * Sets the jdbc template.
+     * Sets the entity manager.
      *
-     * @param jdbcTemplate jdbcTemplate to set
+     * @param entityManager entity manager to set
      */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 }

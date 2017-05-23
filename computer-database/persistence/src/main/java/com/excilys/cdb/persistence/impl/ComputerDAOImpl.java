@@ -132,8 +132,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             try {
                 CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
                 Root<Computer> cpu = find.from(Computer.class);
-                find.select(cpu);
-                find.where(criteriaBuilder.equal(cpu.get("id"), id));
+                find.select(cpu).where(criteriaBuilder.equal(cpu.get("id"), id));
                 LOGGER.debug("Criteria query : " + find);
 
                 return entityManager.createQuery(find).getSingleResult();
@@ -159,8 +158,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             try {
                 CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
                 Root<Computer> cpu = find.from(Computer.class);
-                find.select(cpu);
-                find.where(criteriaBuilder.like(cpu.get("name"), name + '%'));
+                find.select(cpu).where(criteriaBuilder.like(cpu.get("name"), name + '%'));
                 LOGGER.debug("Criteria query : " + find);
 
                 return entityManager.createQuery(find).setMaxResults(limit).setFirstResult(offset)
@@ -183,7 +181,7 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             CriteriaQuery<Long> count = criteriaBuilder.createQuery(Long.class);
             count.select(criteriaBuilder.count(count.from(Computer.class).get("id")));
-            
+
             return entityManager.createQuery(count).getSingleResult().intValue();
         } catch (PersistenceException e) {
             LOGGER.error(message);
@@ -199,12 +197,12 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             CriteriaUpdate<Computer> update = criteriaBuilder.createCriteriaUpdate(Computer.class);
             Root<Computer> cpu = update.from(Computer.class);
-            update.set(cpu.get("name"), computer.getName());
-            update.set(cpu.get("introduced"), computer.getIntroduced());
-            update.set(cpu.get("discontinued"), computer.getDiscontinued());
-            update.set(cpu.get("manufacturer"), computer.getManufacturer());
-            update.where(criteriaBuilder.equal(cpu.get("id"), computer.getId()));
-            
+            update.set(cpu.get("name"), computer.getName())
+                    .set(cpu.get("introduced"), computer.getIntroduced())
+                    .set(cpu.get("discontinued"), computer.getDiscontinued())
+                    .set(cpu.get("manufacturer"), computer.getManufacturer())
+                    .where(criteriaBuilder.equal(cpu.get("id"), computer.getId()));
+
             entityManager.createQuery(update).executeUpdate();
         } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to correctly update the entity.";
