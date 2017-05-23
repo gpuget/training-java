@@ -49,6 +49,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- ORM -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- CDB -->
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>

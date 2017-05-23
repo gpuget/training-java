@@ -2,9 +2,20 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity(name = "computer")
 public class Computer {
+    @Id
+    @GeneratedValue
     private long id;
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company manufacturer;
     private LocalDate introduced;
     private LocalDate discontinued;

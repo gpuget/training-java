@@ -53,12 +53,13 @@ public class ComputerDAOImpl implements ComputerDAO {
     private JdbcTemplate jdbcTemplate;
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
-    @PostConstruct
-    public void init() {
-        LOGGER.info("Initialization ComputerDAO...");
-        LOGGER.debug("Initialization JdbcTemplate");
+    /**
+     * @param entityManager the entity manager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -171,12 +172,19 @@ public class ComputerDAOImpl implements ComputerDAO {
         String message = "Error : DAO has not been able to correctly find all entities.";
 
         if (limit > 0 && offset >= 0) {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Computer> criteria = cb.createQuery(Computer.class);
-            criteria.select(criteria.from(Computer.class));
-            TypedQuery<Computer> query = em.createQuery(criteria).setMaxResults(limit).setFirstResult(offset);
-            
-            return query.getResultList();
+            try {
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<Computer> criteria = cb.createQuery(Computer.class);
+                criteria.select(criteria.from(Computer.class));
+                TypedQuery<Computer> query = entityManager.createQuery(criteria).setMaxResults(limit)
+                        .setFirstResult(offset);
+
+                return query.getResultList();
+            } catch (Exception e) {
+                e.printStackTrace();
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
         } else {
             LOGGER.error(message);
             throw new UnauthorizedValueDAOException(message);
@@ -243,13 +251,6 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     /**
-     * @param jdbcTemplate the jdbcTemplate to set
-     */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    /**
      * Sets values in the prepared statement.
      *
      * @param ps statement to be loaded
@@ -296,5 +297,12 @@ public class ComputerDAOImpl implements ComputerDAO {
         }
 
         return computer;
+    }
+
+    /**
+     * @param jdbcTemplate the jdbcTemplate to set
+     */
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 }
