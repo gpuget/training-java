@@ -1,8 +1,5 @@
 package com.excilys.cdb.persistence.impl;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.exception.UnauthorizedValueDAOException;
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
 
@@ -192,33 +188,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         } catch (PersistenceException e) {
             LOGGER.error(message);
             throw new DAOException(message, e);
-        }
-    }
-
-    /**
-     * Sets values in the prepared statement.
-     *
-     * @param ps statement to be loaded
-     * @param computer computer with values to load in statement
-     * @throws SQLException SQL exception
-     */
-    public void setStatementValues(PreparedStatement ps, Computer computer) throws SQLException {
-        LOGGER.info("Set values in statement");
-        Company company = computer.getManufacturer();
-
-        ps.setString(1, computer.getName());
-        ps.setLong(4, company.getId());
-
-        if (computer.getIntroduced() != null) {
-            ps.setDate(2, Date.valueOf(computer.getIntroduced()));
-        } else {
-            ps.setDate(2, null);
-        }
-
-        if (computer.getDiscontinued() != null) {
-            ps.setDate(3, Date.valueOf(computer.getDiscontinued()));
-        } else {
-            ps.setDate(3, null);
         }
     }
 

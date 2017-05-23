@@ -55,20 +55,6 @@
 				<version>${spring.version}</version>
 			</dependency>
 
-			<!-- JDBC -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
-			<!-- Web MVC -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
 			<!-- Test -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -84,11 +70,12 @@
 				<scope>compile</scope>
 			</dependency>
 
-			<!-- Logger -->
+			<!-- WebMVC -->
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+				<scope>compile</scope>
 			</dependency>
 
 			<!-- Database -->
@@ -106,12 +93,6 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${servlet.version}</version>
 				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.validation</groupId>
-				<artifactId>validation-api</artifactId>
-				<version>${validation.version}</version>
 			</dependency>
 
 			<dependency>
