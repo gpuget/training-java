@@ -1,5 +1,7 @@
 package com.excilys.cdb.config;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,8 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -71,7 +73,9 @@ public class DataConfig {
     @Bean
     public PlatformTransactionManager transactionManager() {
         LOGGER.info("new TransactionManager");
-        return new DataSourceTransactionManager(dataSource());
+        EntityManagerFactory emf = entityManagerFactory().getObject();
+        LOGGER.debug("EntityManageractory : " + emf);
+        return new JpaTransactionManager(emf);
     }
 
     @Bean

@@ -1,14 +1,13 @@
 package com.excilys.cdb.persistence.impl;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -18,13 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.exception.UnauthorizedValueDAOException;
@@ -63,27 +60,14 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    @Transactional
     public Computer create(Computer computer) {
         LOGGER.info("Create computer : " + computer);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try {
-            jdbcTemplate.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con)
-                        throws SQLException {
-                    PreparedStatement statement = con.prepareStatement(CREATE_QUERY);
-                    setStatementValues(statement, computer);
-                    LOGGER.debug("Query : " + statement);
-
-                    return statement;
-                }
-            }, keyHolder);
-
-            long id = (long) keyHolder.getKey();
-            LOGGER.debug("Generated id : " + id);
-            computer.setId(id);
-        } catch (DataAccessException e) {
+            entityManager.persist(computer);
+            LOGGER.debug("Computer : " +computer);
+        } catch (PersistenceException e) {
             String message = "Error : DAO has not been able to correctly create the entity.";
             LOGGER.error(message);
             throw new DAOException(message, e);
@@ -174,14 +158,16 @@ public class ComputerDAOImpl implements ComputerDAO {
         if (limit > 0 && offset >= 0) {
             try {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                LOGGER.debug("CriteriaBuilder : " + cb);
                 CriteriaQuery<Computer> criteria = cb.createQuery(Computer.class);
                 criteria.select(criteria.from(Computer.class));
+                LOGGER.debug("CriteriaQuery : " + criteria);
                 TypedQuery<Computer> query = entityManager.createQuery(criteria).setMaxResults(limit)
                         .setFirstResult(offset);
+                LOGGER.debug("Query : " + query);
 
                 return query.getResultList();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (PersistenceException e) {
                 LOGGER.error(message);
                 throw new DAOException(message, e);
             }
