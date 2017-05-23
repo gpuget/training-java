@@ -19,7 +19,7 @@
 		<maven-tomcat7-plugin.version>2.2</maven-tomcat7-plugin.version>
 		<maven-gatling-plugin.version>2.1.7</maven-gatling-plugin.version>
 
-		<hibernate.core.version>5.2.10.Final</hibernate.core.version>
+		<hibernate.jpa21.version>1.0.0.Final</hibernate.jpa21.version>
 		<hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
 		<spring.version>4.3.7.RELEASE</spring.version>
 		<mysql.version>5.1.6</mysql.version>
@@ -36,9 +36,9 @@
 		<!-- Hibernate -->
 		<dependencies>
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.core.version}</version>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+				<version>${hibernate.jpa21.version}</version>
 			</dependency>
 
 			<dependency>
