@@ -2,6 +2,8 @@ package com.excilys.cdb.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ public class ComputerServiceTest {
         cpuDto.setCompanyId(1L);
 
         cpuDto = computerService.create(cpuDto);
-        computerService.delete(cpuDto.getId());
+        ArrayList<Long> idsList = new ArrayList<>();
+        idsList.add(cpuDto.getId());
+        computerService.deleteList(idsList);
     }
 }

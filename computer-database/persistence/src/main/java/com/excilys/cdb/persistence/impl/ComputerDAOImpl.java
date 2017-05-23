@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,18 +18,11 @@ import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.exception.UnauthorizedValueDAOException;
-import com.excilys.cdb.mapper.row.ComputerRowMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDAO;
@@ -38,20 +30,6 @@ import com.excilys.cdb.persistence.ComputerDAO;
 @Repository("computerDao")
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOImpl.class);
-
-    private static final String FIND_QUERY = "SELECT cpu.id, cpu.name, introduced, discontinued, company_id, com.name AS company_name FROM computer AS cpu LEFT JOIN company AS com ON company_id = com.id WHERE cpu.id = ?";
-    private static final String FIND_ALL = "SELECT cpu.id, cpu.name, introduced, discontinued, company_id, com.name AS company_name FROM computer AS cpu LEFT JOIN company AS com ON company_id = com.id";
-    private static final String DELETE_QUERY = "DELETE FROM computer WHERE id = ?";
-    private static final String UPDATE_QUERY = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-    private static final String DELETE_IN = "DELETE FROM computer WHERE id IN";
-    private static final String DELETE_FROM_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-    private static final String COUNT_QUERY = "SELECT COUNT(id) FROM computer";
-
-    private static final String BOUNDED_RESULT = " LIMIT :limit OFFSET :offset";
-    private static final String LIKE_NAME = " WHERE cpu.name LIKE :name";
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -97,31 +75,6 @@ public class ComputerDAOImpl implements ComputerDAO {
             String message = "Error : DAO has not been able to correctly delete entities.";
             LOGGER.error(message);
             throw new DAOException(message, e);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void delete(long id) {
-        LOGGER.info("Delete computer by id : " + id);
-        String message = "Error : DAO has not been able to correctly delete the entity.";
-
-        if (id > 0) {
-            try {
-                CriteriaDelete<Computer> delete = criteriaBuilder
-                        .createCriteriaDelete(Computer.class);
-                Root<Computer> cpu = delete.from(Computer.class);
-                delete.where(criteriaBuilder.equal(cpu.get("id"), id));
-                LOGGER.debug("Criteria delete : " + delete);
-
-                entityManager.createQuery(delete).executeUpdate();
-            } catch (PersistenceException e) {
-                LOGGER.error(message);
-                throw new DAOException(message, e);
-            }
-        } else {
-            LOGGER.error(message);
-            throw new UnauthorizedValueDAOException(message);
         }
     }
 
@@ -298,12 +251,5 @@ public class ComputerDAOImpl implements ComputerDAO {
      */
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
-    }
-
-    /**
-     * @param jdbcTemplate the jdbcTemplate to set
-     */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
     }
 }

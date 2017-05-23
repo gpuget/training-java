@@ -16,13 +16,6 @@ public interface ComputerService {
     ComputerDTO create(ComputerDTO computerDto);
 
     /**
-     * Deletes the computer corresponding to the identifier.
-     *
-     * @param id identifier
-     */
-    void delete(long id);
-
-    /**
      * Deletes the computers corresponding to the identifiers.
      *
      * @param idsList identifiers

@@ -50,13 +50,6 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public void delete(long id) {
-        LOGGER.info("Delete computer by id : " + id);
-        computerDao.delete(id);
-        --count;
-    }
-
-    @Override
     public void deleteList(List<Long> idsList) {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);

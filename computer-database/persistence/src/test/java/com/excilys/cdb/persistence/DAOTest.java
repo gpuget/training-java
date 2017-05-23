@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class DAOTest {
 	public void correctComputerListSize(){
 	    int max = 10;
 	    
-	    assertEquals(computerDao.getCount(), computerDao.findAll().size());
+	    assertEquals(computerDao.getCount(), 574);
 	    assertEquals(max, computerDao.findAll(max, 0).size());
 	}
     
@@ -42,7 +44,9 @@ public class DAOTest {
         c2 = computerDao.create(c);
         assertNotEquals(0L, c2.getId());
         assertNotNull(computerDao.findById(c2.getId()));
-        computerDao.delete(c2.getId());
+        ArrayList<Long> idsList = new ArrayList<>();
+        idsList.add(c2.getId());
+        computerDao.delete(idsList);
         assertNull(computerDao.findById(c2.getId()));
     }
     
@@ -58,7 +62,9 @@ public class DAOTest {
                                         .name("CPU2")
                                         .manufacturer(new Company.Builder().id(2L).name("CPY2").build()).build());
         assertNotEquals(c, computerDao.findById(c.getId()));
-        computerDao.delete(c.getId());
+        ArrayList<Long> idsList = new ArrayList<>();
+        idsList.add(c.getId());
+        computerDao.delete(idsList);
     }
     
     @Test

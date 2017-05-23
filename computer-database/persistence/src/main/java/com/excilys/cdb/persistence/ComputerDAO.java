@@ -14,13 +14,6 @@ public interface ComputerDAO {
     Computer create(Computer computer);
 
     /**
-     * Deletes the computer corresponding to the identifier.
-     *
-     * @param id identifier
-     */
-    void delete(long id);
-
-    /**
      * Deletes the computers corresponding to the identifiers.
      *
      * @param idsList identifiers
