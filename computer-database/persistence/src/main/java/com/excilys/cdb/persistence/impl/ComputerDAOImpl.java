@@ -214,6 +214,8 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     /**
+     * Sets the entity manager.
+     *
      * @param entityManager the entity manager to set
      */
     public void setEntityManager(EntityManager entityManager) {

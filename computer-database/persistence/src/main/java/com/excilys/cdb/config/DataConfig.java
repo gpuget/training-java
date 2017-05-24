@@ -78,6 +78,11 @@ public class DataConfig {
         return new JpaTransactionManager(emf);
     }
 
+    /**
+     * Gets the entity manager factory.
+     *
+     * @return entity manager
+     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LOGGER.info("new EntityManager");
