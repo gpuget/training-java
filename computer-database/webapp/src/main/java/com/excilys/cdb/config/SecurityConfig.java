@@ -19,15 +19,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/dashboard")
                 .and()
-                .logout().permitAll();
+                .logout().permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/errors/403.jsp");
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("admin").password("qwerty1234").roles("USER").build());
+        manager.createUser(User.withUsername("admin").password("admin").roles("ADMIN").build());
         
         return manager;
     }
