@@ -4,37 +4,32 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
 <%@ tag import="java.lang.StringBuilder" %>
 
-<%@ attribute name="target" required="true" rtexprvalue="true"%>
-<%@ attribute name="value" required="true" rtexprvalue="true"%>
 <%@ attribute name="page" required="true" rtexprvalue="true"%>
 <%@ attribute name="search" required="false" rtexprvalue="true"%>
-<%@ attribute name="max" required="false" rtexprvalue="true"%>
 <%@ attribute name="button" required="false" type="java.lang.Boolean"%>
 
 <%
-	StringBuilder sb = new StringBuilder("?");
-	sb.append(target);
+	StringBuilder sb = new StringBuilder("dashboard?");
 	
-	if (search != null) {
-		sb.append("search&#61").append(search).append("&amp;");
-	}
-	
-	if (max != null) {
-		sb.append("max&#61").append(max).append("&amp;");
-	}
-	
+	if (search != null && !search.trim().isEmpty()) {
+		sb.append("search=").append(search).append("&amp;");
+	}	
 
-	sb.append("page&#61").append(page);
+	sb.append("page=").append(page).append("&amp;");
 	
 	String url = sb.toString();
 %>
 
 <c:choose>
 	<c:when test="${button != null && button.equals(true)}">
-		<a class="btn btn-default" href="<%= url %>">${value}</a>
+		<a class="btn btn-default" href="<%= url %>max=10">10</a>		
+		<a class="btn btn-default" href="<%= url %>max=50">50</a>
+		<a class="btn btn-default" href="<%= url %>max=100">100</a>
 	</c:when>
 	
 	<c:otherwise>
-		<a href="<%= url %>">${value}</a>
+		<a href="<%= url %>max=10">10</a>		
+		<a href="<%= url %>max=50">50</a>
+		<a href="<%= url %>max=100">100</a>
 	</c:otherwise>
 </c:choose>

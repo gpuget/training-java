@@ -2,30 +2,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
-<%@ tag import="java.util.Map" %>
-<%@ tag import="javax.servlet.http.HttpServletRequest" %>
+<%@ tag import="java.lang.StringBuilder" %>
 
-<%@ attribute name="page" required="true" rtexprvalue="true"%>
-<%@ attribute name="request" required="true" rtexprvalue="true" type="javax.servlet.http.HttpServletRequest"%>
+<%@ attribute name="page" required="true" rtexprvalue="true" type="Integer"%>
+<%@ attribute name="total" required="true" rtexprvalue="true" type="Integer"%>
+<%@ attribute name="search" required="false" rtexprvalue="true"%>
+<%@ attribute name="max" required="false" rtexprvalue="true" type="Integer"%>
 
 <%
-	Map<String, String[]> param = request.getParameterMap();
-	String before ="?";
-	if (param != null && !param.isEmpty()) {
-	    for(Map.Entry<String, String[]> p : param.entrySet()) {
-	        if (!p.getKey().equals("page")) {
-	        	before = before + p.getKey() + "&#61;" + p.getValue()[0]+ "&amp;";
-	        }
-	    }
-	}
+    int count;
+
+    StringBuilder sb = new StringBuilder("dashboard?");
+
+    if (search != null && !search.trim().isEmpty()) {
+        sb.append("search=").append(search).append("&amp;");
+    }
+
+    if (max > 0) {
+        sb.append("max=").append(max).append("&amp;");
+        count = 1 + total / max;
+    } else {
+        count = 1 + total / 10;
+    }
+
+    sb.append("page=");
+
+    String before = sb.toString();
 %>
 
 <ul class="pagination">
-	<li><a href="<%= before %>page&#61;${page > 1 ? page - 1 : 1}">&lsaquo;</a></li>
-	
+	<li><a href="<%= before %>1">&lsaquo;&lsaquo;</a></li>
+	<li><a href="<%= before %><%= (page > 1 ? page - 1 : 1) %>">&lsaquo;</a></li>
+
 	<c:forEach var="i" begin="0" end="4">
-		<li><a href="<%= before %>page&#61;${page + i}">${page + i}</a></li>
+		<li><a href="<%= before %>${page + i}">${page + i}</a></li>
 	</c:forEach>
-	
-	<li><a href="<%= before %>page&#61;${page + 1}">&rsaquo;</a></li>
+
+	<li><a href="<%= before %><%= (page < count ? page + 1 : count) %>">&rsaquo;</a></li>
+	<li><a href="<%= before %><%= count %>">&rsaquo;&rsaquo;</a></li>
 </ul>

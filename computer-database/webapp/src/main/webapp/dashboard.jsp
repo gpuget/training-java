@@ -87,24 +87,12 @@
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
 		        
-		        <mytag:pagination request="${pageContext.request}" page="${pageComputer.number}"></mytag:pagination>
+		        <mytag:pagination page="${pageComputer.number}" search="${search}" max="${pageComputer.maxPerPage}" total="${count}"/>
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">
 		        	<mytag:link page="${pageComputer.number}"
 		        				search="${search}"
-		        				max="10"
-		        				value="10" 
-		        				target="dashboard"/>
-		        	<mytag:link page="${pageComputer.number}"
-		        				search="${search}"
-		        				max="50"
-		        				value="50" 
-		        				target="dashboard"/>
-		        	<mytag:link page="${pageComputer.number}"
-		        				search="${search}"
-		        				max="100"
-		        				value="100" 
-		        				target="dashboard"/>
+		        				button="true"/>
 		        </div>
 		    </div>
 	    </footer>
