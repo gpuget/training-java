@@ -48,7 +48,6 @@ public class LoginController {
         
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(req, resp, auth);
-            resp.setStatus(HttpStatus.UNAUTHORIZED.value());
             LOGGER.debug("Authentification : " + auth);
         } else {
             LOGGER.warn("No Authentification logged out");

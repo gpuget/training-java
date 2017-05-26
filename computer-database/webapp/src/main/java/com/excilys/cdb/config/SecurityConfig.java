@@ -36,11 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logoutUrl("/logout")
                 .permitAll()
             .and()
-                .exceptionHandling().accessDeniedPage("/errors/403")
-            .and()
-                .exceptionHandling().authenticationEntryPoint(digestAuthEntryPoint())
-            .and()
-                .addFilter(digestAuthFilter(digestAuthEntryPoint()));
+                .exceptionHandling().accessDeniedPage("/errors/403");
         LOGGER.debug("antMatchers : /resources/**");
         LOGGER.debug("anyRequest : authentificated");
         LOGGER.debug("formLogin : permitAll");
@@ -50,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         LOGGER.debug("passwordParameter : password");
         LOGGER.debug("logout : permitAll");
         LOGGER.debug("accessDeniedPage : /errors/403");
-        LOGGER.debug("authenticationEntryPoint : digestAuthEntryPoint");
-        LOGGER.debug("addFilter : digestAuthFilter");
     }
 
     @Bean
