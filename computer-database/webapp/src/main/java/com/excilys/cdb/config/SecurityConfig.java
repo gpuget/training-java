@@ -10,14 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         LOGGER.info("Configure HttpSecurity");
@@ -37,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .permitAll()
             .and()
                 .exceptionHandling().accessDeniedPage("/errors/403");
+
         LOGGER.debug("antMatchers : /resources/**");
         LOGGER.debug("anyRequest : authentificated");
         LOGGER.debug("formLogin : permitAll");
@@ -48,40 +47,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         LOGGER.debug("accessDeniedPage : /errors/403");
     }
 
+    /**
+     * Gets the user details service.
+     *
+     * @return user details service
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         LOGGER.info("UserDetailsService initialization");
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withUsername("admin").password("admin").roles("ADMIN").build());
-        
+
         return manager;
-    }
-    
-    @Bean
-    public DigestAuthenticationFilter digestAuthFilter(DigestAuthenticationEntryPoint digestAuthEntryPoint) {
-        LOGGER.info("DigestAuthenticationFilter initialization");
-        DigestAuthenticationFilter digestAuthFilter = new DigestAuthenticationFilter();
-        
-        digestAuthFilter.setUserDetailsService(userDetailsService());
-        digestAuthFilter.setAuthenticationEntryPoint(digestAuthEntryPoint);
-        
-        return digestAuthFilter;
-    }
-    
-    @Bean
-    public DigestAuthenticationEntryPoint digestAuthEntryPoint() {
-        LOGGER.info("DigestAuthenticationEntryPoint initialization");
-        DigestAuthenticationEntryPoint entrypoint = new DigestAuthenticationEntryPoint();
-        
-        String realmName = "Contacts Realm via Digest Authentication";
-        String key = "acegi";
-        entrypoint.setRealmName(realmName);
-        LOGGER.debug("Realm name : " + realmName);
-        entrypoint.setKey(key);
-        LOGGER.debug("Key : " + key);
-        entrypoint.setNonceValiditySeconds(10);
-        LOGGER.debug("Nonce validity : 10 s");
-        
-        return entrypoint;
     }
 }

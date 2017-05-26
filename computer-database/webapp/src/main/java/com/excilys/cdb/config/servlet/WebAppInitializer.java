@@ -32,19 +32,19 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
         context.addListener(new ContextLoaderListener(rootContext));
     }
-    
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{AppConfig.class, SecurityConfig.class};
+        return new Class<?>[] {AppConfig.class, SecurityConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{WebConfig.class};
+        return new Class<?>[] {WebConfig.class};
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/", "/addComputer", "/dashboard", "/editComputer", "/login"};
+        return new String[] {"/", "/addComputer", "/dashboard", "/editComputer", "/login"};
     }
 }

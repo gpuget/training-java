@@ -19,8 +19,15 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
     public static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
+    /**
+     * Login servlet.
+     *
+     * @param error authentification error
+     * @param logout logout invoked
+     * @return model
+     */
     @GetMapping(value = "/login")
-    public ModelAndView login(  @RequestParam(value = "error", required = false) String error,
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
                                 @RequestParam(value = "logout", required = false) String logout) {
         LOGGER.info("login GET");
         ModelAndView model = new ModelAndView();
@@ -41,21 +48,33 @@ public class LoginController {
         return model;
     }
 
+    /**
+     * Logout servlet.
+     *
+     * @param req http request
+     * @param resp http response
+     * @return login servlet with logout parameter
+     */
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("logout GET");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
+
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(req, resp, auth);
             LOGGER.debug("Authentification : " + auth);
         } else {
             LOGGER.warn("No Authentification logged out");
         }
-        
+
         return "redirect:/login?logout";
     }
 
+    /**
+     * Access denied.
+     *
+     * @return error 403 page
+     */
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @GetMapping(value = "/errors/403")
     public String acessDenied() {
