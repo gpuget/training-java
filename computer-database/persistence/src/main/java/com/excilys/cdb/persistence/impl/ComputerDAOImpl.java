@@ -85,7 +85,7 @@ public class ComputerDAOImpl implements ComputerDAO {
                 CriteriaDelete<Computer> delete = criteriaBuilder
                         .createCriteriaDelete(Computer.class);
                 Root<Computer> cpu = delete.from(Computer.class);
-                delete.where(criteriaBuilder.equal(cpu.get("company_id"), companyId));
+                delete.where(criteriaBuilder.equal(cpu.get("manufacturer").get("id"), companyId));
                 LOGGER.debug("Criteria delete : " + delete);
 
                 entityManager.createQuery(delete).executeUpdate();
