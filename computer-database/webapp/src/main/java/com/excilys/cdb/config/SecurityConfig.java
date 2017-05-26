@@ -21,8 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         LOGGER.info("Configure HttpSecurity");
-        http.addFilter(digestAuthFilter())
-            .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
                 .anyRequest().authenticated()
             .and()
@@ -34,10 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .permitAll()
             .and()
                 .logout()
+                .logoutUrl("/logout")
                 .permitAll()
             .and()
-                .exceptionHandling().accessDeniedPage("/errors/403");
-        LOGGER.debug("addFilter : digestAuthFilter");
+                .exceptionHandling().accessDeniedPage("/errors/403")
+            .and()
+                .exceptionHandling().authenticationEntryPoint(digestAuthEntryPoint())
+            .and()
+                .addFilter(digestAuthFilter(digestAuthEntryPoint()));
         LOGGER.debug("antMatchers : /resources/**");
         LOGGER.debug("anyRequest : authentificated");
         LOGGER.debug("formLogin : permitAll");
@@ -47,24 +50,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         LOGGER.debug("passwordParameter : password");
         LOGGER.debug("logout : permitAll");
         LOGGER.debug("accessDeniedPage : /errors/403");
+        LOGGER.debug("authenticationEntryPoint : digestAuthEntryPoint");
+        LOGGER.debug("addFilter : digestAuthFilter");
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         LOGGER.info("UserDetailsService initialization");
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("admin").password("admin").roles("USER").build());
+        manager.createUser(User.withUsername("admin").password("admin").roles("ADMIN").build());
         
         return manager;
     }
     
     @Bean
-    public DigestAuthenticationFilter digestAuthFilter() {
+    public DigestAuthenticationFilter digestAuthFilter(DigestAuthenticationEntryPoint digestAuthEntryPoint) {
         LOGGER.info("DigestAuthenticationFilter initialization");
         DigestAuthenticationFilter digestAuthFilter = new DigestAuthenticationFilter();
         
         digestAuthFilter.setUserDetailsService(userDetailsService());
-        digestAuthFilter.setAuthenticationEntryPoint(digestAuthEntryPoint());
+        digestAuthFilter.setAuthenticationEntryPoint(digestAuthEntryPoint);
         
         return digestAuthFilter;
     }
@@ -80,6 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         LOGGER.debug("Realm name : " + realmName);
         entrypoint.setKey(key);
         LOGGER.debug("Key : " + key);
+        entrypoint.setNonceValiditySeconds(10);
+        LOGGER.debug("Nonce validity : 10 s");
         
         return entrypoint;
     }

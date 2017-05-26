@@ -22,14 +22,20 @@ public class LoginController {
     @GetMapping(value = "/login")
     public ModelAndView login(  @RequestParam(value = "error", required = false) String error,
                                 @RequestParam(value = "logout", required = false) String logout) {
+        LOGGER.info("login GET");
         ModelAndView model = new ModelAndView();
+        String message = null;
 
         if (error != null) {
-            model.addObject("error", "Invalid username and password !");
+            message = "Invalid username and password !";
+            LOGGER.debug(message);
+            model.addObject("error", message);
         }
 
         if (logout != null) {
-            model.addObject("logout", "You have been logged out !");
+            message = "You have been logged out !";
+            LOGGER.debug(message);
+            model.addObject("logout", message);
         }
 
         return model;
@@ -37,9 +43,15 @@ public class LoginController {
 
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest req, HttpServletResponse resp) {
+        LOGGER.info("logout GET");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(req, resp, auth);
+            resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+            LOGGER.debug("Authentification : " + auth);
+        } else {
+            LOGGER.warn("No Authentification logged out");
         }
         
         return "redirect:/login?logout";
@@ -48,6 +60,7 @@ public class LoginController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @GetMapping(value = "/errors/403")
     public String acessDenied() {
+        LOGGER.warn("403 accessDenied");
         return "errors/403";
     }
 }
