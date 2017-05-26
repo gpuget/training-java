@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -43,7 +42,7 @@ public class DataConfig {
      */
     @Bean
     public DriverManagerDataSource dataSource() {
-        LOGGER.info("new DataSource");
+        LOGGER.info("DataSource initialization");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName(driver);
@@ -56,25 +55,15 @@ public class DataConfig {
     }
 
     /**
-     * Gets the JDBC Template.
-     *
-     * @return JdbcTemplate
-     */
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
-    }
-
-    /**
      * Gets the transaction manager.
      *
      * @return transaction manager
      */
     @Bean
     public PlatformTransactionManager transactionManager() {
-        LOGGER.info("new TransactionManager");
+        LOGGER.info("TransactionManager initialization");
         EntityManagerFactory emf = entityManagerFactory().getObject();
-        LOGGER.debug("EntityManageractory : " + emf);
+        LOGGER.debug("EntityManagerFactory : " + emf);
         return new JpaTransactionManager(emf);
     }
 
@@ -85,11 +74,12 @@ public class DataConfig {
      */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LOGGER.info("new EntityManager");
+        LOGGER.info("EntityManager initialization");
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
         emf.setPackagesToScan("com.excilys.cdb.model");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        LOGGER.debug("JpaVendorAdaptor : HibernateJpaVendorAdaptor");
 
         return emf;
     }

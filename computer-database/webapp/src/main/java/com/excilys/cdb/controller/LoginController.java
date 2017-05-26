@@ -25,11 +25,11 @@ public class LoginController {
         ModelAndView model = new ModelAndView();
 
         if (error != null) {
-            model.addObject("error", "Invalid username and password!");
+            model.addObject("error", "Invalid username and password !");
         }
 
         if (logout != null) {
-            model.addObject("logout", "You have been logged out.");
+            model.addObject("logout", "You have been logged out !");
         }
 
         return model;
@@ -41,6 +41,7 @@ public class LoginController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(req, resp, auth);
         }
+        
         return "redirect:/login?logout";
     }
 

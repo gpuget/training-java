@@ -24,7 +24,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        LOGGER.info("addResourceHandlers");
+        LOGGER.info("Web config : addResourceHandlers");
         registry.addResourceHandler("/resources/**").addResourceLocations("resources/");
     }
 
@@ -35,7 +35,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      */
     @Bean
     public ViewResolver internalRessourceViewResolver() {
-        LOGGER.info("new ViewResolver");
+        LOGGER.info("ViewResolver initialization");
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setViewClass(JstlView.class);
         resolver.setSuffix(".jsp");
@@ -52,6 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      */
     @Bean
     public HandlerExceptionResolver handlerExceptionResolver() {
+        LOGGER.info("HandlerExceptionResolver initialization");
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         Properties exceptions = new Properties();
 
