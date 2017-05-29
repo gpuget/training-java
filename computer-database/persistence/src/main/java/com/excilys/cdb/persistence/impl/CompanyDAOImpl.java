@@ -10,6 +10,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
@@ -120,6 +121,27 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOGGER.error(message);
             throw new UnauthorizedValueDAOException(message);
         }
+    }
+
+    @Override
+    @Transactional
+    public Company update(Company company) {
+        LOGGER.info("Update company :" + company);
+
+        try {
+            CriteriaUpdate<Company> update = criteriaBuilder.createCriteriaUpdate(Company.class);
+            Root<Company> com = update.from(Company.class);
+            update.set(com.get("name"), company.getName())
+                    .where(criteriaBuilder.equal(com.get("id"), company.getId()));
+
+            entityManager.createQuery(update).executeUpdate();
+        } catch (PersistenceException e) {
+            String message = "Error : DAO has not been able to correctly update the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+
+        return company;
     }
 
     /**

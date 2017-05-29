@@ -35,4 +35,12 @@ public interface CompanyDAO {
      * @return found company
      */
     Company findById(long id);
+    
+    /**
+     * Updates company in DB.
+     *
+     * @param company modified company
+     * @return company
+     */
+    Company update(Company company);
 }
