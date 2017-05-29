@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.model.auth.User;
@@ -16,12 +17,12 @@ public class ConsoleUserService extends AbstractConsoleService {
     private UserDAO userDao;
 
     @Override
-    public void add() {
+    public void add() {        
         System.out.print("Name : ");
         String name = scanner.nextLine();
         System.out.print("Password : ");
         String password = scanner.nextLine();
-        User user = new User(name, password, true);
+        User user = new User(name, BCrypt.hashpw(password, BCrypt.gensalt()), true);
 
         userDao.create(user);
         addRoles(user);

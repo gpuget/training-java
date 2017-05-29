@@ -5,7 +5,7 @@ DROP TABLE if EXISTS users;
 
 CREATE  TABLE users (
   username VARCHAR(45) NOT NULL ,
-  password VARCHAR(45) NOT NULL ,
+  password VARCHAR(255) NOT NULL ,
   enabled TINYINT NOT NULL DEFAULT 1 ,
   PRIMARY KEY (username));
   
@@ -17,8 +17,3 @@ CREATE TABLE user_roles (
   UNIQUE KEY uni_username_role (role,username),
   KEY fk_username_idx (username),
   CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username));
-
-INSERT INTO users(username, password, enabled) VALUES ('admin', 'admin', true);
-
-INSERT INTO user_roles(username, role) VALUES ('admin', 'ROLE_ADMIN');
-INSERT INTO user_roles(username, role) VALUES ('admin', 'ROLE_USER');
