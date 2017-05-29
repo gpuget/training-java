@@ -1,5 +1,7 @@
 package com.excilys.cdb.persistence.impl;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.auth.User;
 import com.excilys.cdb.persistence.UserDAO;
 
@@ -52,6 +55,21 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        LOGGER.info("Find all companies.");
+        try {
+            CriteriaQuery<User> find = criteriaBuilder.createQuery(User.class);
+            find.select(find.from(User.class));
+
+            return entityManager.createQuery(find).getResultList();
+        } catch (PersistenceException e) {
+            String message = "Error : DAO has not been able to find the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
     }
 
     @Override

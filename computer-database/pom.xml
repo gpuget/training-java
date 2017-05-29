@@ -56,6 +56,13 @@
 			</dependency>
 
 			<!-- Spring -->
+			<!-- Boot -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-boot</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			
 			<!-- Context -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -224,5 +231,6 @@
 		<module>persistence</module>
 		<module>service</module>
 		<module>webapp</module>
+		<module>console</module>
 	</modules>
 </project>

@@ -1,5 +1,7 @@
 package com.excilys.cdb.persistence;
 
+import java.util.List;
+
 import com.excilys.cdb.model.auth.User;
 
 public interface UserDAO {
@@ -10,6 +12,13 @@ public interface UserDAO {
      * @return user
      */
     User create(User user);
+
+    /**
+     * Select users in DB.
+     *
+     * @return found users
+     */
+    List<User> findAll();
 
     /**
      * Select user by name.

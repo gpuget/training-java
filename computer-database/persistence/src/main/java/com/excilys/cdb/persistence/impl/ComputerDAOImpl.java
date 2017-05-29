@@ -101,6 +101,21 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    public List<Computer> findAll() {
+        LOGGER.info("Find all companies.");
+        try {
+            CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
+            find.select(find.from(Computer.class));
+
+            return entityManager.createQuery(find).getResultList();
+        } catch (PersistenceException e) {
+            String message = "Error : DAO has not been able to find the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+    @Override
     public List<Computer> findAll(int limit, int offset) {
         LOGGER.info("Find all computers : " + limit + " " + offset);
         String message = "Error : DAO has not been able to correctly find all entities.";
