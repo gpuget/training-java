@@ -15,6 +15,7 @@
 	    <header class="navbar navbar-inverse navbar-fixed-top">
 	        <div class="container">
 	            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+	            <a class="navbar-right btn btn-default navbar-btn" href="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a>
 	        </div>
 	    </header>
 	    <section id="main">
