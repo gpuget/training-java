@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.excilys.cdb</groupId>
 	<artifactId>computer-database</artifactId>
@@ -84,13 +85,20 @@
 			</dependency>
 
 			<!-- Spring security -->
+			<!-- Core -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			
 			<!-- Web -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
-			
+
 			<!-- Config -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -216,6 +224,5 @@
 		<module>persistence</module>
 		<module>service</module>
 		<module>webapp</module>
-		<module>authentification</module>
-	  </modules>
+	</modules>
 </project>

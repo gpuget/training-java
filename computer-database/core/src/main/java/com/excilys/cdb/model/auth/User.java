@@ -1,4 +1,4 @@
-package com.excilys.cdb.model;
+package com.excilys.cdb.model.auth;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,20 +15,30 @@ public class User {
     @Id
     @Column(nullable = false, length = 45)
     private String username;
-    
+
     @Column(nullable = false, length = 45)
     private String password;
-    
+
     @Column(nullable = false)
     private boolean enabled;
-    
+
     @OneToMany(mappedBy = "user")
     private Set<UserRole> userRole;
 
+    /**
+     * Constructor.
+     */
     public User() {
         this.userRole = new HashSet<>(0);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param username name
+     * @param password pasword
+     * @param enabled true if used for the application
+     */
     public User(String username, String password, boolean enabled) {
         super();
         this.username = username;
@@ -36,6 +46,14 @@ public class User {
         this.enabled = enabled;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param username name
+     * @param password password
+     * @param enabled true if used for the application
+     * @param userRole roles
+     */
     public User(String username, String password, boolean enabled, Set<UserRole> userRole) {
         this.username = username;
         this.password = password;

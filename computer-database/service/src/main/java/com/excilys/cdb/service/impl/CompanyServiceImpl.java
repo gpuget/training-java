@@ -26,14 +26,15 @@ public class CompanyServiceImpl implements CompanyService {
     private ComputerDAO computerDao;
 
     @Override
+    @Transactional
     public CompanyDTO create(CompanyDTO companyDto) {
         LOGGER.info("Create company : " + companyDto);
         Company company = companyDao.create(CompanyMapper.toCompany(companyDto));
         return CompanyMapper.toCompanyDTO(company);
     }
 
-    @Transactional(readOnly = false)
     @Override
+    @Transactional(readOnly = false)
     public void delete(long id) {
         LOGGER.info("Delete company by id : " + id);
         computerDao.deleteFromCompany(id);

@@ -1,4 +1,4 @@
-package com.excilys.cdb.model;
+package com.excilys.cdb.model.auth;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
