@@ -34,13 +34,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return buildUserAuth(user);
     }
-    
+
+    /**
+     * Build user for authentication.
+     *
+     * @param user user bean
+     * @return user for authentication
+     */
     private User buildUserAuth(com.excilys.cdb.model.auth.User user) {
         LOGGER.info("Build User : " + user);
         LOGGER.debug("accountNonExpired, creadentialsNonExpired and accountNonLocked");
-        return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true, buildUserAuthority(user.getUserRole()));
+        return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
+                buildUserAuthority(user.getUserRole()));
     }
 
+    /**
+     * Build authorities from user roles.
+     *
+     * @param userRoles user roles
+     * @return authorities
+     */
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
         LOGGER.info("Build authorities : " + userRoles);
         List<GrantedAuthority> authorities = new ArrayList<>();

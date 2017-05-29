@@ -10,7 +10,7 @@ public interface UserDAO {
      * @return user
      */
     User create(User user);
-    
+
     /**
      * Select user by name.
      *

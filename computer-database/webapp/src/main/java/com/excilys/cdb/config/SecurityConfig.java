@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
-    
+
     @Autowired
     @Qualifier("userDetailsService")
     UserDetailsService userDetailsService;
