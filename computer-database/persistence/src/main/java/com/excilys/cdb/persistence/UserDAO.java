@@ -13,7 +13,7 @@ public interface UserDAO {
      * @return user
      */
     User create(User user);
-    
+
     /**
      * Inserts the role in DB.
      *
@@ -21,6 +21,13 @@ public interface UserDAO {
      * @return role
      */
     UserRole create(UserRole role);
+
+    /**
+     * Delete user from DB corresponding to username.
+     *
+     * @param username name
+     */
+    void delete(String username);
 
     /**
      * Select users in DB.

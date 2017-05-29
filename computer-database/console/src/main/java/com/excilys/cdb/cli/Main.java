@@ -42,6 +42,7 @@ public class Main {
         System.out.println("8 : Delete Company");
         System.out.println("9 : Update Company");
         System.out.println("10 : Add User");
+        System.out.println("11 : Delete User");
         System.out.println("\n0 : Quit");
     }
 
@@ -106,7 +107,7 @@ public class Main {
         Computer computer = new Computer.Builder().id(id).name(name)
                 .manufacturer(new Company.Builder().id(companyId).build()).introduced(i)
                 .discontinued(d).build();
-        
+
         computerDao.update(computer);
     }
 
@@ -133,21 +134,21 @@ public class Main {
 
         companyDao.create(new Company.Builder().id(id).name(name).build());
     }
-    
+
     private void addRoles(User user) {
         Set<UserRole> res = new HashSet<>();
-        
+
         System.out.print("Roles : ");
         String roles = scanner.nextLine();
-        
+
         for (String s : roles.split(" ")) {
             UserRole ur = new UserRole(user, s);
             res.add(ur);
             userDao.create(ur);
         }
     }
-    
-    private void addUser(){
+
+    private void addUser() {
         System.out.print("Name : ");
         String name = scanner.nextLine();
         System.out.print("Password : ");
@@ -156,6 +157,13 @@ public class Main {
 
         userDao.create(user);
         addRoles(user);
+    }
+
+    private void deleteUser() {
+        displayUsers();
+        System.out.print("Name : ");
+        String name = scanner.nextLine();
+        userDao.delete(name);
     }
 
     public static void main(String[] args) {
@@ -168,7 +176,7 @@ public class Main {
             i = sc.nextInt();
 
             switch (i) {
-                case 0: {
+                case 0 : {
                     System.out.println("Application closed...");
                     sc.close();
                     System.exit(0);
@@ -183,26 +191,29 @@ public class Main {
 
                 case 3 : main.displayUsers();
                 break;
-                
+
                 case 4 : main.addComputer();
                 break;
-                
+
                 case 5 : main.deleteComputer();
                 break;
-                
+
                 case 6 : main.updateComputer();
                 break;
-                
+
                 case 7 : main.addCompany();
                 break;
-                
+
                 case 8 : main.deleteCompany();
                 break;
-                
+
                 case 9 : main.updateCompany();
                 break;
-                
+
                 case 10 : main.addUser();
+                break;
+
+                case 11 : main.deleteUser();
                 break;
             }
         } while (true);

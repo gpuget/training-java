@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -55,6 +56,29 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return user;
+    }
+
+    @Override
+    @Transactional
+    public void delete(String username) {
+        LOGGER.info("Delete user by name : " + username);
+
+        try {
+            CriteriaDelete<UserRole> deleteUR = criteriaBuilder.createCriteriaDelete(UserRole.class);
+            Root<UserRole> ur = deleteUR.from(UserRole.class);
+            deleteUR.where(criteriaBuilder.equal(ur.get("user").get("username"), username));
+            
+            CriteriaDelete<User> delete = criteriaBuilder.createCriteriaDelete(User.class);
+            Root<User> usr = delete.from(User.class);
+            delete.where(criteriaBuilder.equal(usr.get("username"), username));            
+
+            entityManager.createQuery(deleteUR).executeUpdate();
+            entityManager.createQuery(delete).executeUpdate();
+        } catch (PersistenceException e) {
+            String message = "Error : DAO has not been able to correctly delete the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
     }
 
     @Override
