@@ -58,6 +58,30 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     @Transactional
+    public void delete(long id) {
+        LOGGER.info("Delete computer by id : " + id);
+        String message = "Error : DAO has not been able to correctly delete the entity.";
+
+        if (id > 0) {
+            try {
+                CriteriaDelete<Computer> delete = criteriaBuilder
+                        .createCriteriaDelete(Computer.class);
+                Root<Computer> cpy = delete.from(Computer.class);
+                delete.where(criteriaBuilder.equal(cpy.get("id"), id));
+
+                entityManager.createQuery(delete).executeUpdate();
+            } catch (PersistenceException e) {
+                LOGGER.error(message);
+                throw new DAOException(message, e);
+            }
+        } else {
+            LOGGER.error(message);
+            throw new UnauthorizedValueDAOException(message);
+        }
+    }
+
+    @Override
+    @Transactional
     public void delete(List<Long> idsList) {
         LOGGER.info("Delete all computer in : " + idsList);
         try {

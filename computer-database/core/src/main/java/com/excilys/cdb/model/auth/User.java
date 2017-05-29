@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,14 +23,14 @@ public class User {
     @Column(nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRole;
 
     /**
      * Constructor.
      */
     public User() {
-        this.userRole = new HashSet<>(0);
+        this.userRole = new HashSet<>();
     }
 
     /**
@@ -40,7 +41,7 @@ public class User {
      * @param enabled true if used for the application
      */
     public User(String username, String password, boolean enabled) {
-        super();
+        this();
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -59,6 +60,17 @@ public class User {
         this.password = password;
         this.enabled = enabled;
         this.userRole = userRole;
+    }
+    
+    @Override
+    public String toString() {
+        String res = "User : " + username + ' '+ password + ' ' + enabled;
+        
+        for (UserRole ur : userRole) {
+            res = res + ' ' + ur.getRole();
+        }
+        
+        return res;
     }
 
     /**

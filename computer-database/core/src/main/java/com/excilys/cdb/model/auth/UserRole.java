@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "user_roles",
-        uniqueConstraints = @UniqueConstraint(columnNames = { "role", "username" }))
+@Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = { "role",
+        "username" }))
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,21 @@ public class UserRole {
 
     @Column(nullable = false)
     private String role;
+
+    /**
+     * Constructor.
+     */
+    public UserRole() {
+
+    }
+
+    /**
+     * @param role role
+     */
+    public UserRole(User user, String role) {
+        this.user = user;
+        this.role = role;
+    }
 
     /**
      * @return the id

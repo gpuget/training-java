@@ -17,8 +17,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.auth.User;
+import com.excilys.cdb.model.auth.UserRole;
 import com.excilys.cdb.persistence.UserDAO;
 
 @Repository
@@ -58,8 +58,25 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    @Transactional
+    public UserRole create(UserRole role) {
+        LOGGER.info("Create role : " + role);
+
+        try {
+            entityManager.persist(role);
+            LOGGER.debug("Entity stored.");
+        } catch (PersistenceException e) {
+            String message = "Error : DAO has not been able to correctly create the entity.";
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+
+        return role;
+    }
+
+    @Override
     public List<User> findAll() {
-        LOGGER.info("Find all companies.");
+        LOGGER.info("Find all users.");
         try {
             CriteriaQuery<User> find = criteriaBuilder.createQuery(User.class);
             find.select(find.from(User.class));

@@ -3,6 +3,7 @@ package com.excilys.cdb.persistence;
 import java.util.List;
 
 import com.excilys.cdb.model.auth.User;
+import com.excilys.cdb.model.auth.UserRole;
 
 public interface UserDAO {
     /**
@@ -12,6 +13,14 @@ public interface UserDAO {
      * @return user
      */
     User create(User user);
+    
+    /**
+     * Inserts the role in DB.
+     *
+     * @param role role to insert
+     * @return role
+     */
+    UserRole create(UserRole role);
 
     /**
      * Select users in DB.
