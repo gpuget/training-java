@@ -34,6 +34,9 @@ public class UserRole {
     }
 
     /**
+     * Constructor.
+     *
+     * @param user user
      * @param role role
      */
     public UserRole(User user, String role) {

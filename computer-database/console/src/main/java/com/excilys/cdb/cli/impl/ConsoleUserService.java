@@ -17,7 +17,7 @@ public class ConsoleUserService extends AbstractConsoleService {
     private UserDAO userDao;
 
     @Override
-    public void add() {        
+    public void add() {
         System.out.print("Name : ");
         String name = scanner.nextLine();
         System.out.print("Password : ");
@@ -49,6 +49,11 @@ public class ConsoleUserService extends AbstractConsoleService {
 
     }
 
+    /**
+     * Add roles for an user.
+     *
+     * @param user user to configure
+     */
     private void addRoles(User user) {
         Set<UserRole> res = new HashSet<>();
 

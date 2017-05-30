@@ -58,9 +58,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.debug("logout : permitAll");
         LOGGER.debug("accessDeniedPage : /errors/403");
     }
-    
+
+    /**
+     * Encodes the password.
+     *
+     * @return password encoder
+     */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
     }

@@ -61,15 +61,15 @@ public class User {
         this.enabled = enabled;
         this.userRole = userRole;
     }
-    
+
     @Override
     public String toString() {
-        String res = "User : " + username + ' '+ password + ' ' + enabled;
-        
+        String res = "User : " + username + ' ' + password + ' ' + enabled;
+
         for (UserRole ur : userRole) {
             res = res + ' ' + ur.getRole();
         }
-        
+
         return res;
     }
 

@@ -64,13 +64,14 @@ public class UserDAOImpl implements UserDAO {
         LOGGER.info("Delete user by name : " + username);
 
         try {
-            CriteriaDelete<UserRole> deleteUR = criteriaBuilder.createCriteriaDelete(UserRole.class);
+            CriteriaDelete<UserRole> deleteUR = criteriaBuilder
+                    .createCriteriaDelete(UserRole.class);
             Root<UserRole> ur = deleteUR.from(UserRole.class);
             deleteUR.where(criteriaBuilder.equal(ur.get("user").get("username"), username));
-            
+
             CriteriaDelete<User> delete = criteriaBuilder.createCriteriaDelete(User.class);
             Root<User> usr = delete.from(User.class);
-            delete.where(criteriaBuilder.equal(usr.get("username"), username));            
+            delete.where(criteriaBuilder.equal(usr.get("username"), username));
 
             entityManager.createQuery(deleteUR).executeUpdate();
             entityManager.createQuery(delete).executeUpdate();

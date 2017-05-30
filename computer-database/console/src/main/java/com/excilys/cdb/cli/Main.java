@@ -1,13 +1,19 @@
-package com.excilys.cdb.cli.impl;
+package com.excilys.cdb.cli;
 
 import java.util.Scanner;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.cdb.cli.impl.ConsoleCompanyService;
+import com.excilys.cdb.cli.impl.ConsoleComputerService;
+import com.excilys.cdb.cli.impl.ConsoleUserService;
 import com.excilys.cdb.config.ConsoleConfig;
 
 public class Main {
+    /**
+     * Display menu.
+     */
     public static void menu() {
         System.out.print("\n--- MENU ---"
                 + "\n1 : Companies list\n2 : Add company\n3 : Delete company\n4 : Update company\n"
@@ -15,9 +21,14 @@ public class Main {
                 + "\n9 : Users list\n10 : Add User\n11 : Delete User\n");
         System.out.println("\n0 : Quit");
     }
-
+    /**
+     * Main.
+     *
+     * @param args args
+     */
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(ConsoleConfig.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+                ConsoleConfig.class);
 
         ConsoleCompanyService companyService = context.getBean(ConsoleCompanyService.class);
         ConsoleComputerService computerService = context.getBean(ConsoleComputerService.class);
@@ -35,13 +46,12 @@ public class Main {
             }
 
             switch (i) {
-                default :            
-                case 0: {
+                default :
+                case 0 :
                     System.out.println("Application closed...");
                     sc.close();
                     context.close();
                     System.exit(0);
-                }
                 break;
 
                 case 1 : companyService.display();
