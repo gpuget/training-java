@@ -25,6 +25,10 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Autowired
     private ComputerDAO computerDao;
+    
+    @Autowired
+    private ComputerMapper computerMapper;
+    
     private int count;
 
     /**
@@ -43,8 +47,8 @@ public class ComputerServiceImpl implements ComputerService {
         ++count;
         LOGGER.debug("Count : " + count);
         try {
-            Computer computer = computerDao.create(ComputerMapper.toComputer(computerDto));
-            return ComputerMapper.toComputerDTO(computer);
+            Computer computer = computerDao.create(computerMapper.toComputer(computerDto));
+            return computerMapper.toComputerDTO(computer);
         } catch (DAOException e) {
             --count;
             LOGGER.debug("Count : " + count);
@@ -69,7 +73,7 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public ComputerDTO getDetails(long id) {
         LOGGER.info("Get computer details with id : " + id);
-        return ComputerMapper.toComputerDTO(computerDao.findById(id));
+        return computerMapper.toComputerDTO(computerDao.findById(id));
     }
 
     @Override
@@ -78,7 +82,7 @@ public class ComputerServiceImpl implements ComputerService {
                 + maxPerPage + " computers");
         List<Computer> computers = computerDao.findByName(maxPerPage, maxPerPage * (number - 1),
                 name);
-        return new Page<>(number, ComputerMapper.toComputerDTO(computers));
+        return new Page<>(number, computerMapper.toComputerDTO(computers));
     }
 
     @Override
@@ -86,15 +90,15 @@ public class ComputerServiceImpl implements ComputerService {
         LOGGER.info(
                 "Get page of computer : number " + number + " with " + maxPerPage + " computers");
         List<Computer> computers = computerDao.findAll(maxPerPage, maxPerPage * (number - 1));
-        return new Page<>(number, ComputerMapper.toComputerDTO(computers));
+        return new Page<>(number, computerMapper.toComputerDTO(computers));
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ComputerDTO update(ComputerDTO computerDto) {
         LOGGER.info("Update computer : " + computerDto);
-        Computer computer = computerDao.update(ComputerMapper.toComputer(computerDto));
-        return ComputerMapper.toComputerDTO(computer);
+        Computer computer = computerDao.update(computerMapper.toComputer(computerDto));
+        return computerMapper.toComputerDTO(computer);
     }
 
     /**

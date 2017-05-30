@@ -25,13 +25,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private ComputerDAO computerDao;
+    
+    @Autowired
+    private CompanyMapper companyMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public CompanyDTO create(CompanyDTO companyDto) {
         LOGGER.info("Create company : " + companyDto);
-        Company company = companyDao.create(CompanyMapper.toCompany(companyDto));
-        return CompanyMapper.toCompanyDTO(company);
+        Company company = companyDao.create(companyMapper.toCompany(companyDto));
+        return companyMapper.toCompanyDTO(company);
     }
 
     @Override
@@ -45,13 +48,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDTO> getCompanies() {
         LOGGER.info("Get companies");
-        return CompanyMapper.toCompanyDTO(companyDao.findAll());
+        return companyMapper.toCompanyDTO(companyDao.findAll());
     }
 
     @Override
     public CompanyDTO getCompanyById(long id) {
         LOGGER.info("Get company by id : " + id);
-        return CompanyMapper.toCompanyDTO(companyDao.findById(id));
+        return companyMapper.toCompanyDTO(companyDao.findById(id));
     }
 
     /**

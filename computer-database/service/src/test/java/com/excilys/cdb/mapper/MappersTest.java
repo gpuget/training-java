@@ -19,9 +19,14 @@ public class MappersTest {
     Computer cpu;
     CompanyDTO comDto;
     ComputerDTO cpuDto;
+    CompanyMapper companyMapper;
+    ComputerMapper computerMapper;
 
     @Before
     public void init() {
+        companyMapper = new CompanyMapper();
+        computerMapper = new ComputerMapper();
+        
         com = new Company.Builder()
                             .id(1L)
                             .name("Bob Inc.")
@@ -47,21 +52,21 @@ public class MappersTest {
 
     @Test
     public void goodConversionToCompanyDTO(){
-        assertEquals(comDto, CompanyMapper.toCompanyDTO(com));
+        assertEquals(comDto, companyMapper.toCompanyDTO(com));
     }
 
     @Test
     public void goodConversionToCompany(){
-        assertEquals(com, CompanyMapper.toCompany(comDto));
+        assertEquals(com, companyMapper.toCompany(comDto));
     }
 
     @Test
     public void goodConversionToComputerDTO(){
-        assertEquals(cpuDto, ComputerMapper.toComputerDTO(cpu));
+        assertEquals(cpuDto, computerMapper.toComputerDTO(cpu));
     }
 
     @Test
     public void goodConversionToComputer(){
-        assertEquals(cpu, ComputerMapper.toComputer(cpuDto));
+        assertEquals(cpu, computerMapper.toComputer(cpuDto));
     }
 }

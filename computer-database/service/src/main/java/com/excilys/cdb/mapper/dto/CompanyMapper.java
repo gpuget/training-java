@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.dto.CompanyDTO;
 
-public final class CompanyMapper {
+@Component
+public class CompanyMapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyMapper.class);
 
     /**
@@ -18,7 +20,7 @@ public final class CompanyMapper {
      * @param companyDto DTO to convert
      * @return conversion result
      */
-    public static Company toCompany(CompanyDTO companyDto) {
+    public Company toCompany(CompanyDTO companyDto) {
         LOGGER.info("Convert CompanyDTO to model : " + companyDto);
         return new Company.Builder().id(companyDto.getId()).name(companyDto.getName()).build();
     }
@@ -29,7 +31,7 @@ public final class CompanyMapper {
      * @param company company to convert
      * @return conversion result
      */
-    public static CompanyDTO toCompanyDTO(Company company) {
+    public CompanyDTO toCompanyDTO(Company company) {
         LOGGER.info("Convert Company to DTO : " + company);
         CompanyDTO companyDto = new CompanyDTO();
 
@@ -47,7 +49,7 @@ public final class CompanyMapper {
      * @param companies list to convert
      * @return conversion result
      */
-    public static List<CompanyDTO> toCompanyDTO(List<Company> companies) {
+    public List<CompanyDTO> toCompanyDTO(List<Company> companies) {
         LOGGER.info("Convert Companies to DTO");
         List<CompanyDTO> listDto = new ArrayList<>();
 

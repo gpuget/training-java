@@ -7,12 +7,14 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.dto.ComputerDTO;
 
-public final class ComputerMapper {
+@Component
+public class ComputerMapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
 
     /**
@@ -21,7 +23,7 @@ public final class ComputerMapper {
      * @param computerDto DTO to convert
      * @return conversion result
      */
-    public static Computer toComputer(ComputerDTO computerDto) {
+    public Computer toComputer(ComputerDTO computerDto) {
         LOGGER.info("Computer DTO to model : " + computerDto);
         Computer computer = new Computer.Builder().build();
 
@@ -49,7 +51,7 @@ public final class ComputerMapper {
      * @param computer computer to convert
      * @return conversion result
      */
-    public static ComputerDTO toComputerDTO(Computer computer) {
+    public ComputerDTO toComputerDTO(Computer computer) {
         LOGGER.info("Computer model to DTO : " + computer);
         ComputerDTO computerDto = new ComputerDTO();
 
@@ -78,7 +80,7 @@ public final class ComputerMapper {
      * @param computers list to convert
      * @return conversion result
      */
-    public static List<ComputerDTO> toComputerDTO(List<Computer> computers) {
+    public List<ComputerDTO> toComputerDTO(List<Computer> computers) {
         LOGGER.info("Computer list model to DTO");
         List<ComputerDTO> listDto = new ArrayList<>();
 
