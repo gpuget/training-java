@@ -45,8 +45,7 @@ public class ConsoleUserService extends AbstractConsoleService {
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-
+        throw new UnsupportedOperationException();
     }
 
     /**
