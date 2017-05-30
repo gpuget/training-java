@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.mapper.dto.CompanyMapper;
@@ -26,7 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
     private ComputerDAO computerDao;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public CompanyDTO create(CompanyDTO companyDto) {
         LOGGER.info("Create company : " + companyDto);
         Company company = companyDao.create(CompanyMapper.toCompany(companyDto));
@@ -34,7 +35,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void delete(long id) {
         LOGGER.info("Delete company by id : " + id);
         computerDao.deleteFromCompany(id);

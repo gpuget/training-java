@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.exception.DAOException;
@@ -36,7 +37,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ComputerDTO create(ComputerDTO computerDto) {
         LOGGER.info("Create computer : " + computerDto);
         ++count;
@@ -52,7 +53,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteList(List<Long> idsList) {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);
@@ -89,7 +90,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ComputerDTO update(ComputerDTO computerDto) {
         LOGGER.info("Update computer : " + computerDto);
         Computer computer = computerDao.update(ComputerMapper.toComputer(computerDto));

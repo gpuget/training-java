@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.auth.UserRole;
@@ -27,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserDAO userDao;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info("Load user by name : " + username);
         com.excilys.cdb.model.auth.User user = userDao.findByUsername(username);
