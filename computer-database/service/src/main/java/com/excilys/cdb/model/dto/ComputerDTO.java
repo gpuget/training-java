@@ -13,23 +13,23 @@ import com.excilys.cdb.validator.Date;
 public class ComputerDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Min(0)
+    @Min(value = 0, message = "Computer id size is not valid.")
     private long id;
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "Computer name size is not valid.")
     private String name;
 
-    @Min(0)
+    @Min(value = 0, message = "Company id size is not valid.")
     private long companyId;
 
     @Value("")
     private String companyName;
 
-    @Date
+    @Date(message = "Introduced date is not valid.")
     private String introduced;
 
-    @Date
+    @Date(message = "Discontinued date is not valid.")
     private String discontinued;
 
     /**

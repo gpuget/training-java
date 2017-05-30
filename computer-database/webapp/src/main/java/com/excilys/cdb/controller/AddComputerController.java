@@ -56,12 +56,13 @@ public class AddComputerController {
     /**
      * Post method for computer creation servlet.
      *
+     * @param model model
      * @param computerDto posted computer
      * @param results validation results
      * @return servlet mapping
      */
     @PostMapping
-    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
+    public String post(ModelMap model, @Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
         LOGGER.info("addComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
         String message = "Sorry, an error has occured during the computer creation.";
@@ -81,8 +82,9 @@ public class AddComputerController {
                 throw new ControllerException(message, e);
             }
         } else {
-            LOGGER.error(results.toString());
-            throw new ControllerException(message);
+            LOGGER.warn(results.getAllErrors().toString());
+            model.addAttribute("errors", results.getAllErrors());
+            return "/addComputer";
         }
     }
 

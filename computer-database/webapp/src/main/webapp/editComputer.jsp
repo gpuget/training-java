@@ -26,6 +26,14 @@
 	                        id: <c:out value="${computer.id}"></c:out>
 	                    </div>
 	                    <h1>Edit Computer</h1>
+
+						<c:if test="${errors != null}">						
+							<div class="alert alert-danger">
+								<c:forEach items="${errors}" var="e">
+									<strong>Error :</strong><c:out value="${e.defaultMessage}" />
+								</c:forEach>								
+							</div>
+						</c:if>
 	
 	                    <form action="editComputer" method="POST">
 	                        <input type="hidden" value="${computer.id}" id="id" name="id"/>

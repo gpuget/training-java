@@ -25,7 +25,16 @@
 	            <div class="row">
 	                <div class="col-xs-8 col-xs-offset-2 box">
 	                    <h1>Add Computer</h1>
-	                    <form action="addComputer" method="POST">
+
+						<c:if test="${errors != null}">						
+							<div class="alert alert-danger">
+								<c:forEach items="${errors}" var="e">
+									<strong>Error :</strong><c:out value="${e.defaultMessage}" />
+								</c:forEach>								
+							</div>
+						</c:if>
+
+						<form action="addComputer" method="POST">
 	                        <fieldset>
 	                            <div class="form-group">
 	                                <label for="computerName">Computer name</label>

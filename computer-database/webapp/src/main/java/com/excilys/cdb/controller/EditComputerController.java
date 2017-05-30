@@ -62,12 +62,13 @@ public class EditComputerController {
     /**
      * Post method for computer edition.
      *
+     * @param model model
      * @param computerDto posted computer
      * @param results validation result
      * @return servlet mapping
      */
     @PostMapping
-    public String post(@Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
+    public String post(ModelMap model, @Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
         LOGGER.info("editComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
         LOGGER.debug("Validation results : " + results);
@@ -83,8 +84,9 @@ public class EditComputerController {
                 throw new ControllerException(message, e);
             }
         } else {
-            LOGGER.error(message);
-            throw new ControllerException(message);
+            LOGGER.warn(results.getAllErrors().toString());
+            model.addAttribute("errors", results.getAllErrors());
+            return "/editComputer";
         }
     }
 
