@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.excilys.cdb</groupId>
 		<artifactId>computer-database</artifactId>
-		<version>7.0.0-RELEASE</version>
+		<version>7.1.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -43,13 +43,13 @@
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>
 			<artifactId>core</artifactId>
-			<version>${cdb.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>
 			<artifactId>persistence</artifactId>
-			<version>${cdb.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
 

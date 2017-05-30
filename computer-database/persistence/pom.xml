@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.excilys.cdb</groupId>
 		<artifactId>computer-database</artifactId>
-		<version>7.0.0-RELEASE</version>
+		<version>7.1.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -24,7 +24,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>compile</scope>
 		</dependency>
 
 		<!-- Spring -->
@@ -32,29 +31,25 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		
 		<!-- ORM -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<scope>compile</scope>
 		</dependency>
 
 		<!-- CDB -->
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>
 			<artifactId>core</artifactId>
-			<version>${cdb.version}</version>
-			<scope>compile</scope>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
 

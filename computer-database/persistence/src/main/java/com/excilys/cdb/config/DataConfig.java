@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan(basePackages = "com.excilys.cdb.persistence")
 @EnableTransactionManagement
-@PropertySource("classpath:default.properties")
+@PropertySource("classpath:local.properties")
 public class DataConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataConfig.class);
 
