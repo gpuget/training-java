@@ -17,8 +17,8 @@ import com.excilys.cdb.service.ComputerService;
 
 @RestController
 @RequestMapping(RequestUri.ROOT)
-public class ComputerRESTController {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ComputerRESTController.class);
+public class ComputerRestController {
+    public static final Logger LOGGER = LoggerFactory.getLogger(ComputerRestController.class);
 
     @Autowired
     private ComputerService computerService;
