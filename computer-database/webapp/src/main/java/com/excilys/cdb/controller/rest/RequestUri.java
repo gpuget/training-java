@@ -8,4 +8,5 @@ public class RequestUri {
     public static final String GET_COMPANY = "/company/{id}";
     
     public static final String CREATE_COMPUTER = "/computers";
+    public static final String CREATE_COMPANY = "/companies";
 }

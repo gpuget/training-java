@@ -65,19 +65,14 @@ public class AddComputerController {
     public String post(ModelMap model, @Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
         LOGGER.info("addComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
-        String message = "Sorry, an error has occured during the computer creation.";
 
         if (!results.hasErrors()) {
-            CompanyDTO companyDto;
-            long companyId = computerDto.getCompanyId();
-            companyDto = companyService.getCompanyById(companyId);
-            LOGGER.debug("Valid company : " + companyDto);
-
             try {
                 computerService.create(computerDto);
                 LOGGER.debug("Dispatcher : redirect:/dashboard");
                 return "redirect:/dashboard";
             } catch (DAOException e) {
+                String message = "Sorry, an error has occured during the computer creation.";
                 LOGGER.error(message);
                 throw new ControllerException(message, e);
             }
