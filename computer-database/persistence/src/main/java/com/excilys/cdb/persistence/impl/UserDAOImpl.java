@@ -115,7 +115,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User find(String username) {
         LOGGER.info("Find company by username : " + username);
 
         try {
@@ -132,5 +132,10 @@ public class UserDAOImpl implements UserDAO {
             LOGGER.error(message);
             throw new DAOException(message, e);
         }
+    }
+
+    @Override
+    public User update(User obj) {
+        throw new UnsupportedOperationException();
     }
 }

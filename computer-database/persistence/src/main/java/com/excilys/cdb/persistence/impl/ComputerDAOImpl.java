@@ -58,7 +58,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     @Override
     @Transactional
-    public void delete(long id) {
+    public void delete(Long id) {
         LOGGER.info("Delete computer by id : " + id);
         String message = "Error : DAO has not been able to correctly delete the entity.";
 
@@ -163,7 +163,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public Computer findById(long id) {
+    public Computer find(Long id) {
         LOGGER.info("Find computer by id : " + id);
         String message = "Error : DAO has not been able to find the entity.";
 

@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info("Load user by name : " + username);
-        com.excilys.cdb.model.auth.User user = userDao.findByUsername(username);
+        com.excilys.cdb.model.auth.User user = userDao.find(username);
 
         return buildUserAuth(user);
     }

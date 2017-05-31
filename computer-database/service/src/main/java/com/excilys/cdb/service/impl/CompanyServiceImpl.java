@@ -54,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDTO getCompanyById(long id) {
         LOGGER.info("Get company by id : " + id);
-        return companyMapper.toCompanyDTO(companyDao.findById(id));
+        return companyMapper.toCompanyDTO(companyDao.find(id));
     }
 
     /**

@@ -61,7 +61,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     @Transactional
-    public void delete(long id) {
+    public void delete(Long id) {
         LOGGER.info("Delete company by id : " + id);
         String message = "Error : DAO has not been able to correctly delete the entity.";
 
@@ -99,7 +99,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public Company findById(long id) {
+    public Company find(Long id) {
         LOGGER.info("Find company by id : " + id);
         String message = "Error : DAO has not been able to find the entity.";
 

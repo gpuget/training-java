@@ -73,7 +73,7 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public ComputerDTO getDetails(long id) {
         LOGGER.info("Get computer details with id : " + id);
-        return computerMapper.toComputerDTO(computerDao.findById(id));
+        return computerMapper.toComputerDTO(computerDao.find(id));
     }
 
     @Override

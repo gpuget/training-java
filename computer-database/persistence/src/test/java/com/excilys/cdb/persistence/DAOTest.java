@@ -43,11 +43,11 @@ public class DAOTest {
         assertEquals(0l, c.getId());
         c2 = computerDao.create(c);
         assertNotEquals(0L, c2.getId());
-        assertNotNull(computerDao.findById(c2.getId()));
+        assertNotNull(computerDao.find(c2.getId()));
         ArrayList<Long> idsList = new ArrayList<>();
         idsList.add(c2.getId());
         computerDao.delete(idsList);
-        assertNull(computerDao.findById(c2.getId()));
+        assertNull(computerDao.find(c2.getId()));
     }
     
     @Test
@@ -61,7 +61,7 @@ public class DAOTest {
                                         .id(c.getId())
                                         .name("CPU2")
                                         .manufacturer(new Company.Builder().id(2L).name("CPY2").build()).build());
-        assertNotEquals(c, computerDao.findById(c.getId()));
+        assertNotEquals(c, computerDao.find(c.getId()));
         ArrayList<Long> idsList = new ArrayList<>();
         idsList.add(c.getId());
         computerDao.delete(idsList);
@@ -80,8 +80,8 @@ public class DAOTest {
     	assertEquals(0L, com.getId());
     	com2 = companyDao.create(com);
     	assertNotEquals(0L, com2.getId());
-    	assertNotNull(companyDao.findById(com2.getId()));
+    	assertNotNull(companyDao.find(com2.getId()));
     	companyDao.delete(com2.getId());
-    	assertNull(companyDao.findById(com2.getId()));
+    	assertNull(companyDao.find(com2.getId()));
     }
 }
