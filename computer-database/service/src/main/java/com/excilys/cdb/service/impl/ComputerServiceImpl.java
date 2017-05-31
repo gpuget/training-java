@@ -28,14 +28,6 @@ public class ComputerServiceImpl implements ComputerService {
     @Autowired
     private ComputerMapper computerMapper;
 
-    /**
-     * Bean initialization.
-     */
-    @PostConstruct
-    private void init() {
-        LOGGER.info("Initialization computer service...");
-    }
-
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ComputerDTO create(ComputerDTO computerDto) {
@@ -50,17 +42,17 @@ public class ComputerServiceImpl implements ComputerService {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);
     }
-    
-    @Override
-    public List<ComputerDTO> getAll() {
-        LOGGER.info("Get all computers :");
-        return computerMapper.toComputerDTO(computerDao.findAll());
-    }
 
     @Override
-    public ComputerDTO getDetails(long id) {
+    public ComputerDTO getComputerById(long id) {
         LOGGER.info("Get computer details with id : " + id);
         return computerMapper.toComputerDTO(computerDao.find(id));
+    }
+    
+    @Override
+    public List<ComputerDTO> getComputers() {
+        LOGGER.info("Get all computers :");
+        return computerMapper.toComputerDTO(computerDao.findAll());
     }
 
     @Override
@@ -88,12 +80,12 @@ public class ComputerServiceImpl implements ComputerService {
         return page;
     }
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ComputerDTO update(ComputerDTO computerDto) {
-        LOGGER.info("Update computer : " + computerDto);
-        Computer computer = computerDao.update(computerMapper.toComputer(computerDto));
-        return computerMapper.toComputerDTO(computer);
+    /**
+     * Bean initialization.
+     */
+    @PostConstruct
+    private void init() {
+        LOGGER.info("Initialization computer service...");
     }
 
     /**
@@ -104,5 +96,13 @@ public class ComputerServiceImpl implements ComputerService {
     public void setComputerDao(ComputerDAO computerDao) {
         LOGGER.info("Set computer DAO");
         this.computerDao = computerDao;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public ComputerDTO update(ComputerDTO computerDto) {
+        LOGGER.info("Update computer : " + computerDto);
+        Computer computer = computerDao.update(computerMapper.toComputer(computerDto));
+        return computerMapper.toComputerDTO(computer);
     }
 }

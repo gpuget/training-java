@@ -40,9 +40,9 @@ public class CompanyServiceTest {
         cpuDto.setName("Bob");
         cpuDto.setCompanyId(comDto.getId());
         cpuDto = computerService.create(cpuDto);
-        assertNotNull(computerService.getDetails(cpuDto.getId()));
+        assertNotNull(computerService.getComputerById(cpuDto.getId()));
         companyService.delete(comDto.getId());
-        assertEquals(new ComputerDTO(), computerService.getDetails(cpuDto.getId()));
+        assertEquals(new ComputerDTO(), computerService.getComputerById(cpuDto.getId()));
         assertEquals(new CompanyDTO(), companyService.getCompanyById(comDto.getId()));
     }
 }

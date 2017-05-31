@@ -23,19 +23,19 @@ public interface ComputerService {
     void deleteList(List<Long> idsList);
 
     /**
-     * Gets the all computers.
-     *
-     * @return computers
-     */
-    List<ComputerDTO> getAll();
-
-    /**
      * Gets the details of the computer corresponding to the identifier.
      *
      * @param id identifier
      * @return computer
      */
-    ComputerDTO getDetails(long id);
+    ComputerDTO getComputerById(long id);
+
+    /**
+     * Gets the all computers.
+     *
+     * @return computers
+     */
+    List<ComputerDTO> getComputers();
 
     /**
      * Gets the pages of computers corresponding to specified name.

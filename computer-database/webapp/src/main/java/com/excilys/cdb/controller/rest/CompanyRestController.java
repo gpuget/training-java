@@ -24,12 +24,12 @@ public class CompanyRestController {
     private CompanyService companyService;
 
     @GetMapping(value = RequestUri.GET_ALL_COMPANIES, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody List<CompanyDTO> getComputers() {
+    public @ResponseBody List<CompanyDTO> getCompanies() {
         return companyService.getCompanies();
     }
 
     @GetMapping(value = RequestUri.GET_COMPANY, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody CompanyDTO getComputer(@PathVariable long id) {
+    public @ResponseBody CompanyDTO getCompany(@PathVariable long id) {
         return companyService.getCompanyById(id);
     }
 }

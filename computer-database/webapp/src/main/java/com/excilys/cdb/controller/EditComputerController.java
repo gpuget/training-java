@@ -49,7 +49,7 @@ public class EditComputerController {
         LOGGER.debug("Computer service : " + computerService);
 
         List<CompanyDTO> companiesDto = companyService.getCompanies();
-        ComputerDTO computerDto = computerService.getDetails(Long.parseLong(id));
+        ComputerDTO computerDto = computerService.getComputerById(Long.parseLong(id));
         LOGGER.debug("Set attribute companies : " + companiesDto);
         model.addAttribute("companies", companiesDto);
         LOGGER.debug("Set attribute computer : " + computerDto);
