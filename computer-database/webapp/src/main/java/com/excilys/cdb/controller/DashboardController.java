@@ -70,11 +70,8 @@ public class DashboardController {
             page = getPage(params.getPage(), params.getMax());
         }
 
-        int count = getCount();
         LOGGER.debug("Set attribute pageComputer : " + page);
         model.addAttribute("pageComputer", page);
-        LOGGER.debug("Set attribute count : " + count);
-        model.addAttribute("count", count);
 
         LOGGER.debug("Dispatcher : dashboard");
         return "dashboard";
@@ -122,16 +119,6 @@ public class DashboardController {
     private Page<ComputerDTO> getPage(int number, int maxPerPage) {
         LOGGER.info("Get page : number " + number + " with max " + maxPerPage);
         return computerService.getPage(number, maxPerPage);
-    }
-
-    /**
-     * Gets the total number of computers.
-     *
-     * @return total number of computers
-     */
-    private int getCount() {
-        LOGGER.info("Count of computers");
-        return computerService.getCount();
     }
 
     /**

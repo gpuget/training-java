@@ -23,13 +23,6 @@ public interface ComputerService {
     void deleteList(List<Long> idsList);
 
     /**
-     * Gets the total number of computers.
-     *
-     * @return total number of computers
-     */
-    int getCount();
-
-    /**
      * Gets the details of the computer corresponding to the identifier.
      *
      * @param id identifier

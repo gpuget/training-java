@@ -229,6 +229,24 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    public int getCount(String name) {
+        LOGGER.info("Count computers");
+        String message = "Error : DAO has not been able to correctly count the entities.";
+
+        try {
+            CriteriaQuery<Long> count = criteriaBuilder.createQuery(Long.class);
+            Root<Computer> cpu = count.from(Computer.class);
+            count.select(criteriaBuilder.count(cpu.get("id")));
+            count.where(criteriaBuilder.like(cpu.get("name"), name + '%'));
+
+            return entityManager.createQuery(count).getSingleResult().intValue();
+        } catch (PersistenceException e) {
+            LOGGER.error(message);
+            throw new DAOException(message, e);
+        }
+    }
+
+    @Override
     @Transactional
     public Computer update(Computer computer) {
         LOGGER.info("Update computer :" + computer);

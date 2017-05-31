@@ -6,6 +6,13 @@ public class Page<T> {
     private List<T> objects;
     private int number;
     private int maxPerPage;
+    private int total;
+    
+    /**
+     * Constructor.
+     */
+    public Page() {
+    }
 
     /**
      * Constructor.
@@ -13,9 +20,9 @@ public class Page<T> {
      * @param number number of page
      * @param list list of objects
      */
-    public Page(int number, List<T> list) {
+    public Page(int number, int maxPerPage, List<T> list) {
         objects = list;
-        maxPerPage = list.size();
+        this.maxPerPage = maxPerPage;
         this.number = number;
     }
 
@@ -26,6 +33,10 @@ public class Page<T> {
         res = res + objects;
 
         return res;
+    }
+    
+    public int getLastNumber() {
+        return 1 + (total / maxPerPage);
     }
 
     public List<T> getObjects() {
@@ -50,5 +61,12 @@ public class Page<T> {
 
     public void setMaxPerPage(int maxPerPage) {
         this.maxPerPage = maxPerPage;
+    }
+    public int getTotal() {
+        return total;
+    }
+    
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

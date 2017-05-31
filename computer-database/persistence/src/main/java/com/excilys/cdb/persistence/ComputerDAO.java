@@ -44,4 +44,12 @@ public interface ComputerDAO extends DAO<Computer, Long>{
      * @return total number of computers
      */
     int getCount();
+
+    /**
+     * Gets the total number of computers with name like.
+     *
+     * @param name seek name
+     * @return total number of computers
+     */
+    int getCount(String name);
 }

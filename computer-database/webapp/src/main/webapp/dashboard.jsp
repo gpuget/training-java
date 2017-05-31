@@ -25,7 +25,7 @@
 	    <section id="main">
 	        <div class="container">
 	            <h1 id="homeTitle">
-	               <c:out value="${count}"/> Computers found
+	               <c:out value="${pageComputer.total}"/> Computers found
 	            </h1>
 	            <div id="actions" class="form-horizontal">
 	                <div class="pull-left">
@@ -92,7 +92,7 @@
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
 		        
-		        <mytag:pagination page="${pageComputer.number}" search="${search}" max="${pageComputer.maxPerPage}" total="${count}"/>
+		        <mytag:pagination pageComputer="${pageComputer}" search="${search}"/>
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">
 		        	<mytag:link page="${pageComputer.number}"

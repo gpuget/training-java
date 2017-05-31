@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.cdb.exception.DAOException;
 import com.excilys.cdb.mapper.dto.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
@@ -29,31 +28,20 @@ public class ComputerServiceImpl implements ComputerService {
     @Autowired
     private ComputerMapper computerMapper;
 
-    private int count;
-
     /**
      * Bean initialization.
      */
     @PostConstruct
     private void init() {
         LOGGER.info("Initialization computer service...");
-        this.count = computerDao.getCount();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ComputerDTO create(ComputerDTO computerDto) {
         LOGGER.info("Create computer : " + computerDto);
-        ++count;
-        LOGGER.debug("Count : " + count);
-        try {
-            Computer computer = computerDao.create(computerMapper.toComputer(computerDto));
-            return computerMapper.toComputerDTO(computer);
-        } catch (DAOException e) {
-            --count;
-            LOGGER.debug("Count : " + count);
-            throw e;
-        }
+        Computer computer = computerDao.create(computerMapper.toComputer(computerDto));
+        return computerMapper.toComputerDTO(computer);
     }
 
     @Override
@@ -61,13 +49,6 @@ public class ComputerServiceImpl implements ComputerService {
     public void deleteList(List<Long> idsList) {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);
-        count -= idsList.size();
-    }
-
-    @Override
-    public int getCount() {
-        LOGGER.info("Count of computers : " + count);
-        return count;
     }
 
     @Override
@@ -82,7 +63,11 @@ public class ComputerServiceImpl implements ComputerService {
                 + maxPerPage + " computers");
         List<Computer> computers = computerDao.findByName(maxPerPage, maxPerPage * (number - 1),
                 name);
-        return new Page<>(number, computerMapper.toComputerDTO(computers));
+        int count = computerDao.getCount(name);
+        Page<ComputerDTO> page = new Page<>(number, maxPerPage, computerMapper.toComputerDTO(computers));
+        page.setTotal(count);
+
+        return page;
     }
 
     @Override
@@ -90,7 +75,11 @@ public class ComputerServiceImpl implements ComputerService {
         LOGGER.info(
                 "Get page of computer : number " + number + " with " + maxPerPage + " computers");
         List<Computer> computers = computerDao.findAll(maxPerPage, maxPerPage * (number - 1));
-        return new Page<>(number, computerMapper.toComputerDTO(computers));
+        int count = computerDao.getCount();
+        Page<ComputerDTO> page = new Page<>(number, maxPerPage, computerMapper.toComputerDTO(computers));
+        page.setTotal(count);
+
+        return page;
     }
 
     @Override

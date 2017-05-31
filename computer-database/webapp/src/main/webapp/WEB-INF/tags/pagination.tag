@@ -2,15 +2,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
-<%@ tag import="java.lang.StringBuilder" %>
+<%@ tag import="java.lang.StringBuilder"%>
 
-<%@ attribute name="page" required="true" rtexprvalue="true" type="Integer"%>
-<%@ attribute name="total" required="true" rtexprvalue="true" type="Integer"%>
+<%@ attribute name="pageComputer" required="true" rtexprvalue="true"
+	type="com.excilys.cdb.model.Page"%>
 <%@ attribute name="search" required="false" rtexprvalue="true"%>
-<%@ attribute name="max" required="false" rtexprvalue="true" type="Integer"%>
 
 <%
-    int count;
+    int number = pageComputer.getNumber();
+    int maxPerPage = pageComputer.getMaxPerPage();
+    int last = pageComputer.getLastNumber();
 
     StringBuilder sb = new StringBuilder("dashboard?");
 
@@ -18,26 +19,23 @@
         sb.append("search=").append(search).append("&amp;");
     }
 
-    if (max > 0) {
-        sb.append("max=").append(max).append("&amp;");
-        count = 1 + total / max;
-    } else {
-        count = 1 + total / 10;
-    }
-
+    sb.append("max=").append(maxPerPage).append("&amp;");
     sb.append("page=");
 
     String before = sb.toString();
 %>
 
 <ul class="pagination">
-	<li><a href="<%= before %>1">&lsaquo;&lsaquo;</a></li>
-	<li><a href="<%= before %><%= (page > 1 ? page - 1 : 1) %>">&lsaquo;</a></li>
+	<li><a href="<%=before%>1">&lsaquo;&lsaquo;</a></li>
+	<li><a href="<%=before%><%=(number > 1 ? number - 1 : 1)%>">&lsaquo;</a></li>
 
-	<c:forEach var="i" begin="0" end="4">
-		<li><a href="<%= before %>${page + i}">${page + i}</a></li>
+	<c:forEach var="i" begin="0" end="3">		
+		<c:if test="${pageComputer.number + i <= pageComputer.lastNumber}">
+			<li><a href="<%= before %>${pageComputer.number + i}">${pageComputer.number + i}</a></li>
+		</c:if>
 	</c:forEach>
 
-	<li><a href="<%= before %><%= (page < count ? page + 1 : count) %>">&rsaquo;</a></li>
-	<li><a href="<%= before %><%= count %>">&rsaquo;&rsaquo;</a></li>
+	<li><a
+		href="<%=before%><%=(number < last ? number + 1 : last)%>">&rsaquo;</a></li>
+	<li><a href="<%=before%><%=last%>">&rsaquo;&rsaquo;</a></li>
 </ul>
