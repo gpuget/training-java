@@ -25,10 +25,10 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Autowired
     private ComputerDAO computerDao;
-    
+
     @Autowired
     private ComputerMapper computerMapper;
-    
+
     private int count;
 
     /**

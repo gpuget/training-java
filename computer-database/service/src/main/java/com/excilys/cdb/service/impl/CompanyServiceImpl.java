@@ -25,7 +25,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private ComputerDAO computerDao;
-    
+
     @Autowired
     private CompanyMapper companyMapper;
 

@@ -11,16 +11,25 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.excilys.cdb.controller.AddComputerController;
+
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = "com.excilys.cdb.controller")
+@ComponentScan(basePackageClasses = AddComputerController.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        LOGGER.info("RedirectViewController : '/' to '/dashboard'");
+        registry.addRedirectViewController("/", "/dashboard");
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

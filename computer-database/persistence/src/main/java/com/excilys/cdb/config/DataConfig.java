@@ -16,8 +16,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.excilys.cdb.persistence.CompanyDAO;
+
 @Configuration
-@ComponentScan(basePackages = "com.excilys.cdb.persistence")
+@ComponentScan(basePackageClasses = CompanyDAO.class)
 @EnableTransactionManagement
 @PropertySource("classpath:local.properties")
 public class DataConfig {
@@ -57,12 +59,12 @@ public class DataConfig {
     /**
      * Gets the transaction manager.
      *
+     * @param emf entity manager factory
      * @return transaction manager
      */
     @Bean
-    public PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         LOGGER.info("TransactionManager initialization");
-        EntityManagerFactory emf = entityManagerFactory().getObject();
         LOGGER.debug("EntityManagerFactory : " + emf);
         return new JpaTransactionManager(emf);
     }
@@ -70,13 +72,14 @@ public class DataConfig {
     /**
      * Gets the entity manager factory.
      *
+     * @param dataSource data source
      * @return entity manager
      */
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
         LOGGER.info("EntityManager initialization");
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setDataSource(dataSource());
+        emf.setDataSource(dataSource);
         emf.setPackagesToScan("com.excilys.cdb.model");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         LOGGER.debug("JpaVendorAdaptor : HibernateJpaVendorAdaptor");

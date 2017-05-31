@@ -45,6 +45,6 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {"/", "/addComputer", "/dashboard", "/editComputer", "/login"};
+        return new String[] {"/", "/addComputer", "/dashboard", "/editComputer", "/login", "/logout"};
     }
 }
