@@ -50,6 +50,12 @@ public class ComputerServiceImpl implements ComputerService {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);
     }
+    
+    @Override
+    public List<ComputerDTO> getAll() {
+        LOGGER.info("Get all computers :");
+        return computerMapper.toComputerDTO(computerDao.findAll());
+    }
 
     @Override
     public ComputerDTO getDetails(long id) {
