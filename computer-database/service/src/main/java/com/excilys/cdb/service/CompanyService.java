@@ -35,4 +35,12 @@ public interface CompanyService {
      * @return found company
      */
     CompanyDTO getCompanyById(long id);
+
+    /**
+     * Updates the company corresponding to the identifier after conversion.
+     *
+     * @param companyDto modified company
+     * @return modified company
+     */
+    CompanyDTO update(CompanyDTO companyDto);
 }

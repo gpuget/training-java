@@ -38,6 +38,13 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void delete(long id) {
+        LOGGER.info("Delete computer by id : " + id);
+        computerDao.delete(id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteList(List<Long> idsList) {
         LOGGER.info("Delete computers by ids : " + idsList);
         computerDao.delete(idsList);

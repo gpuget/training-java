@@ -57,6 +57,13 @@ public class CompanyServiceImpl implements CompanyService {
         return companyMapper.toCompanyDTO(companyDao.find(id));
     }
 
+    @Override
+    public CompanyDTO update(CompanyDTO companyDto) {
+        LOGGER.info("Update company : " + companyDto);
+        Company company = companyDao.update(companyMapper.toCompany(companyDto));
+        return companyMapper.toCompanyDTO(company);
+    }
+
     /**
      * Sets the company DAO.
      *
