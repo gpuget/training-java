@@ -32,6 +32,7 @@
 		<validation.version>1.1.0.Final</validation.version>
 		<persistence.version>1.0</persistence.version>
 		<jstl.version>1.2</jstl.version>
+		<jersy.version>2.17</jersy.version>
 	</properties>
 
 	<dependencyManagement>
@@ -42,7 +43,7 @@
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
-			
+
 			<!-- Hibernate -->
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -135,7 +136,21 @@
 				<artifactId>jstl</artifactId>
 				<version>${jstl.version}</version>
 			</dependency>
+			
+			<!-- Jersy -->
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersy.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersy.version}</version>
+			</dependency>
 		</dependencies>
+
 	</dependencyManagement>
 
 	<dependencies>
