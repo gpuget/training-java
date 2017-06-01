@@ -1,22 +1,25 @@
 package com.excilys.cdb.cli.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.persistence.CompanyDAO;
+import com.excilys.cdb.model.dto.CompanyDTO;
+import com.excilys.cdb.service.CompanyService;
 
-@Service
-public class ConsoleCompanyService extends AbstractConsoleService {
+@Component
+public class CompanyConsole extends AbstractConsole {
     @Autowired
-    private CompanyDAO companyDao;
+    private CompanyService companyService;
 
     @Override
     public void add() {
         System.out.print("Company name : ");
         String name = scanner.next();
+        
+        CompanyDTO companyDto = new CompanyDTO();
+        companyDto.setName(name);
 
-        companyDao.create(new Company.Builder().name(name).build());
+        companyService.create(companyDto);
     }
 
     @Override
@@ -25,13 +28,13 @@ public class ConsoleCompanyService extends AbstractConsoleService {
         System.out.print("Company id :");
         long id = scanner.nextLong();
 
-        companyDao.delete(id);
+        companyService.delete(id);
     }
 
     @Override
     public void display() {
-        for (Company com : companyDao.findAll()) {
-            System.out.println(com);
+        for (CompanyDTO comDto : companyService.getCompanies()) {
+            System.out.println(comDto);
         }
     }
 
@@ -42,7 +45,9 @@ public class ConsoleCompanyService extends AbstractConsoleService {
         long id = scanner.nextLong();
         System.out.print("Company name : ");
         String name = scanner.next();
+        
+        CompanyDTO companyDto = new CompanyDTO(id, name);
 
-        companyDao.update(new Company.Builder().id(id).name(name).build());
+        companyService.update(companyDto);
     }
 }

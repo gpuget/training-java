@@ -1,6 +1,6 @@
 package com.excilys.cdb.cli;
 
-public interface ConsoleService {
+public interface Console {
     /**
      * Add data.
      */

@@ -12,12 +12,13 @@
 	</parent>
 
 	<dependencies>
-		<!-- Spring security -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		
+		<!-- Spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
@@ -38,7 +39,7 @@
 
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>
-			<artifactId>persistence</artifactId>
+			<artifactId>service</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

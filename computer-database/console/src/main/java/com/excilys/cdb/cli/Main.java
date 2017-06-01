@@ -5,9 +5,9 @@ import java.util.Scanner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.excilys.cdb.cli.impl.ConsoleCompanyService;
-import com.excilys.cdb.cli.impl.ConsoleComputerService;
-import com.excilys.cdb.cli.impl.ConsoleUserService;
+import com.excilys.cdb.cli.impl.CompanyConsole;
+import com.excilys.cdb.cli.impl.ComputerConsole;
+import com.excilys.cdb.cli.impl.UserConsole;
 import com.excilys.cdb.config.ConsoleConfig;
 
 public class Main {
@@ -30,9 +30,9 @@ public class Main {
         ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
                 ConsoleConfig.class);
 
-        ConsoleCompanyService companyService = context.getBean(ConsoleCompanyService.class);
-        ConsoleComputerService computerService = context.getBean(ConsoleComputerService.class);
-        ConsoleUserService userService = context.getBean(ConsoleUserService.class);
+        CompanyConsole companyService = context.getBean(CompanyConsole.class);
+        ComputerConsole computerService = context.getBean(ComputerConsole.class);
+        UserConsole userService = context.getBean(UserConsole.class);
 
         int i;
         Scanner sc = new Scanner(System.in);

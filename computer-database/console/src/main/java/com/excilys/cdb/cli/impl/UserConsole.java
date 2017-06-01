@@ -5,14 +5,14 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.model.auth.User;
 import com.excilys.cdb.model.auth.UserRole;
 import com.excilys.cdb.persistence.UserDAO;
 
-@Service
-public class ConsoleUserService extends AbstractConsoleService {
+@Component
+public class UserConsole extends AbstractConsole {
     @Autowired
     private UserDAO userDao;
 
