@@ -2,6 +2,7 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,11 +15,16 @@ public class Computer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
+    @Column(nullable = false)
     private String name;
+    
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company manufacturer;
+    
     private LocalDate introduced;
+    
     private LocalDate discontinued;
 
     @Override
@@ -68,92 +74,42 @@ public class Computer {
         return res;
     }
 
-    /**
-     * Gets the identifier.
-     *
-     * @return identifier
-     */
     public long getId() {
         return id;
     }
 
-    /**
-     * Sets the identifier.
-     *
-     * @param id identifier
-     */
     public void setId(long id) {
         this.id = id;
     }
 
-    /**
-     * Gets the name of the computer.
-     *
-     * @return name of the computer
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the name of the computer.
-     *
-     * @param name name of the computer
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Gets the manufacturing company.
-     *
-     * @return manufacturing company
-     */
     public Company getManufacturer() {
         return manufacturer;
     }
 
-    /**
-     * Sets the manufacturing company.
-     *
-     * @param manufacter manufacturing company
-     */
     public void setManufacturer(Company manufacter) {
         this.manufacturer = manufacter;
     }
 
-    /**
-     * Gets the date of the first apparition.
-     *
-     * @return date of the first apparition
-     */
     public LocalDate getIntroduced() {
         return introduced;
     }
 
-    /**
-     * Sets the date of the first apparition.
-     *
-     * @param introduced date of the first apparition
-     */
     public void setIntroduced(LocalDate introduced) {
         this.introduced = introduced;
     }
 
-    /**
-     * Gets the date of the last apparition.
-     *
-     * @return date of the last apparition
-     */
     public LocalDate getDiscontinued() {
         return discontinued;
     }
 
-    /**
-     * Sets the date of the last apparition.
-     *
-     * @param discontinued date of the last apparition
-     */
     public void setDiscontinued(LocalDate discontinued) {
         this.discontinued = discontinued;
     }

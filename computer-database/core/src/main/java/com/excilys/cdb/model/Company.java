@@ -1,5 +1,6 @@
 package com.excilys.cdb.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +11,8 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(nullable = false)
     private String name;
 
     @Override
@@ -38,38 +41,18 @@ public class Company {
         return "Company (" + id + ") " + name;
     }
 
-    /**
-     * Gets the identifier.
-     *
-     * @return identifier
-     */
     public long getId() {
         return id;
     }
 
-    /**
-     * Sets the identifier.
-     *
-     * @param id identifier
-     */
     public void setId(long id) {
         this.id = id;
     }
 
-    /**
-     * Gets the name of the company.
-     *
-     * @return name of the company
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the name of the company.
-     *
-     * @param name name of the company
-     */
     public void setName(String name) {
         this.name = name;
     }
