@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.excilys.cdb</groupId>
 		<artifactId>computer-database</artifactId>
-		<version>8.0.0-RELEASE</version>
+		<version>8.1.0-RELEASE</version>
 	</parent>
 
 	<dependencies>
@@ -17,7 +17,7 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		
+
 		<!-- Spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -39,7 +39,7 @@
 
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>
-			<artifactId>service</artifactId>
+			<artifactId>binding</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

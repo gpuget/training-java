@@ -5,7 +5,7 @@
 	<groupId>com.excilys.cdb</groupId>
 	<artifactId>computer-database</artifactId>
 	<packaging>pom</packaging>
-	<version>8.0.0-RELEASE</version>
+	<version>8.1.0-RELEASE</version>
 	<name>computer-database</name>
 
 	<properties>
@@ -233,5 +233,6 @@
 		<module>service</module>
 		<module>webapp</module>
 		<module>console</module>
+		<module>binding</module>
 	</modules>
 </project>

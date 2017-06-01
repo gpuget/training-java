@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.excilys.cdb.model.dto.ComputerDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { com.excilys.cdb.config.ServiceConfig.class })
+@ContextConfiguration(classes = { com.excilys.cdb.config.BindingConfig.class })
 public class ComputerServiceTest {
     @Autowired
     private ComputerService computerService;
