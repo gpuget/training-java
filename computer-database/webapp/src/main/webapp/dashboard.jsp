@@ -92,25 +92,29 @@
                                     </a>
 	                            </span>
                 </th>
-                <th><mytag:link value="<spring:message code="computerName"/>"
+                <th><spring:message code="computerName" var="computerName"/>
+                    <spring:message code="introduced" var="introduced"/>
+                    <spring:message code="discontinued" var="discontinued"/>
+                    <spring:message code="company" var="company"/>
+                    <mytag:link value="${computerName}"
 								page="${pageComputer.number}"
 								search="${search}"
 								max="${pageComputer.maxPerPage}"
 								column="name"
 								order="${1 - order}"/></th>
-				<th><mytag:link value="<spring:message code="introduced"/>"
+				<th><mytag:link value="${introduced}"
 								page="${pageComputer.number}"
 								search="${search}"
 								max="${pageComputer.maxPerPage}"
 								column="introduced"
 								order="${1 - order}"/></th>
-				<th><mytag:link value="<spring:message code="discontinued"/>"
+				<th><mytag:link value="${discontinued}"
 								page="${pageComputer.number}"
 								search="${search}"
 								max="${pageComputer.maxPerPage}"
 								column="discontinued"
 								order="${1 - order}"/></th>
-				<th><mytag:link value="<spring:message code="company"/>"
+				<th><mytag:link value="${company}"
 								page="${pageComputer.number}"
 								search="${search}"
 								max="${pageComputer.maxPerPage}"
