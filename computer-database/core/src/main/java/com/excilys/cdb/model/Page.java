@@ -7,7 +7,7 @@ public class Page<T> {
     private int number;
     private int maxPerPage;
     private int total;
-    
+
     /**
      * Constructor.
      */
@@ -34,7 +34,12 @@ public class Page<T> {
 
         return res;
     }
-    
+
+    /**
+     * Returns the last page number.
+     *
+     * @return last page number
+     */
     public int getLastNumber() {
         return 1 + (total / maxPerPage);
     }
@@ -62,10 +67,11 @@ public class Page<T> {
     public void setMaxPerPage(int maxPerPage) {
         this.maxPerPage = maxPerPage;
     }
+
     public int getTotal() {
         return total;
     }
-    
+
     public void setTotal(int total) {
         this.total = total;
     }
