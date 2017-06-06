@@ -1,8 +1,10 @@
 package com.excilys.cdb.mapper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,22 +53,48 @@ public class MappersTest {
     }
 
     @Test
-    public void goodConversionToCompanyDTO(){
-        assertEquals(comDto, companyMapper.toCompanyDTO(com));
+    public void goodConversionToCompany(){
+        assertEquals(com, companyMapper.toCompany(comDto));
     }
 
     @Test
-    public void goodConversionToCompany(){
-        assertEquals(com, companyMapper.toCompany(comDto));
+    public void goodConversionToCompanyDTO(){
+        assertEquals(comDto, companyMapper.toCompanyDTO(com));
+    }
+    
+    @Test
+    public void goodListConversionToCompanyDTO() {
+        List<Company> companies = new ArrayList<>();
+        List<CompanyDTO> companiesDto = new ArrayList<>();
+        
+        companies.add(com);
+        companies.add(com);
+        companiesDto.add(comDto);
+        companiesDto.add(comDto);
+        
+        assertEquals(companiesDto, companyMapper.toCompanyDTO(companies));
+    }
+
+    @Test
+    public void goodConversionToComputer(){
+        assertEquals(cpu, computerMapper.toComputer(cpuDto));
     }
 
     @Test
     public void goodConversionToComputerDTO(){
         assertEquals(cpuDto, computerMapper.toComputerDTO(cpu));
     }
-
+    
     @Test
-    public void goodConversionToComputer(){
-        assertEquals(cpu, computerMapper.toComputer(cpuDto));
+    public void goodListConversionToComputerDTO() {
+        List<Computer> computers = new ArrayList<>();
+        List<ComputerDTO> computersDto = new ArrayList<>();
+        
+        computers.add(cpu);
+        computers.add(cpu);
+        computersDto.add(cpuDto);
+        computersDto.add(cpuDto);
+        
+        assertEquals(computersDto, computerMapper.toComputerDTO(computers));
     }
 }
