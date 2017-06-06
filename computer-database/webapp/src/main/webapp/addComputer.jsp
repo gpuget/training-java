@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -15,7 +16,10 @@
 	<body>
 	    <header class="navbar navbar-inverse navbar-fixed-top">
 	        <div class="container">
-	            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+				<mytag:link value="Application - Computer Database" 
+							cssClass="navbar-brand"
+							page="1"/>
+	            <a class="navbar-right btn btn-default navbar-btn" href="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a>
 	            <a class="navbar-right btn btn-default navbar-btn" href="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a>
 	        </div>
 	    </header>

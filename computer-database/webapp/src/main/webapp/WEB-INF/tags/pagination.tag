@@ -7,6 +7,8 @@
 <%@ attribute name="pageComputer" required="true" rtexprvalue="true"
 	type="com.excilys.cdb.model.Page"%>
 <%@ attribute name="search" required="false" rtexprvalue="true"%>
+<%@ attribute name="column" required="false" rtexprvalue="true"%>
+<%@ attribute name="order" required="false" rtexprvalue="true"%>
 
 <%
     int number = pageComputer.getNumber();
@@ -17,6 +19,16 @@
 
     if (search != null && !search.trim().isEmpty()) {
         sb.append("search=").append(search).append("&amp;");
+    }
+    
+    if (column != null && !column.trim().isEmpty()) {
+        sb.append("column=").append(column).append("&amp;");
+        
+        if (order == null || order.trim().isEmpty()) {
+			order = "1";
+        }
+        
+        sb.append("order=").append(order).append("&amp;");
     }
 
     sb.append("max=").append(maxPerPage).append("&amp;");
