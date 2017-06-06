@@ -23,16 +23,29 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 
     @Override
     public boolean isValid(String dateString, ConstraintValidatorContext context) {
+        String message = "Not valid date.";
         String regex = "\\d{4}\\-\\d{2}\\-\\d{2}";
         LOGGER.info("Check date : " + dateString);
         LOGGER.debug("Regex : " + regex);
 
-        if (dateString != null && dateString.matches(regex)) {
-            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LOGGER.debug("LocalDate cast : " + date);
-            int year = date.getYear();
-            if (year < min || year > max) {
-                LOGGER.warn("Not valid date.");
+        if (dateString != null) {
+            if (dateString.matches(regex)) {
+                LocalDate date;
+                try {
+                    date = LocalDate.parse(dateString,
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                } catch (Exception e) {
+                    LOGGER.error(message + " LocalDate parsing");
+                    return false;
+                }
+                LOGGER.debug("LocalDate cast : " + date);
+                int year = date.getYear();
+                if (year < min || year > max) {
+                    LOGGER.warn(message);
+                    return false;
+                } 
+            } else {
+                LOGGER.warn(message);
                 return false;
             }
         }
