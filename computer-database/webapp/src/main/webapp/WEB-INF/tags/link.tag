@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
-<%@ tag import="java.lang.StringBuilder"%>
+<%@ tag import="java.lang.StringBuilder" %>
 
 <%@ attribute name="page" required="true" rtexprvalue="true"%>
 <%@ attribute name="value" required="true" rtexprvalue="true"%>
@@ -19,21 +19,21 @@
     if (search != null && !search.trim().isEmpty()) {
         sb.append("search=").append(search).append("&amp;");
     }
-    
+
     if (max != null && !max.trim().isEmpty()) {
         sb.append("max=").append(max).append("&amp;");
     }
-    
+
     if (column != null && !column.trim().isEmpty()) {
         sb.append("column=").append(column).append("&amp;");
-        
+
         if (order == null || order.trim().isEmpty()) {
 			order = "1";
         }
-        
+
         sb.append("order=").append(order).append("&amp;");
     }
-    
+
     if (cssClass == null) {
 		cssClass = "";
     }

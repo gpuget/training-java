@@ -12,6 +12,7 @@
 		<link href="resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen">
 		<link href="resources/css/font-awesome.css" type="text/css" rel="stylesheet" media="screen">
 		<link href="resources/css/main.css" type="text/css" rel="stylesheet" media="screen">
+		<link href="resources/css/login.css" type="text/css" rel="stylesheet" media="screen">
 	</head>
 	<body>
 		<div class = "container">
@@ -27,7 +28,7 @@
 				</div>
 			</c:if>
 		
-			<form action="login" method="post">
+			<form id="form-login" action="login" method="post">
 				<h2 class="form-signin-heading">Computer database</h2>
 				<br>
 				<input type="text" class="form-control" id="username" name="username" placeholder="Username" />
