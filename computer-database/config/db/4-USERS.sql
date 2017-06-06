@@ -17,3 +17,6 @@ CREATE TABLE user_roles (
   UNIQUE KEY uni_username_role (role,username),
   KEY fk_username_idx (username),
   CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username));
+  
+INSERT INTO users (username, password, enabled) VALUES ('admin', '$2a$10$41gNgeb//NGo1pi5Zyst6OOzF27ONJz9M5uog8WM0IGsrjNyh7wS2', 1);
+INSERT INTO user_roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
