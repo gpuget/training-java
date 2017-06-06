@@ -66,10 +66,30 @@
                                     </a>
 	                            </span>
 	                        </th>                 
-	                        <th><a>Computer name</a></th>
-	                        <th>Introduced date</th>
-	                        <th>Discontinued date</th>
-	                        <th>Company</th>
+	                        <th><mytag:link value="Computer name" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="name"
+	                        				order="${1 - order}"/></th>                 
+	                        <th><mytag:link value="Introduced date" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="introduced"
+	                        				order="${1 - order}"/></th>                 
+	                        <th><mytag:link value="Discontinued date" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="discontinued"
+	                        				order="${1 - order}"/></th>                 
+	                        <th><mytag:link value="Company" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="companyName"
+	                        				order="${1 - order}"/></th>
 	                    </tr>
 	                </thead>
 	                <!-- Browse attribute computers -->
@@ -95,7 +115,7 @@
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
 		        
-		        <mytag:pagination pageComputer="${pageComputer}" search="${search}"/>
+		        <mytag:pagination pageComputer="${pageComputer}" search="${search}" column="${column}" order="${order}"/>
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">
 		        	<mytag:link page="${pageComputer.number}"

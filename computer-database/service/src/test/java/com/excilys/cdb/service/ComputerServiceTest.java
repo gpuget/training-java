@@ -20,9 +20,9 @@ public class ComputerServiceTest {
 
     @Test
     public void correctPage() {
-        assertEquals(10, computerService.getPage(1, 10).getObjects().size());
+        assertEquals(10, computerService.getPage(1, 10, "id", 1).getObjects().size());
         assertEquals(computerService.getComputerById(12L),
-                computerService.getPage(2, 10).getObjects().get(1));
+                computerService.getPage(2, 10, "id", 1).getObjects().get(1));
     }
 
     @Test

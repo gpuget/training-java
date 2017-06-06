@@ -24,19 +24,23 @@ public interface ComputerDAO extends DAO<Computer, Long>{
      *
      * @param limit limit size of the list returned
      * @param offset start of the search
+     * @param column column for orderby
+     * @param order ASC (1) or DESC (0)
      * @return list of all computers in the interval
      */
-    List<Computer> findAll(int limit, int offset);
+    List<Computer> findAll(int limit, int offset, String column, int order);
 
     /**
      * Finds all computers in an interval fixed by limit and offset parameters and filtered by name.
      *
      * @param limit limit size of the list returned
      * @param offset start of the search
+     * @param column column for orderby
+     * @param order ASC (1) or DESC (0)
      * @param name seek name
      * @return list of computers
      */
-    List<Computer> findByName(int limit, int offset, String name);
+    List<Computer> findByName(int limit, int offset, String column, int order, String name);
 
     /**
      * Gets the total number of computers.

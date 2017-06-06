@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestParameters {
     public static final String SEARCH_REGEX = "[\\w\\+\\-\\ \\.]*";
+    public static final String COLUMN_REGEX = "id|name|introduced|discontinued|companyName";
 
     @Min(1)
     private int page;
@@ -17,6 +18,12 @@ public class RequestParameters {
 
     @Pattern(regexp = SEARCH_REGEX)
     private String search;
+    
+    @Pattern(regexp = COLUMN_REGEX)
+    private String column;
+    
+    @Min(0)
+    private int order;
 
     @Override
     public String toString() {
@@ -63,5 +70,33 @@ public class RequestParameters {
      */
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    /**
+     * @return the column
+     */
+    public String getColumn() {
+        return column;
+    }
+
+    /**
+     * @param column the column to set
+     */
+    public void setColumn(String column) {
+        this.column = column;
+    }
+
+    /**
+     * @return the order
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    /**
+     * @param order the order to set
+     */
+    public void setOrder(int order) {
+        this.order = order;
     }
 }
