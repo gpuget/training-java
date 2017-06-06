@@ -1,23 +1,27 @@
 package com.excilys.cdb.cli;
 
-public interface Console {
+import java.util.List;
+
+public interface Console<T> {
     /**
      * Add data.
      */
-    void add();
+    void add(T t);
 
     /**
      * Delete data.
      */
-    void delete();
+    void delete(String id);
 
     /**
      * Display data.
      */
-    void display();
+    List<T> display();
 
     /**
      * Update data.
      */
     void update();
+    
+    T findById(String id);
 }
