@@ -39,7 +39,7 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 		</dependency>
-		
+
 		<!-- CDB -->
 		<dependency>
 			<groupId>com.excilys.cdb</groupId>
@@ -58,9 +58,7 @@
 			<artifactId>service</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-
 	</dependencies>
-
 
 	<build>
 		<finalName>console</finalName>

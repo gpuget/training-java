@@ -1,0 +1,10 @@
+.flag-icon {
+    width: 48px;
+    height: 32px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.container .panel-icon {
+    margin: 8px 16px 8px 8px;
+}
