@@ -17,7 +17,10 @@
 	<body>
 	    <header class="navbar navbar-inverse navbar-fixed-top">
 	        <div class="container">
-	            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+				<mytag:link value="Application - Computer Database" 
+							cssClass="navbar-brand"
+							page="1"
+							max="${pageComputer.maxPerPage}"/>
 	            <a class="navbar-right btn btn-default navbar-btn" href="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a>
 	        </div>
 	    </header>
@@ -63,7 +66,7 @@
                                     </a>
 	                            </span>
 	                        </th>                 
-	                        <th>Computer name</th>
+	                        <th><a>Computer name</a></th>
 	                        <th>Introduced date</th>
 	                        <th>Discontinued date</th>
 	                        <th>Company</th>
@@ -96,7 +99,21 @@
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">
 		        	<mytag:link page="${pageComputer.number}"
+		        				value="10"
 		        				search="${search}"
+		        				max="10"
+		        				button="true"/>
+		        				
+					<mytag:link page="${pageComputer.number}"
+		        				value="50"
+		        				search="${search}"
+		        				max="50"
+		        				button="true"/>
+		        				
+					<mytag:link page="${pageComputer.number}"
+		        				value="100"
+		        				search="${search}"
+		        				max="100"
 		        				button="true"/>
 		        </div>
 		    </div>
