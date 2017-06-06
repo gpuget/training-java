@@ -1,78 +1,105 @@
 package com.excilys.cdb.cli.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.stereotype.Component;
 
+import com.excilys.cdb.cli.Console;
 import com.excilys.cdb.model.dto.ComputerDTO;
-import com.excilys.cdb.service.ComputerService;
 
 @Component
-public class ComputerConsole extends AbstractConsole {
-    @Autowired
-    private ComputerService computerService;
+public class ComputerConsole implements Console<ComputerDTO> {
 
-    @Autowired
-    private CompanyConsole companyService;
+
+    private final static String ROOT_URI = "http://localhost:8080/computer-database/api/";
+    
+    private ClientConfig authentification(){
+        ClientConfig clientConfig = new ClientConfig();
+        
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("saraadmin", "123456");
+        clientConfig.register( feature) ;
+        
+        clientConfig.register(JacksonFeature.class);
+        return clientConfig;
+    }
+    
 
     @Override
-    public void add() {
-        System.out.print("Computer name : ");
-        String name = scanner.next();
-        companyService.display();
-        System.out.print("Company id : ");
-        long companyId = scanner.nextLong();
-        System.out.print("Introduced (yyyy-MM-dd): ");
-        String introduced = scanner.next();
-        System.out.print("Discontinued (yyyy-MM-dd): ");
-        String discontinued = scanner.next();
-
-        ComputerDTO computerDto = new ComputerDTO();
-        computerDto.setName(name);
-        computerDto.setCompanyId(companyId);
-        computerDto.setDiscontinued(discontinued);
-        computerDto.setIntroduced(introduced);
-
-        computerService.create(computerDto);
+    public void add(ComputerDTO computerDto) {
+        
+        Client client = ClientBuilder.newClient();
+        WebTarget base = client.target(ROOT_URI);
+        WebTarget find = base.path("computers/");
+        Invocation.Builder builder = find.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response=builder.post(Entity.entity(computerDto, MediaType.APPLICATION_JSON_TYPE));
+        System.out.println(response.getStatus());
+        
     }
 
     @Override
-    public void delete() {
-        display();
-        System.out.print("Computer id :");
-        long id = scanner.nextLong();
-
-        computerService.delete(id);
+    public void delete(String id) {
+        Client client = ClientBuilder.newClient();
+        
+            Response response= client.target(ROOT_URI)
+                                        .path("computer")
+                                            .path(id)
+                                                .request().delete();
+        //System.out.println(response.getStatus());
+        
+        
     }
 
     @Override
-    public void display() {
-        for (ComputerDTO cpuDto : computerService.getComputers()) {
-            System.out.println(cpuDto);
-        }
+    public List<ComputerDTO> display() {
+        Client client = ClientBuilder.newClient();
+        ComputerDTO[] response= client.target(ROOT_URI)
+                                        .path("computers")
+                                            .request(MediaType.APPLICATION_JSON_TYPE)
+                                                .get(ComputerDTO[].class);
+        
+        return Arrays.asList(response);
+        
     }
+
+  
+    public void update(ComputerDTO computerDto) {
+        Client client = ClientBuilder.newClient();
+        WebTarget base = client.target(ROOT_URI);
+        WebTarget find = base.path("computers/");
+        Invocation.Builder builder = find.request(MediaType.APPLICATION_JSON_TYPE);
+        builder.post(Entity.entity(computerDto, MediaType.APPLICATION_JSON_TYPE));
+    }
+
+
+    @Override
+    public ComputerDTO findById(String id) {
+        Client client = ClientBuilder.newClient();
+        ComputerDTO response= client.target(ROOT_URI)
+                                        .path("computer/")
+                                            .path(id)
+                                            .request(MediaType.APPLICATION_JSON_TYPE)
+                                                .get(ComputerDTO.class);
+        
+        return response;
+    }
+
 
     @Override
     public void update() {
-        display();
-        System.out.print("Computer id : ");
-        long id = scanner.nextLong();
-        System.out.print("Computer name : ");
-        String name = scanner.next();
-        companyService.display();
-        System.out.print("Company id : ");
-        long companyId = scanner.nextLong();
-        System.out.print("Introduced (yyyy-MM-dd): ");
-        String introduced = scanner.next();
-        System.out.print("Discontinued (yyyy-MM-dd): ");
-        String discontinued = scanner.next();
-
-        ComputerDTO computerDto = new ComputerDTO();
-        computerDto.setId(id);
-        computerDto.setName(name);
-        computerDto.setCompanyId(companyId);
-        computerDto.setDiscontinued(discontinued);
-        computerDto.setIntroduced(introduced);
-
-        computerService.update(computerDto);
+        
     }
+   
+
 }

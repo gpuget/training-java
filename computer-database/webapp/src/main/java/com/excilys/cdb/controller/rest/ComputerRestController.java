@@ -95,6 +95,7 @@ public class ComputerRestController {
         LOGGER.info("Rest Computer DELETE : " + id);
         try {
             computerService.delete(id);
+            LOGGER.info("delete computer ");
             return new ResponseEntity<>("Computer has been deleted", HttpStatus.ACCEPTED);
         } catch (DAOException e) {
             String message = "Sorry, an error has occured during the computer creation.";
