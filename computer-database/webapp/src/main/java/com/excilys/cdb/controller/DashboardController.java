@@ -59,19 +59,24 @@ public class DashboardController {
         }
 
         Page<ComputerDTO> page;
+        String column = (params.getColumn() == null ? "id" : params.getColumn());
         if (params.getSearch() != null) {
             LOGGER.debug("Filtered page returned");
-            page = getFilteredByNamePage(params.getPage(), params.getMax(), params.getSearch());
+            page = getFilteredByNamePage(params.getPage(), params.getMax(), column, params.getOrder(), params.getSearch());
 
             LOGGER.debug("Set attribute search : " + params.getSearch());
             model.addAttribute("search", params.getSearch());
         } else {
             LOGGER.debug("Default page returned");
-            page = getPage(params.getPage(), params.getMax());
+            page = getPage(params.getPage(), params.getMax(), column, params.getOrder());
         }
 
         LOGGER.debug("Set attribute pageComputer : " + page);
         model.addAttribute("pageComputer", page);
+        LOGGER.debug("Set attribute column : " + column);
+        model.addAttribute("column", column);
+        LOGGER.debug("Set attribute order : " + params.getOrder());
+        model.addAttribute("order", params.getOrder());
 
         LOGGER.debug("Dispatcher : dashboard");
         return "dashboard";
@@ -103,10 +108,10 @@ public class DashboardController {
      * @param name seek name
      * @return page of filtered computers
      */
-    private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
+    private Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String column, int order, String name) {
         LOGGER.info("Get filtered by name page : (" + name + ") number " + number + " with max "
                 + maxPerPage);
-        return computerService.getFilteredByNamePage(number, maxPerPage, name);
+        return computerService.getFilteredByNamePage(number, maxPerPage, column, order, name);
     }
 
     /**
@@ -116,9 +121,9 @@ public class DashboardController {
      * @param maxPerPage maximum number of items
      * @return page page of computers
      */
-    private Page<ComputerDTO> getPage(int number, int maxPerPage) {
+    private Page<ComputerDTO> getPage(int number, int maxPerPage, String column, int order) {
         LOGGER.info("Get page : number " + number + " with max " + maxPerPage);
-        return computerService.getPage(number, maxPerPage);
+        return computerService.getPage(number, maxPerPage, column, order);
     }
 
     /**

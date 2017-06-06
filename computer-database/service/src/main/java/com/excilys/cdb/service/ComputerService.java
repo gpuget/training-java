@@ -49,19 +49,23 @@ public interface ComputerService {
      *
      * @param number number of the page
      * @param maxPerPage maximum number of items
+     * @param column column for orderby
+     * @param order ASC (1) or DESC (0)
      * @param name seek name
      * @return page of filtered computers
      */
-    Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name);
+    Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String column, int order, String name);
 
     /**
      * Gets the page of computers.
      *
      * @param number number of the page
      * @param maxPerPage maximum number of items
+     * @param column column for orderby
+     * @param order ASC (1) or DESC (0)
      * @return page page of computers
      */
-    Page<ComputerDTO> getPage(int number, int maxPerPage);
+    Page<ComputerDTO> getPage(int number, int maxPerPage, String column, int order);
 
     /**
      * Updates the computer corresponding to the identifier after conversion.
