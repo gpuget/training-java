@@ -55,7 +55,7 @@ public class ComputerServiceImpl implements ComputerService {
         LOGGER.info("Get computer details with id : " + id);
         return computerMapper.toComputerDTO(computerDao.find(id));
     }
-    
+
     @Override
     public List<ComputerDTO> getComputers() {
         LOGGER.info("Get all computers :");
@@ -63,25 +63,29 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String name) {
+    public Page<ComputerDTO> getFilteredByNamePage(int number, int maxPerPage, String column,
+            int order, String name) {
         LOGGER.info("Get page of filtered computer : (" + name + ") number " + number + " with "
                 + maxPerPage + " computers");
         List<Computer> computers = computerDao.findByName(maxPerPage, maxPerPage * (number - 1),
-                name);
+                column, order, name);
         int count = computerDao.getCount(name);
-        Page<ComputerDTO> page = new Page<>(number, maxPerPage, computerMapper.toComputerDTO(computers));
+        Page<ComputerDTO> page = new Page<>(number, maxPerPage,
+                computerMapper.toComputerDTO(computers));
         page.setTotal(count);
 
         return page;
     }
 
     @Override
-    public Page<ComputerDTO> getPage(int number, int maxPerPage) {
+    public Page<ComputerDTO> getPage(int number, int maxPerPage, String column, int order) {
         LOGGER.info(
                 "Get page of computer : number " + number + " with " + maxPerPage + " computers");
-        List<Computer> computers = computerDao.findAll(maxPerPage, maxPerPage * (number - 1));
+        List<Computer> computers = computerDao.findAll(maxPerPage, maxPerPage * (number - 1),
+                column, order);
         int count = computerDao.getCount();
-        Page<ComputerDTO> page = new Page<>(number, maxPerPage, computerMapper.toComputerDTO(computers));
+        Page<ComputerDTO> page = new Page<>(number, maxPerPage,
+                computerMapper.toComputerDTO(computers));
         page.setTotal(count);
 
         return page;

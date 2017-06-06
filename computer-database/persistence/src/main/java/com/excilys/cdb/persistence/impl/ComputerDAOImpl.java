@@ -140,14 +140,28 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> findAll(int limit, int offset) {
+    public List<Computer> findAll(int limit, int offset, String column, int order) {
         LOGGER.info("Find all computers : " + limit + " " + offset);
         String message = "Error : DAO has not been able to correctly find all entities.";
 
         if (limit > 0 && offset >= 0) {
             try {
                 CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
-                find.select(find.from(Computer.class));
+                Root<Computer> cpu = find.from(Computer.class);
+                find.select(cpu);
+                if (order == 0) {                    
+                    if (column.equals("companyName")) {
+                        find.orderBy(criteriaBuilder.desc(cpu.get("manufacturer").get("name")));
+                    } else {                        
+                        find.orderBy(criteriaBuilder.desc(cpu.get(column)));                        
+                    }
+                } else {                    
+                    if (column.equals("companyName")) {
+                        find.orderBy(criteriaBuilder.asc(cpu.get("manufacturer").get("name")));
+                    } else {                        
+                        find.orderBy(criteriaBuilder.asc(cpu.get(column)));                        
+                    }
+                }
                 LOGGER.debug("Criteria query : " + find);
 
                 return entityManager.createQuery(find).setMaxResults(limit).setFirstResult(offset)
@@ -189,7 +203,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> findByName(int limit, int offset, String name) {
+    public List<Computer> findByName(int limit, int offset, String column, int order, String name) {
         LOGGER.info("Find all computer with name : " + name);
         String message = "Error : DAO has not been able to correctly find all entities.";
 
@@ -198,6 +212,19 @@ public class ComputerDAOImpl implements ComputerDAO {
                 CriteriaQuery<Computer> find = criteriaBuilder.createQuery(Computer.class);
                 Root<Computer> cpu = find.from(Computer.class);
                 find.select(cpu).where(criteriaBuilder.like(cpu.get("name"), name + '%'));
+                if (order == 0) {                    
+                    if (column.equals("companyName")) {
+                        find.orderBy(criteriaBuilder.desc(cpu.get("manufacturer").get("name")));
+                    } else {                        
+                        find.orderBy(criteriaBuilder.desc(cpu.get(column)));                        
+                    }
+                } else {                    
+                    if (column.equals("companyName")) {
+                        find.orderBy(criteriaBuilder.asc(cpu.get("manufacturer").get("name")));
+                    } else {                        
+                        find.orderBy(criteriaBuilder.asc(cpu.get(column)));                        
+                    }
+                }
                 LOGGER.debug("Criteria query : " + find);
 
                 return entityManager.createQuery(find).setMaxResults(limit).setFirstResult(offset)

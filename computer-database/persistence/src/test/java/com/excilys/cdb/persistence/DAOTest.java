@@ -30,7 +30,7 @@ public class DAOTest {
 	    int max = 10;
 	    
 	    assertEquals(computerDao.getCount(), 574);
-	    assertEquals(max, computerDao.findAll(max, 0).size());
+	    assertEquals(max, computerDao.findAll(max, 0, "id", 1).size());
 	}
     
     @Test

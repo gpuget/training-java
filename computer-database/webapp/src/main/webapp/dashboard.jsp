@@ -17,7 +17,10 @@
 	<body>
 	    <header class="navbar navbar-inverse navbar-fixed-top">
 	        <div class="container">
-	            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+				<mytag:link value="Application - Computer Database" 
+							cssClass="navbar-brand"
+							page="1"
+							max="${pageComputer.maxPerPage}"/>
 	            <a class="navbar-right btn btn-default navbar-btn" href="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a>
 	        </div>
 	    </header>
@@ -63,10 +66,30 @@
                                     </a>
 	                            </span>
 	                        </th>                 
-	                        <th>Computer name</th>
-	                        <th>Introduced date</th>
-	                        <th>Discontinued date</th>
-	                        <th>Company</th>
+	                        <th><mytag:link value="Computer name" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="name"
+	                        				order="${1 - order}"/></th>                 
+	                        <th><mytag:link value="Introduced date" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="introduced"
+	                        				order="${1 - order}"/></th>                 
+	                        <th><mytag:link value="Discontinued date" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="discontinued"
+	                        				order="${1 - order}"/></th>                 
+	                        <th><mytag:link value="Company" 
+	                        				page="${pageComputer.number}"
+	                        				search="${search}"
+	                        				max="${pageComputer.maxPerPage}"
+	                        				column="companyName"
+	                        				order="${1 - order}"/></th>
 	                    </tr>
 	                </thead>
 	                <!-- Browse attribute computers -->
@@ -92,11 +115,25 @@
 	    <footer class="navbar-fixed-bottom">
 	        <div class="container text-center">
 		        
-		        <mytag:pagination pageComputer="${pageComputer}" search="${search}"/>
+		        <mytag:pagination pageComputer="${pageComputer}" search="${search}" column="${column}" order="${order}"/>
 		
 		        <div class="btn-group btn-group-sm pull-right" role="group">
 		        	<mytag:link page="${pageComputer.number}"
+		        				value="10"
 		        				search="${search}"
+		        				max="10"
+		        				button="true"/>
+		        				
+					<mytag:link page="${pageComputer.number}"
+		        				value="50"
+		        				search="${search}"
+		        				max="50"
+		        				button="true"/>
+		        				
+					<mytag:link page="${pageComputer.number}"
+		        				value="100"
+		        				search="${search}"
+		        				max="100"
 		        				button="true"/>
 		        </div>
 		    </div>
