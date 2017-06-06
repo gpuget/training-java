@@ -38,16 +38,20 @@
 %>
 
 <ul class="pagination">
+	<c:if test="${pageComputer.number >1}">
 	<li><a href="<%=before%>1">&lsaquo;&lsaquo;</a></li>
-	<li><a href="<%=before%><%=(number > 1 ? number - 1 : 1)%>">&lsaquo;</a></li>
+	<li><a href="<%=before%><%=number - 1%>">&lsaquo;</a></li>
+	</c:if>
 
-	<c:forEach var="i" begin="0" end="3">		
+	<c:forEach var="i" begin="0" end="3">
 		<c:if test="${pageComputer.number + i <= pageComputer.lastNumber}">
 			<li><a href="<%= before %>${pageComputer.number + i}">${pageComputer.number + i}</a></li>
 		</c:if>
 	</c:forEach>
 
+	<c:if test="${pageComputer.number < pageComputer.lastNumber}">
 	<li><a
 		href="<%=before%><%=(number < last ? number + 1 : last)%>">&rsaquo;</a></li>
 	<li><a href="<%=before%><%=last%>">&rsaquo;&rsaquo;</a></li>
+	</c:if>
 </ul>

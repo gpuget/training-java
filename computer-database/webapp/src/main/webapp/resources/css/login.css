@@ -1,0 +1,8 @@
+#form-login {
+    width: 32%;
+    margin: auto;
+    text-align: center;
+}
+#form-login input {
+    margin-bottom: 16px;
+}
