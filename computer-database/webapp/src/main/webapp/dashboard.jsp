@@ -138,9 +138,14 @@
                     <td class="editMode">
                         <input type="checkbox" name="cb" class="cb" value="${obj.id}">
                     </td>
+                    <sec:authorize access="hasRole('ADMIN')">
                     <td>
                         <a href="editComputer?id=${obj.id}">${obj.name}</a>
                     </td>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('USER')">
+                    <td><c:out value="${obj.name}"/></td>
+                    </sec:authorize>
                     <td><c:out value="${obj.introduced}"/></td>
                     <td><c:out value="${obj.discontinued}"/></td>
                     <td><c:out value="${obj.companyName}"/></td>
