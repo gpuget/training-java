@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,25 +14,25 @@
           media="screen">
 </head>
 <body>
-    <header class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="/webapp/dashboard"> Application - Computer Database </a>
-        </div>
-    </header>
+<header class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/webapp/dashboard"> Application - Computer Database </a>
+    </div>
+</header>
 
-    <section id="main">
-        <div class="container">
-            <div class="alert alert-danger">
-                Error 404: Page not found.
-                <br/>
-                <!-- stacktrace -->
-                ${pageContext.exception.message}
-            </div>
+<section id="main">
+    <div class="container">
+        <div class="alert alert-danger">
+            <spring:message code="404"/>
+            <br/>
+            <!-- stacktrace -->
+            ${pageContext.exception.message}
         </div>
-    </section>
+    </div>
+</section>
 
-    <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
-    <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
 
 
 </body>
