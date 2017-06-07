@@ -19,50 +19,52 @@
         <maven-tomcat7-plugin.version>2.2</maven-tomcat7-plugin.version>
         <maven-gatling-plugin.version>2.1.7</maven-gatling-plugin.version>
 
-		<jackson.version>2.8.8</jackson.version>
-		<hibernate.core.version>5.2.10.Final</hibernate.core.version>
-		<hibernate.jpa21.version>1.0.0.Final</hibernate.jpa21.version>
-		<hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
-		<spring.version>4.3.7.RELEASE</spring.version>
-		<spring.security.version>4.2.2.RELEASE</spring.security.version>
-		<mysql.version>5.1.6</mysql.version>
-		<junit.version>4.12</junit.version>
-		<slf4j.version>1.7.5</slf4j.version>
-		<logback-classic.version>1.1.3</logback-classic.version>
-		<servlet.version>3.0.1</servlet.version>
-		<validation.version>1.1.0.Final</validation.version>
-		<persistence.version>1.0</persistence.version>
-		<jstl.version>1.2</jstl.version>
-		<jersy.version>2.17</jersy.version>
-	</properties>
+        <jackson.version>2.8.8</jackson.version>
+        <hibernate.core.version>5.2.10.Final</hibernate.core.version>
+        <hibernate.jpa21.version>1.0.0.Final</hibernate.jpa21.version>
+        <hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
+        <spring.version>4.3.7.RELEASE</spring.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
+        <mysql.version>5.1.6</mysql.version>
+        <junit.version>4.12</junit.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <logback-classic.version>1.1.3</logback-classic.version>
+        <servlet.version>3.0.1</servlet.version>
+        <validation.version>1.1.0.Final</validation.version>
+        <persistence.version>1.0</persistence.version>
+        <jstl.version>1.2</jstl.version>
+        <jersy.version>2.17</jersy.version>
+        <mockito.version>2.7.22</mockito.version>
+        <common.language.version>3.4</common.language.version>
+    </properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- Jackson -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
-			<!-- Hibernate -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.core.version}</version>
-			</dependency>
+            <!-- Hibernate -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.core.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
@@ -144,31 +146,37 @@
                 <scope>provided</scope>
             </dependency>
 
-			<dependency>
-				<groupId>jstl</groupId>
-				<artifactId>jstl</artifactId>
-				<version>${jstl.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+            </dependency>
 
-			<!-- Jersy -->
-			<dependency>
-				<groupId>org.glassfish.jersey.core</groupId>
-				<artifactId>jersey-client</artifactId>
-				<version>${jersy.version}</version>
-			</dependency>
+            <!-- Jersy -->
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersy.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.glassfish.jersey.media</groupId>
-				<artifactId>jersey-media-json-jackson</artifactId>
-				<version>${jersy.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersy.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-taglibs</artifactId>
                 <version>${spring.security.version}</version>
             </dependency>
-		</dependencies>
-	</dependencyManagement>
+            <!-- common language -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${common.language.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Test -->
@@ -218,6 +226,12 @@
             <version>${logback-classic.version}</version>
         </dependency>
 
+        <!-- common language -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
     </dependencies>
 
 
@@ -258,7 +272,7 @@
                 <version>2.2</version>
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
-                   <server>TomcatServer</server>
+                    <server>TomcatServer</server>
                     <username>admin</username>
                     <password>admin</password>
                 </configuration>

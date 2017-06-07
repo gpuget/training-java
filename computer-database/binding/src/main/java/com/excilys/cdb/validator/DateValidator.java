@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +30,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
         LOGGER.info("Check date : " + dateString);
         LOGGER.debug("Regex : " + regex);
 
-        if (dateString != null) {
+        if (StringUtils.isNotBlank(dateString)) {
             if (dateString.matches(regex)) {
                 LocalDate date;
                 try {
@@ -43,7 +45,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
                 if (year < min || year > max) {
                     LOGGER.warn(message);
                     return false;
-                } 
+                }
             } else {
                 LOGGER.warn(message);
                 return false;
