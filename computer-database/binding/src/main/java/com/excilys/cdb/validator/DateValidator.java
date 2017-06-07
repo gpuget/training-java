@@ -30,11 +30,9 @@ public class DateValidator implements ConstraintValidator<Date, String> {
         LOGGER.info("Check date : " + dateString);
         LOGGER.debug("Regex : " + regex);
 
-<<<<<<< HEAD
+
         if (StringUtils.isNotBlank(dateString)) {
-=======
-        if (dateString != null) {
->>>>>>> 04bb5d1be1a1562fdfc102cab585d05040962683
+
             if (dateString.matches(regex)) {
                 LocalDate date;
                 try {
@@ -49,11 +47,9 @@ public class DateValidator implements ConstraintValidator<Date, String> {
                 if (year < min || year > max) {
                     LOGGER.warn(message);
                     return false;
-<<<<<<< HEAD
+
                 }
-=======
-                } 
->>>>>>> 04bb5d1be1a1562fdfc102cab585d05040962683
+
             } else {
                 LOGGER.warn(message);
                 return false;

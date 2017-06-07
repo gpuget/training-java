@@ -5,17 +5,11 @@
 <%@ tag import="java.lang.StringBuilder" %>
 
 <%@ attribute name="pageComputer" required="true" rtexprvalue="true"
-<<<<<<< HEAD
+
               type="com.excilys.cdb.model.Page" %>
 <%@ attribute name="search" required="false" rtexprvalue="true" %>
 <%@ attribute name="column" required="false" rtexprvalue="true" %>
 <%@ attribute name="order" required="false" rtexprvalue="true" %>
-=======
-	type="com.excilys.cdb.model.Page"%>
-<%@ attribute name="search" required="false" rtexprvalue="true"%>
-<%@ attribute name="column" required="false" rtexprvalue="true"%>
-<%@ attribute name="order" required="false" rtexprvalue="true"%>
->>>>>>> 04bb5d1be1a1562fdfc102cab585d05040962683
 
 <%
     int number = pageComputer.getNumber();
@@ -55,7 +49,7 @@
 %>
 
 <ul class="pagination">
-<<<<<<< HEAD
+
     <c:if test="${pageComputer.number >1}">
         <li><a href="<%=before%>1">&lsaquo;&lsaquo;</a></li>
         <li><a href="<%=before%><%=number - 1%>">&lsaquo;</a></li>
@@ -89,22 +83,5 @@
                 href="<%=before%><%=(number < last ? number + 1 : last)%>">&rsaquo;</a></li>
         <li><a href="<%=before%><%=last%>">&rsaquo;&rsaquo;</a></li>
     </c:if>
-=======
-	<c:if test="${pageComputer.number >1}">
-	<li><a href="<%=before%>1">&lsaquo;&lsaquo;</a></li>
-	<li><a href="<%=before%><%=number - 1%>">&lsaquo;</a></li>
-	</c:if>
 
-	<c:forEach var="i" begin="0" end="3">
-		<c:if test="${pageComputer.number + i <= pageComputer.lastNumber}">
-			<li><a href="<%= before %>${pageComputer.number + i}">${pageComputer.number + i}</a></li>
-		</c:if>
-	</c:forEach>
-
-	<c:if test="${pageComputer.number < pageComputer.lastNumber}">
-	<li><a
-		href="<%=before%><%=(number < last ? number + 1 : last)%>">&rsaquo;</a></li>
-	<li><a href="<%=before%><%=last%>">&rsaquo;&rsaquo;</a></li>
-	</c:if>
->>>>>>> 04bb5d1be1a1562fdfc102cab585d05040962683
 </ul>
