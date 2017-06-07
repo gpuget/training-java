@@ -34,8 +34,17 @@
                 class="glyphicon glyphicon-log-out"></i></a>
 
         <div class="navbar-right panel-icon">
-            <a href="?mylocale=en"> <img class="flag-icon" src="resources/images/UK.jpeg"/> </a>
-            <a href="?mylocale=fr"> <img class="flag-icon" src="resources/images/france.jpg"/> </a>
+            <mytag:link value="<img class='flag-icon' src='resources/images/UK.jpeg'/>"
+                        locale="en"
+                        search="${search}"
+                        page="1"
+                        max="${pageComputer.maxPerPage}"/>
+
+            <mytag:link value="<img class='flag-icon' src='resources/images/france.jpg'/>"
+                        locale="fr"
+                        search="${search}"
+                        page="1"
+                        max="${pageComputer.maxPerPage}"/>
         </div>
     </div>
 

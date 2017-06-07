@@ -21,7 +21,7 @@ import com.excilys.cdb.persistence.CompanyDAO;
 @Configuration
 @ComponentScan(basePackageClasses = CompanyDAO.class)
 @EnableTransactionManagement
-@PropertySource("classpath:default.properties")
+@PropertySource("classpath:local.properties")
 public class DataConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataConfig.class);
 

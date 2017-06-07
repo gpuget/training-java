@@ -7,6 +7,7 @@
 <%@ attribute name="page" required="true" rtexprvalue="true"%>
 <%@ attribute name="value" required="true" rtexprvalue="true"%>
 <%@ attribute name="cssClass" required="false" rtexprvalue="true"%>
+<%@ attribute name="locale" required="false" rtexprvalue="true"%>
 <%@ attribute name="search" required="false" rtexprvalue="true"%>
 <%@ attribute name="max" required="false" rtexprvalue="true"%>
 <%@ attribute name="column" required="false" rtexprvalue="true"%>
@@ -34,8 +35,12 @@
         sb.append("order=").append(order).append("&amp;");
     }
 
+    if (locale != null) {
+        sb.append("mylocale=").append(locale).append("&amp;");
+    }
+
     if (cssClass == null) {
-		cssClass = "";
+        cssClass = "";
     }
 
     sb.append("page=").append(page);

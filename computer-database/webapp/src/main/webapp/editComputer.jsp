@@ -25,8 +25,8 @@
 							page="1"/>
 	            <a class="navbar-right btn btn-default navbar-btn" href="logout"><spring:message code="logout"/> <i class="glyphicon glyphicon-log-out"></i></a>
 				<div class="navbar-right panel-icon">
-					<a href="?mylocale=en"> <img class="flag-icon" src="resources/images/UK.jpeg"/> </a>
-					<a href="?mylocale=fr"> <img class="flag-icon" src="resources/images/france.jpg"/> </a>
+					<a href="?id=${computer.id}&mylocale=en"> <img class="flag-icon" src="resources/images/UK.jpeg"/> </a>
+					<a href="?id=${computer.id}&mylocale=fr"> <img class="flag-icon" src="resources/images/france.jpg"/> </a>
 				</div>
 			</div>
 	    </header>
