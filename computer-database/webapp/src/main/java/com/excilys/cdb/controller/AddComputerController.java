@@ -62,7 +62,8 @@ public class AddComputerController {
      * @return servlet mapping
      */
     @PostMapping
-    public String post(ModelMap model, @Valid @ModelAttribute ComputerDTO computerDto, BindingResult results) {
+    public String post(ModelMap model, @Valid @ModelAttribute ComputerDTO computerDto,
+            BindingResult results) {
         LOGGER.info("addComputer POST");
         LOGGER.debug("Posted ComputerDTO : " + computerDto);
 
@@ -77,9 +78,12 @@ public class AddComputerController {
                 throw new ControllerException(message, e);
             }
         } else {
+            List<CompanyDTO> companies = companyService.getCompanies();
+            LOGGER.debug("Set attribute compagnies : " + companies);
+            model.addAttribute("companies", companies);
             LOGGER.warn(results.getAllErrors().toString());
             model.addAttribute("errors", results.getAllErrors());
-            return "/addComputer";
+            return "addComputer";
         }
     }
 

@@ -32,16 +32,6 @@
         sb.append("order=").append(order).append("&amp;");
     }
 
-    if (column != null && !column.trim().isEmpty()) {
-        sb.append("column=").append(column).append("&amp;");
-
-        if (order == null || order.trim().isEmpty()) {
-            order = "1";
-        }
-
-        sb.append("order=").append(order).append("&amp;");
-    }
-
     sb.append("max=").append(maxPerPage).append("&amp;");
     sb.append("page=");
 
@@ -56,7 +46,7 @@
     </c:if>
 
     <c:choose>
-        <c:when test="${pageComputer.number lt 4}">
+        <c:when test="${pageComputer.number < 4}">
             <c:forEach var="i" begin="1" end="5">
                 <li><a href="<%= before %>${i}">${i}</a></li>
             </c:forEach>
@@ -73,8 +63,6 @@
             <c:forEach var="i" begin="1" end="5">
                 <li><a href="<%= before %>${pageComputer.number + i -3}">${pageComputer.number + i -3}</a></li>
             </c:forEach>
-
-
         </c:otherwise>
     </c:choose>
 

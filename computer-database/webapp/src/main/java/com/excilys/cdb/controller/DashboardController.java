@@ -61,6 +61,16 @@ public class DashboardController {
                 LOGGER.warn("The search is not valid.");
                 params.setSearch(null);
             }
+
+            if (result.getFieldError("column") != null) {
+                LOGGER.warn("The column is not valid.");
+                params.setColumn(null);
+            }
+
+            if (result.getFieldError("order") != null) {
+                LOGGER.warn("The order is not valid.");
+                params.setOrder(0);
+            }
         }
 
         Page<ComputerDTO> page;

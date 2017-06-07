@@ -159,7 +159,10 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
 
-        <mytag:pagination pageComputer="${pageComputer}" search="${search}"/>
+        <mytag:pagination pageComputer="${pageComputer}" 
+        					search="${search}"
+        					column="${column}"
+        					order="${order}"/>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<mytag:link page="${pageComputer.number}"

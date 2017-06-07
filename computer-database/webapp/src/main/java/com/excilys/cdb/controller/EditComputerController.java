@@ -84,6 +84,9 @@ public class EditComputerController {
                 throw new ControllerException(message, e);
             }
         } else {
+            List<CompanyDTO> companies = companyService.getCompanies();
+            LOGGER.debug("Set attribute compagnies : " + companies);
+            model.addAttribute("companies", companies);
             LOGGER.warn(results.getAllErrors().toString());
             model.addAttribute("errors", results.getAllErrors());
             return "/editComputer";
