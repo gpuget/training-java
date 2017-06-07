@@ -139,7 +139,7 @@
                         <input type="checkbox" name="cb" class="cb" value="${obj.id}">
                     </td>
                     <td>
-                        <a href="editComputer?id=${obj.id}">${obj.name}</a>
+                        <a href="editComputer?id=${obj.id}"><c:out value="${obj.name}"/></a>
                     </td>
                     <td><c:out value="${obj.introduced}"/></td>
                     <td><c:out value="${obj.discontinued}"/></td>

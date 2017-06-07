@@ -18,13 +18,13 @@
 		<div class = "container">
 			<c:if test="${param.logout != null}">
 				<div class="alert alert-success">
-				  <strong>Success :</strong> ${logout}
+				  <strong>Success :</strong> <c:out value="${logout}"/>
 				</div>
 			</c:if>			
 			
 			<c:if test="${param.error != null}">
 				<div class="alert alert-danger">
-				  <strong>Error :</strong> ${error}
+				  <strong>Error :</strong> <c:out value="${error}"/>
 				</div>
 			</c:if>
 		

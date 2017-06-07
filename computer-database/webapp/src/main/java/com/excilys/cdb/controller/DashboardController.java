@@ -56,6 +56,11 @@ public class DashboardController {
                 LOGGER.warn("The max per page was not valid : reset to 10");
                 params.setMax(10);
             }
+
+            if (result.getFieldError("search") != null) {
+                LOGGER.warn("The search is not valid.");
+                params.setSearch(null);
+            }
         }
 
         Page<ComputerDTO> page;
